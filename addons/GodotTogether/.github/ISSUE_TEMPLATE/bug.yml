@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a bug
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug description
+      description: Describe the what's wrong. Provide as much details as possible. You can also attach screenshots and videos.
+      placeholder: Describe the bug...
+  - type: input
+    id: godot-version
+    attributes:
+      label: Godot version
+      description: The version of Godot you're running
+      placeholder: ex. v4.4.1.stable.arch_linux
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched for other issues describing this bug
+          required: true
+        - label: I am using the latest source code version of the plugin
+          required: true
+        - label: I have read the [wiki](https://github.com/Wolfyxon/GodotTogether/wiki) and believe I'm not doing anything wrong
+          required: true
+        - label: The bug isn't listed in the [TODO list](https://github.com/Wolfyxon/GodotTogether/issues/1) and the feature it's referring to is implemented
+          required: true

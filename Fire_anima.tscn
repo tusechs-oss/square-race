@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://4goy6q677m1d"]
+
+[ext_resource type="Script" uid="uid://fxb6boafypqr" path="res://sword.gd" id="1_lcl8j"]
+[ext_resource type="Shader" uid="uid://b66s340fjckt1" path="res://sword.gdshader" id="2_1oa1d"]
+[ext_resource type="Texture2D" uid="uid://kushpq3hvmi" path="res://6951dfc299ecc304db62cb44adb46545-removebg-preview.png" id="3_1oa1d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vg0fh"]
+size = Vector2(103.16948, 86.940575)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ugcdv"]
+shader = ExtResource("2_1oa1d")
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/tint_amount = 0.0
+shader_parameter/flash_modifier = 0.09656358581502633
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_thickness = 3.618000171855
+
+[sub_resource type="Animation" id="Animation_lcl8j"]
+resource_name = "Idle"
+length = 1.0666667
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.03333334, 0.5, 1),
+"transitions": PackedFloat32Array(0.7320428, 1.5157164, 1.3195081),
+"update": 0,
+"values": [Vector2(0.28, 0.28), Vector2(0.32, 0.32), Vector2(0.28, 0.28)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/flash_modifier")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.52, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.26000001235, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1oa1d"]
+_data = {
+&"Idle": SubResource("Animation_lcl8j")
+}
+
+[node name="Fire" type="Node2D" unique_id=1190718171]
+scale = Vector2(0.8626582, 0.8626582)
+script = ExtResource("1_lcl8j")
+
+[node name="SWORD" type="Area2D" parent="." unique_id=152893256]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SWORD" unique_id=1887124757]
+visible = false
+position = Vector2(4.057226, 1.738812)
+shape = SubResource("RectangleShape2D_vg0fh")
+
+[node name="Fire" type="Sprite2D" parent="SWORD" unique_id=1040267122]
+material = SubResource("ShaderMaterial_ugcdv")
+scale = Vector2(0.29949638, 0.29949638)
+texture = ExtResource("3_1oa1d")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SWORD/Fire" unique_id=1007329914]
+libraries/ = SubResource("AnimationLibrary_1oa1d")
+autoplay = &"Idle"
+
+[connection signal="body_entered" from="SWORD" to="." method="_on_body_entered"]

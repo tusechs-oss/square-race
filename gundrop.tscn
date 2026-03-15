@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://cvgb1jjhkp0nb"]
+
+[ext_resource type="Texture2D" uid="uid://bpdrplsvuvr7v" path="res://4smg04.png" id="1_f5qmr"]
+
+[sub_resource type="Animation" id="Animation_1l4h5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_uc70m"]
+resource_name = "drop"
+length = 1.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.47, 0.96666664),
+"transitions": PackedFloat32Array(0.67847383, 3.1383367, 0.22531268),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-82.999985, -166), Vector2(-139, 694)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.97),
+"transitions": PackedFloat32Array(3.6050034, 1),
+"update": 0,
+"values": [0.0, 12.90671]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c3clc"]
+_data = {
+&"RESET": SubResource("Animation_1l4h5"),
+&"drop": SubResource("Animation_uc70m")
+}
+
+[node name="Gundrop" type="Node2D" unique_id=985873470]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=428837533]
+texture_filter = 1
+scale = Vector2(2.085, 2.085)
+texture = ExtResource("1_f5qmr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=124209308]
+root_node = NodePath("../Sprite2D")
+libraries/ = SubResource("AnimationLibrary_c3clc")

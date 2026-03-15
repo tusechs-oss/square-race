@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://bocpcanhmp4ep"]
+
+[ext_resource type="Script" uid="uid://y4nbtqo4g8gd" path="res://examples/ean13/main.gd" id="1_stasl"]
+[ext_resource type="Script" uid="uid://dgrysjry3op5g" path="res://addons/kenyoni/ean13/ean13_rect.gd" id="2_stasl"]
+
+[node name="HBoxContainer" type="HBoxContainer" unique_id=1018684991 node_paths=PackedStringArray("_input_number", "_bar_color", "_background_color", "_auto_module_px_size", "_module_px_size", "_add_quiet_zone", "_show_quiet_zone_indicator", "_show_text", "_ean13_label", "_ean13_rect")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_stasl")
+_input_number = NodePath("MarginContainer2/VBoxContainer/InputNumber")
+_bar_color = NodePath("MarginContainer2/VBoxContainer/options/BarColor")
+_background_color = NodePath("MarginContainer2/VBoxContainer/options/BackgroundColor")
+_auto_module_px_size = NodePath("MarginContainer2/VBoxContainer/options/AutoModulePxSize")
+_module_px_size = NodePath("MarginContainer2/VBoxContainer/options/ModulePxSize")
+_add_quiet_zone = NodePath("MarginContainer2/VBoxContainer/options/add_quiet_zone_button")
+_show_quiet_zone_indicator = NodePath("MarginContainer2/VBoxContainer/options/show_quiet_zone_indicator_button")
+_show_text = NodePath("MarginContainer2/VBoxContainer/options/show_text_button")
+_ean13_label = NodePath("MarginContainer2/VBoxContainer/h_box_container/ean13_label")
+_ean13_rect = NodePath("MarginContainer/ean_13_rect")
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=292203905]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2" unique_id=265323509]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InputNumber" type="LineEdit" parent="MarginContainer2/VBoxContainer" unique_id=493765864]
+layout_mode = 2
+placeholder_text = "Data"
+
+[node name="h_box_container" type="HBoxContainer" parent="MarginContainer2/VBoxContainer" unique_id=43649717]
+layout_mode = 2
+
+[node name="ean13_label_label" type="Label" parent="MarginContainer2/VBoxContainer/h_box_container" unique_id=927856793]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "EAN-13 Number"
+
+[node name="ean13_label" type="Label" parent="MarginContainer2/VBoxContainer/h_box_container" unique_id=665086117]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer2/VBoxContainer" unique_id=1151907566]
+layout_mode = 2
+
+[node name="options" type="GridContainer" parent="MarginContainer2/VBoxContainer" unique_id=116582115]
+layout_mode = 2
+columns = 3
+
+[node name="BarColorLabel" type="Label" parent="MarginContainer2/VBoxContainer/options" unique_id=197084317]
+layout_mode = 2
+text = "Light Modules"
+
+[node name="Control3" type="Control" parent="MarginContainer2/VBoxContainer/options" unique_id=1080115320]
+layout_mode = 2
+
+[node name="BarColor" type="ColorPickerButton" parent="MarginContainer2/VBoxContainer/options" unique_id=730030500]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 1, 1, 1)
+
+[node name="BackgroundColorLabel" type="Label" parent="MarginContainer2/VBoxContainer/options" unique_id=999712502]
+layout_mode = 2
+text = "Dark Modules"
+
+[node name="Control5" type="Control" parent="MarginContainer2/VBoxContainer/options" unique_id=1090373481]
+layout_mode = 2
+
+[node name="BackgroundColor" type="ColorPickerButton" parent="MarginContainer2/VBoxContainer/options" unique_id=443655059]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ModulePxSizeLabel" type="Label" parent="MarginContainer2/VBoxContainer/options" unique_id=949913811]
+layout_mode = 2
+text = "Module Px Size"
+
+[node name="AutoModulePxSize" type="CheckBox" parent="MarginContainer2/VBoxContainer/options" unique_id=1389425839]
+layout_mode = 2
+button_pressed = true
+
+[node name="ModulePxSize" type="SpinBox" parent="MarginContainer2/VBoxContainer/options" unique_id=1674323374]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
+allow_greater = true
+alignment = 1
+editable = false
+
+[node name="AddQuietZoneLabel" type="Label" parent="MarginContainer2/VBoxContainer/options" unique_id=3732704]
+layout_mode = 2
+text = "Add Quiet Zone"
+
+[node name="Control6_2" type="Control" parent="MarginContainer2/VBoxContainer/options" unique_id=812037156]
+layout_mode = 2
+
+[node name="add_quiet_zone_button" type="CheckButton" parent="MarginContainer2/VBoxContainer/options" unique_id=946336123]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ShowTextLabel" type="Label" parent="MarginContainer2/VBoxContainer/options" unique_id=171748749]
+layout_mode = 2
+text = "Show Text"
+
+[node name="Control6_4" type="Control" parent="MarginContainer2/VBoxContainer/options" unique_id=1946766829]
+layout_mode = 2
+
+[node name="show_text_button" type="CheckButton" parent="MarginContainer2/VBoxContainer/options" unique_id=1900101647]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ShowQuietZoneIndicatorLabel" type="Label" parent="MarginContainer2/VBoxContainer/options" unique_id=110253206]
+layout_mode = 2
+text = "Show Quiet Zone Indicator"
+
+[node name="Control6_3" type="Control" parent="MarginContainer2/VBoxContainer/options" unique_id=2031730702]
+layout_mode = 2
+
+[node name="show_quiet_zone_indicator_button" type="CheckButton" parent="MarginContainer2/VBoxContainer/options" unique_id=1542034679]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=33990807]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="ean_13_rect" type="TextureRect" parent="MarginContainer" unique_id=1540270460]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("2_stasl")
+auto_update = true
+number = ""
+background_color = Color(1, 1, 1, 1)
+bar_color = Color(0, 0, 0, 1)
+auto_module_size = true
+add_quiet_zone = true
+show_text = true
+show_quiet_zone_indicator = false
+text_font = null
+metadata/_custom_type_script = "uid://dgrysjry3op5g"

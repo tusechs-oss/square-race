@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cyclifb0dn05v"]
+
+[ext_resource type="Script" uid="uid://07p7er66joh6" path="res://Leaderboardscp.gd" id="1_n6nvk"]
+
+[node name="Node2D" type="Node2D" unique_id=1998414505]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=637360392]
+script = ExtResource("1_n6nvk")
+
+[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=451380666]
+offset_left = 797.0
+offset_top = 1.0
+offset_right = 1151.0
+offset_bottom = 436.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Panel" unique_id=2104363826]
+layout_mode = 0
+offset_right = 353.0
+offset_bottom = 434.0
+
+[node name="ScoreList" type="VBoxContainer" parent="CanvasLayer/Panel/ScrollContainer" unique_id=121959176]
+layout_mode = 2

@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://rk36oo8heiwh"]
+
+[ext_resource type="Texture2D" uid="uid://bdmlqo3lv3sl" path="res://examples/icons_patcher/home-variant.svg" id="1_vong5"]
+[ext_resource type="Texture2D" uid="uid://cdmidyrsrv42h" path="res://examples/icons_patcher/icons/home-variant.svg" id="2_mdm8t"]
+
+[node name="main" type="PanelContainer" unique_id=1249431954]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=272974715]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1532497198]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1707852664]
+layout_mode = 2
+text = "Original"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1059938687]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_vong5")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=476020008]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2" unique_id=853533603]
+layout_mode = 2
+text = "Converted"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer2" unique_id=930107362]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_mdm8t")
+expand_mode = 1
+stretch_mode = 4

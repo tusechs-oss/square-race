@@ -1,0 +1,9 @@
+# Godot 4+ specific ignores
+.godot/
+
+# custom ignores
+
+addons/explore-editor-theme/
+archives/
+doc/.cache/
+doc/site/

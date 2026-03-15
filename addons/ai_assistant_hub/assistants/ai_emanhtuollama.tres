@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AIAssistantResource" format=3 uid="uid://dv7wsmcf2cfl6"]
+
+[ext_resource type="Resource" uid="uid://c0xq2vafep0gu" path="res://addons/ai_assistant_hub/llm_providers/ollama.tres" id="1_mxjer"]
+[ext_resource type="Script" uid="uid://cs3cfhd7q3pvr" path="res://addons/ai_assistant_hub/quick_prompts/ai_quick_prompt_resource.gd" id="2_neg4v"]
+[ext_resource type="Script" uid="uid://bbgm33o102otu" path="res://addons/ai_assistant_hub/assistants/ai_assistant_resource.gd" id="3_pispm"]
+
+[resource]
+script = ExtResource("3_pispm")
+type_name = "EmAnhTuollama"
+ai_model = "llama3:latest"
+llm_provider = ExtResource("1_mxjer")

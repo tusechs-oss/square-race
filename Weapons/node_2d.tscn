@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://bq43yrpqgq1mr"]
+
+[ext_resource type="Script" uid="uid://dhbhy6ecrg4t6" path="res://Weapons/rigid_body_2d.gd" id="1_2dkge"]
+[ext_resource type="PackedScene" uid="uid://4skvv05ouaaw" path="res://Weapons/Shot.tscn" id="2_g38nq"]
+[ext_resource type="Texture2D" uid="uid://bpdrplsvuvr7v" path="res://4smg04.png" id="2_nm73w"]
+[ext_resource type="PackedScene" uid="uid://dcfq5ral3h4nn" path="res://KillSplash.tscn" id="3_onmmb"]
+[ext_resource type="PackedScene" uid="uid://cvgb1jjhkp0nb" path="res://gundrop.tscn" id="4_a8o6o"]
+[ext_resource type="Shader" uid="uid://rfpdejppredf" path="res://TX.gdshader" id="5_5gt47"]
+[ext_resource type="Texture2D" uid="uid://kushpq3hvmi" path="res://6951dfc299ecc304db62cb44adb46545-removebg-preview.png" id="6_a8o6o"]
+[ext_resource type="Texture2D" uid="uid://bg5cv5qwbnu7r" path="res://R.jpg" id="6_yv2v2"]
+[ext_resource type="Texture2D" uid="uid://cr81y0twuxlge" path="res://Adobe Express - file (1).png" id="7_6tcmd"]
+[ext_resource type="Script" uid="uid://cdhoxv1lt5326" path="res://addons/trail_2d/trail_2d.gd" id="10_yv2v2"]
+[ext_resource type="FontFile" uid="uid://cyhqn1a8sqlq8" path="res://SouthernGothic-Normal-FREE-FOR-PERSONAL-USE-ONLY.otf" id="8_nm0ys"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g38nq"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nm73w"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2dkge"]
+line_spacing = 3.93
+font = ExtResource("8_nm0ys")
+font_size = 17
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lg5qu"]
+shader = ExtResource("5_5gt47")
+shader_parameter/width = 0.02700000128249999
+shader_parameter/speed = 2.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1u1nc"]
+size = Vector2(171.5, 144.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d0lh3"]
+size = Vector2(196.99184, 182.33737)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ni0l1"]
+
+[sub_resource type="Curve" id="Curve_yv2v2"]
+_data = [Vector2(0.1534091, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Node2D" type="Node2D" unique_id=2116439196]
+position = Vector2(1, 5)
+
+[node name="RigidBody2D" type="RigidBody2D" parent="." unique_id=102067423 groups=["Player"]]
+physics_material_override = SubResource("PhysicsMaterial_g38nq")
+gravity_scale = 0.0
+lock_rotation = true
+angular_damp_mode = 1
+angular_damp = 1.0
+script = ExtResource("1_2dkge")
+bullet_scene = ExtResource("2_g38nq")
+kill_splash_scene = ExtResource("3_onmmb")
+gun_drop_scene = ExtResource("4_a8o6o")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D" unique_id=1914109737]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D" unique_id=797225866]
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_nm73w")
+
+[node name="Label" type="Label" parent="RigidBody2D" unique_id=1319552608]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_top = -35.0
+offset_right = 72.0
+offset_bottom = -3.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_2dkge")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="RigidBody2D" unique_id=1286840685]
+material = SubResource("ShaderMaterial_lg5qu")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -29.66
+offset_top = -30.06
+offset_right = 5.790001
+offset_bottom = 5.699999
+grow_horizontal = 2
+scale = Vector2(1.675, 1.675)
+texture = ExtResource("6_yv2v2")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="SparkParticles" type="GPUParticles2D" parent="RigidBody2D" unique_id=2011472447]
+amount = 3
+sub_emitter = NodePath(".")
+
+[node name="AutoAimArea" type="Area2D" parent="RigidBody2D" unique_id=1364610957]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/AutoAimArea" unique_id=605601477]
+visible = false
+shape = SubResource("RectangleShape2D_1u1nc")
+
+[node name="hand" type="Marker2D" parent="RigidBody2D" unique_id=648572089]
+position = Vector2(36.1, 0)
+scale = Vector2(2.46, 2.46)
+
+[node name="Gun" type="Sprite2D" parent="RigidBody2D/hand" unique_id=585199912]
+visible = false
+texture_filter = 1
+position = Vector2(6.4634156, 2.4390244)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("2_nm73w")
+
+[node name="Sword" type="Sprite2D" parent="RigidBody2D/hand" unique_id=1561596220]
+visible = false
+z_index = -1
+texture_filter = 1
+position = Vector2(-15.081298, -30.0813)
+scale = Vector2(0.16, 0.16)
+texture = ExtResource("6_a8o6o")
+
+[node name="SwordHitbox" type="Area2D" parent="RigidBody2D/hand/Sword" unique_id=684933576]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/hand/Sword/SwordHitbox" unique_id=862036908]
+visible = false
+position = Vector2(5.0812874, 188.00815)
+scale = Vector2(1.0000002, 1.0000002)
+shape = SubResource("RectangleShape2D_d0lh3")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D/hand/Sword" unique_id=1264813156]
+z_index = 1
+texture_filter = 1
+material = SubResource("ShaderMaterial_ni0l1")
+position = Vector2(2.540641, 218.49596)
+scale = Vector2(0.19, 0.19)
+texture = ExtResource("7_6tcmd")
+
+[node name="Muzzle" type="Marker2D" parent="RigidBody2D/hand" unique_id=1466545983]
+position = Vector2(23.130081, -0.40650406)
+scale = Vector2(0.475, 0.475)
+
+[node name="ShootTimer" type="Timer" parent="RigidBody2D/hand" unique_id=1174690563]
+one_shot = true
+
+[node name="Trail" type="Line2D" parent="RigidBody2D" unique_id=895888144]
+z_index = -2
+texture_filter = 1
+points = PackedVector2Array(-30, -1, -75, -3)
+width = 35.0
+width_curve = SubResource("Curve_yv2v2")
+texture_mode = 2
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("10_yv2v2")
+length = 15
+metadata/_custom_type_script = "uid://cdhoxv1lt5326"
+
+[connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="_on_body_entered"]
+[connection signal="body_entered" from="RigidBody2D/AutoAimArea" to="RigidBody2D" method="_on_auto_aim_area_body_entered"]
+[connection signal="body_entered" from="RigidBody2D/hand/Sword/SwordHitbox" to="RigidBody2D" method="_on_sword_hitbox_body_entered"]

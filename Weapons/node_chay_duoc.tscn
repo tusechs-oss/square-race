@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://beyuxo71yoehy"]
+
+[sub_resource type="Curve" id="Curve_wtcfe"]
+_data = [Vector2(0.007968128, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.03887844), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_0e48y"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[node name="Node2D" type="Node2D" unique_id=2116439196]
+
+[node name="Trail" type="Line2D" parent="." unique_id=747671283]
+top_level = true
+points = PackedVector2Array(-401, -456)
+width = 20.0
+width_curve = SubResource("Curve_wtcfe")
+gradient = SubResource("Gradient_0e48y")

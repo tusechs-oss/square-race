@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dwrvneuy0flaa"
+path="res://.godot/imported/khối va chạm.mp3-9511b7af6173834cb55468be8c35b878.mp3str"
+
+[deps]
+
+source_file="res://khối va chạm.mp3"
+dest_files=["res://.godot/imported/khối va chạm.mp3-9511b7af6173834cb55468be8c35b878.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

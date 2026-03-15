@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://4skvv05ouaaw"]
+
+[ext_resource type="Script" uid="uid://bavi43b3v0me" path="res://Weapons/shot.gd" id="1_lsigg"]
+[ext_resource type="Texture2D" uid="uid://h3cnyl537mbk" path="res://Bullet 24x24 Free Part 3B.png" id="2_bst44"]
+[ext_resource type="Shader" uid="uid://bqkqaq8d3spj5" path="res://Weapons/Shot.gdshader" id="2_qlomx"]
+[ext_resource type="PackedScene" uid="uid://dgotdf8tvfrvc" path="res://addons/vfx_library/effects/blood_splash.tscn" id="3_bst44"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m78lb"]
+radius = 9.0
+height = 50.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qjfid"]
+shader = ExtResource("2_qlomx")
+shader_parameter/blood_color = Color(1, 1, 1, 1)
+shader_parameter/glow_power = 2.0000000475
+
+[sub_resource type="Environment" id="Environment_qjfid"]
+background_mode = 3
+glow_enabled = true
+
+[node name="Shot_scene" type="Node2D" unique_id=2053566569]
+script = ExtResource("1_lsigg")
+
+[node name="Bullet" type="Area2D" parent="." unique_id=731206154]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bullet" unique_id=543891675]
+visible = false
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_m78lb")
+
+[node name="Sprite2D" type="Sprite2D" parent="Bullet" unique_id=723015481]
+self_modulate = Color(2.3422987, 2.3422987, 2.3422987, 1)
+texture_filter = 1
+material = SubResource("ShaderMaterial_qjfid")
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_bst44")
+region_enabled = true
+region_rect = Rect2(407.04218, 338.5384, 24.688965, 21.461609)
+
+[node name="BloodSplash" parent="." unique_id=1665688062 instance=ExtResource("3_bst44")]
+self_modulate = Color(1.9429119, 1.9429119, 1.9429119, 1)
+scale = Vector2(1.305, 1.305)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1683183854]
+environment = SubResource("Environment_qjfid")
+
+[connection signal="body_entered" from="Bullet" to="." method="_on_bullet_body_entered"]
