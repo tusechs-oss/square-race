@@ -144,6 +144,9 @@ func send_get_request(http_node: HTTPRequest, request_url: String):
 	]
 	headers = add_jwt_token_headers(headers)
 	print("GET headers: " + str(headers))
+	if http_node == null or !is_instance_valid(http_node):
+		SWLogger.error("SilentWolf: HTTPRequest invalid before GET; aborting to avoid crash")
+		return
 	if !http_node.is_inside_tree():
 		await get_tree().create_timer(0.01).timeout
 	SWLogger.debug("Method: GET")
@@ -188,6 +191,9 @@ func send_post_request(http_node, request_url, payload):
 			headers.append("x-sw-act-dig: " + hashed)
 			break
 	var use_ssl = true
+	if http_node == null or !is_instance_valid(http_node):
+		SWLogger.error("SilentWolf: HTTPRequest invalid before POST; aborting to avoid crash")
+		return
 	if !http_node.is_inside_tree():
 		await get_tree().create_timer(0.01).timeout
 	var query = JSON.stringify(payload)

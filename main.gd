@@ -41,6 +41,8 @@ func _resolve_boss_level(reason: Variant, raw_data: Variant) -> int:
 					10: level = 2
 					15: level = 3
 					20: level = 4
+					25: level = 5
+					30: level = 6
 		if raw_data.has("hearts"):
 			var h := int(raw_data["hearts"])
 			if h > 0:
@@ -52,6 +54,75 @@ func _resolve_boss_level(reason: Variant, raw_data: Variant) -> int:
 			if parts.size() >= 3:
 				level = int(parts[2])
 	return level
+
+# Màu sắc theo cấp Boss (1→5): đỏ nhạt → đỏ đậm
+func _boss_color_for_level(level: int) -> Color:
+	match level:
+		1: return Color(1.0, 0.7, 0.7, 1.0)
+		2: return Color(1.0, 0.5, 0.5, 1.0)
+		3: return Color(0.95, 0.3, 0.3, 1.0)
+		4: return Color(0.9, 0.15, 0.15, 1.0)
+		5: return Color(0.85, 0.05, 0.05, 1.0)
+		6: return Color(0.7, 0.0, 0.0, 1.0)
+		_: return Color(1, 1, 1, 1)
+
+# Áp màu Boss lên phần thân (ưu tiên TextureRect; không có thì tô cả RigidBody2D)
+func _apply_boss_color(rb: Node, level: int) -> void:
+	if rb == null:
+		return
+	var col := _boss_color_for_level(level)
+	var body_tex = rb.get_node_or_null("TextureRect")
+	if body_tex == null:
+		body_tex = rb.find_child("TextureRect", true, false)
+	if body_tex and "modulate" in body_tex:
+		body_tex.modulate = col
+	else:
+		rb.modulate = col
+
+# Áp màu cho Trail (Line2D) nếu nhân vật có node "Trail"
+func _apply_trail_color(rb: Node, level: int) -> void:
+	if rb == null:
+		return
+	var trail = rb.get_node_or_null("Trail")
+	if trail == null:
+		trail = rb.find_child("Trail", true, false)
+	if trail:
+		var col := _boss_color_for_level(level)
+		if "default_color" in trail:
+			trail.default_color = col
+		elif "modulate" in trail:
+			trail.modulate = col
+		# Tăng độ dày trail theo cấp nếu có thuộc tính width
+		if "width" in trail:
+			trail.width = 6.0 + max(level - 1, 0) * 2.0
+		if "visible" in trail:
+			trail.visible = true
+
+# Tăng kích cỡ theo cấp Boss; Lv6 phóng to rõ rệt
+func _boss_scale_for_level(level: int) -> float:
+	match level:
+		3: return 1.4
+		4: return 1.7
+		5: return 2.1
+		6: return 2.6
+		_: return 1.0
+
+func _apply_boss_scale(rb: Node2D, level: int) -> void:
+	if rb == null:
+		return
+	var s := _boss_scale_for_level(level)
+	# Không scale physics; scale trực tiếp các node hiển thị (TextureRect, Label)
+	rb.scale = Vector2(1, 1)
+	var tex = rb.get_node_or_null("TextureRect")
+	if tex == null:
+		tex = rb.find_child("TextureRect", true, false)
+	if tex and "scale" in tex:
+		tex.scale = Vector2(s, s)
+	var lbl = rb.get_node_or_null("Label")
+	if lbl == null:
+		lbl = rb.find_child("Label", true, false)
+	if lbl and "scale" in lbl:
+		lbl.scale = Vector2(s, s)
 
 func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
 	if box_template:
@@ -116,6 +187,9 @@ func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
 			if rb2 and rb2.has_method("apply_damage"):
 				rb2.max_hearts = hp
 				rb2.hearts = hp
+				_apply_boss_color(rb2, boss_level)
+				_apply_trail_color(rb2, boss_level)
+				_apply_boss_scale(rb2, boss_level)
 			# Không thêm tiền tố BossLv vào tên
 
 		# 4. Xử lý Avatar (Giữ nguyên để tránh lỗi 403)
@@ -284,6 +358,9 @@ func _spawn_boss_level(level: int) -> void:
 			var hp = level + 1
 			rb.max_hearts = hp
 			rb.hearts = hp
+			_apply_boss_color(rb, level)
+			_apply_trail_color(rb, level)
+			_apply_boss_scale(rb, level)
 
 func _on_boss_lv_1_pressed() -> void:
 	_spawn_boss_level(1)
