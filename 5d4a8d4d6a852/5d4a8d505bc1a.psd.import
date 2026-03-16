@@ -1,0 +1,22 @@
+[remap]
+
+importer="psd_layers_importer"
+type="PhotoshopDocument"
+uid="uid://dlwge1pco0l54"
+path="res://.godot/imported/5d4a8d505bc1a.psd-e8701ad7ab4abea743129457b0e5ad58.tres"
+
+[deps]
+
+files=["res://5d4a8d4d6a852/5d4a8d505bc1a.tres"]
+
+source_file="res://5d4a8d4d6a852/5d4a8d505bc1a.psd"
+dest_files=["res://.godot/imported/5d4a8d505bc1a.psd-e8701ad7ab4abea743129457b0e5ad58.tres", "res://5d4a8d4d6a852/5d4a8d505bc1a.tres"]
+
+[params]
+
+import_mode=1
+layer_name_encoding=1
+layer_trim_enabled=false
+layer_resource_naming="<file>-<layer>"
+old_resource_handling=0
+perform_ownership_analysis=false

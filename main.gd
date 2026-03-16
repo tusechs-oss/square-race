@@ -22,6 +22,37 @@ func _ready() -> void:
 		Global.tiktok_spawn_requested.connect(_on_tiktok_spawn)
 	randomize()
 	
+# Trích xuất boss_level từ reason/raw_data theo thứ tự ưu tiên:
+# 1) raw_data.boss_level
+# 2) reason = "boss_lv_X"
+# 3) Test offline: gift == "rose" + repeatEnd → map repeatCount 5/10/15/20 → 1..4
+# 4) raw_data.hearts (nếu có) → nâng cấp theo hearts-1
+func _resolve_boss_level(reason: Variant, raw_data: Variant) -> int:
+	var level := 0
+	if raw_data is Dictionary:
+		level = int(raw_data.get("boss_level", 0))
+		if level == 0:
+			var g := str(raw_data.get("gift", "")).to_lower()
+			var rc := int(raw_data.get("repeatCount", 0))
+			var re := bool(raw_data.get("repeatEnd", false))
+			if g == "rose" and re:
+				match rc:
+					5: level = 1
+					10: level = 2
+					15: level = 3
+					20: level = 4
+		if raw_data.has("hearts"):
+			var h := int(raw_data["hearts"])
+			if h > 0:
+				level = max(level, h - 1)
+	if level == 0 and typeof(reason) == TYPE_STRING:
+		var r := str(reason).to_lower()
+		if r.begins_with("boss_lv_"):
+			var parts = r.split("_")
+			if parts.size() >= 3:
+				level = int(parts[2])
+	return level
+
 func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
 	if box_template:
 		# 1. Tạo nhân vật
@@ -76,6 +107,16 @@ func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
 				settings.outline_size = 6
 				settings.outline_color = Color.BLACK
 				label_node.label_settings = settings
+		
+		# 3.1. Xử lý Boss theo donate → boss_level càng rõ ràng càng tốt
+		var boss_level := _resolve_boss_level(reason, raw_data)
+		if boss_level > 0:
+			var rb2 = new_player.get_node_or_null("RigidBody2D")
+			var hp := boss_level + 1
+			if rb2 and rb2.has_method("apply_damage"):
+				rb2.max_hearts = hp
+				rb2.hearts = hp
+			# Không thêm tiền tố BossLv vào tên
 
 		# 4. Xử lý Avatar (Giữ nguyên để tránh lỗi 403)
 		var final_url = ""
@@ -234,20 +275,15 @@ func _on_gun_pressed() -> void:
 
 	get_tree().current_scene.add_child(box)
 
+# Spawn boss thủ công từ UI: số tim = level + 1 (Lv1=2, Lv2=3, Lv3=4, Lv4=5)
+func _spawn_boss_level(level: int) -> void:
+	var new_player = spawn_basic_box()
+	if new_player:
+		var rb = new_player.get_node_or_null("RigidBody2D")
+		if rb and rb.has_method("apply_damage"):
+			var hp = level + 1
+			rb.max_hearts = hp
+			rb.hearts = hp
 
-func _on_button_pressed() -> void:
-	# Tạo một tên bảng mới duy nhất (ví dụ: main_v2, main_v3...)
-	var reset_name = "lb_" + str(Time.get_unix_time_from_system())
-	Global.current_leaderboard = reset_name
-	
-	# Gửi một điểm 0 vào bảng mới này để server khởi tạo nó
-	if SilentWolf.Scores.has_method("save_score"):
-		await SilentWolf.Scores.save_score("Admin", 0, reset_name).sw_save_score_complete
-	
-	# Cập nhật lại giao diện hiển thị bảng mới này
-	if leaderboard_node:
-		# Xóa các dòng điểm cũ trên màn hình cho sạch
-		var score_list = leaderboard_node.find_child("ScoreList")
-		if score_list:
-			for child in score_list.get_children():
-				child.queue_free()
+func _on_boss_lv_1_pressed() -> void:
+	_spawn_boss_level(1)

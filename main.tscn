@@ -151,6 +151,13 @@ offset_right = 57.0
 offset_bottom = 33.999985
 metadata/_edit_use_anchors_ = true
 
+[node name="Boss lv1" type="Button" parent="Control" unique_id=651612636]
+layout_mode = 0
+offset_left = 22.5
+offset_top = 281.5
+offset_right = 51.5
+offset_bottom = 312.5
+
 [node name="Boxspawn" type="Area2D" parent="." unique_id=1530572154]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boxspawn" unique_id=1551865793]
@@ -192,3 +199,4 @@ scale = Vector2(0.27, 0.27)
 [connection signal="pressed" from="Control/GUN" to="." method="_on_gun_pressed"]
 [connection signal="toggled" from="Control/GUN" to="." method="_on_gun_toggled"]
 [connection signal="pressed" from="Control/Sword" to="." method="_on_sword_pressed"]
+[connection signal="pressed" from="Control/Boss lv1" to="." method="_on_boss_lv_1_pressed"]

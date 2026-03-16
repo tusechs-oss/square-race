@@ -32,6 +32,8 @@ var player_name: String = ""
 @onready var sword_sound: AudioStreamPlayer2D = null
 @onready var sword_kill_sound: AudioStreamPlayer2D = null
 @onready var reload_sound: AudioStreamPlayer2D = null
+@export var max_hearts := 1
+var hearts := 1
 func _ready():
 	_ensure_audio_players()
 	contact_monitor = true
@@ -40,6 +42,7 @@ func _ready():
 		body_entered.connect(_on_body_entered)
 	if has_node("Trail"):
 		$Trail.visible = false
+	hearts = max_hearts
 
 	# 2. VÔ HIỆU HÓA vật lý tạm thời để không bị khựng khi tính toán va chạm lúc mới spawn
 	freeze = true 
@@ -338,7 +341,10 @@ func _try_sword_kill(body: Node2D) -> bool:
 		return false
 	if not body.is_in_group("Player"):
 		return false
-	if body.has_method("queue_free"):
+	var dead := true
+	if body.has_method("apply_damage"):
+		dead = body.apply_damage(1)
+	if dead and body.has_method("queue_free"):
 		kill += 1
 		upload_score() # Cập nhật điểm ngay khi giết được người
 		# Phát âm thanh chém chết (Among Us)
@@ -415,3 +421,14 @@ func upload_score():
 func _physics_process(_delta):
 	if linear_velocity.length() < 600:
 		linear_velocity = linear_velocity.normalized() * 400
+
+# Trừ máu và trả về true nếu chết (caller sẽ cộng kill/xóa node khi true)
+# Đồng thời tạo hiệu ứng trúng đạn: chớp đỏ nhanh rồi mờ trở lại bình thường
+func apply_damage(amount := 1) -> bool:
+	hearts -= amount
+	var t := create_tween()
+	t.tween_property(self, "modulate", Color(1, 0.4, 0.4, 1.0), 0.05)
+	t.tween_property(self, "modulate", Color(1, 1, 1, 1.0), 0.3)
+	if hearts > 0:
+		return false
+	return true
