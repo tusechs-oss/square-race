@@ -42,7 +42,8 @@ func _resolve_boss_level(reason: Variant, raw_data: Variant) -> int:
 					15: level = 3
 					20: level = 4
 					25: level = 5
-					30: level = 6
+			elif g == "donut":
+				level = 6
 		if raw_data.has("hearts"):
 			var h := int(raw_data["hearts"])
 			if h > 0:
@@ -101,28 +102,61 @@ func _apply_trail_color(rb: Node, level: int) -> void:
 # Tăng kích cỡ theo cấp Boss; Lv6 phóng to rõ rệt
 func _boss_scale_for_level(level: int) -> float:
 	match level:
+		1: return 1.0
+		2: return 1.2
 		3: return 1.4
 		4: return 1.7
 		5: return 2.1
 		6: return 2.6
 		_: return 1.0
 
-func _apply_boss_scale(rb: Node2D, level: int) -> void:
+func _apply_boss_scale_full(rb: Node2D, level: int) -> void:
 	if rb == null:
 		return
 	var s := _boss_scale_for_level(level)
-	# Không scale physics; scale trực tiếp các node hiển thị (TextureRect, Label)
-	rb.scale = Vector2(1, 1)
-	var tex = rb.get_node_or_null("TextureRect")
-	if tex == null:
-		tex = rb.find_child("TextureRect", true, false)
-	if tex and "scale" in tex:
-		tex.scale = Vector2(s, s)
-	var lbl = rb.get_node_or_null("Label")
-	if lbl == null:
-		lbl = rb.find_child("Label", true, false)
-	if lbl and "scale" in lbl:
-		lbl.scale = Vector2(s, s)
+	var root := rb.get_parent()
+	if root is Node2D:
+		(root as Node2D).scale = Vector2(s, s)
+	else:
+		rb.scale = Vector2(s, s)
+
+# Scale CollisionShape2D theo cấp để khớp kích cỡ hiển thị
+func _apply_collision_scale(rb: Node2D, level: int) -> void:
+	if rb == null:
+		return
+	var s := _boss_scale_for_level(level)
+	var col = rb.get_node_or_null("CollisionShape2D")
+	if col == null:
+		col = rb.find_child("CollisionShape2D", true, false)
+	if col == null:
+		return
+	var shape = col.shape
+	if shape == null:
+		return
+	# Lưu kích cỡ gốc để tránh nhân đôi khi gọi lại
+	if not col.has_meta("base_saved"):
+		if "size" in shape:
+			col.set_meta("base_size", shape.size)
+		elif "extents" in shape:
+			col.set_meta("base_extents", shape.extents)
+		elif "radius" in shape:
+			col.set_meta("base_radius", shape.radius)
+			if "height" in shape:
+				col.set_meta("base_height", shape.height)
+		col.set_meta("base_saved", true)
+	# Áp scale theo loại shape
+	if "size" in shape:
+		var base_size = col.get_meta("base_size", shape.size)
+		shape.size = base_size * s
+	elif "extents" in shape:
+		var base_extents = col.get_meta("base_extents", shape.extents)
+		shape.extents = base_extents * s
+	elif "radius" in shape:
+		var base_radius = float(col.get_meta("base_radius", shape.radius))
+		shape.radius = base_radius * s
+		if "height" in shape:
+			var base_h = float(col.get_meta("base_height", shape.height))
+			shape.height = base_h * s
 
 func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
 	if box_template:
@@ -189,7 +223,7 @@ func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
 				rb2.hearts = hp
 				_apply_boss_color(rb2, boss_level)
 				_apply_trail_color(rb2, boss_level)
-				_apply_boss_scale(rb2, boss_level)
+				_apply_boss_scale_full(rb2, boss_level)
 			# Không thêm tiền tố BossLv vào tên
 
 		# 4. Xử lý Avatar (Giữ nguyên để tránh lỗi 403)
@@ -360,7 +394,7 @@ func _spawn_boss_level(level: int) -> void:
 			rb.hearts = hp
 			_apply_boss_color(rb, level)
 			_apply_trail_color(rb, level)
-			_apply_boss_scale(rb, level)
+			_apply_boss_scale_full(rb, level)
 
 func _on_boss_lv_1_pressed() -> void:
 	_spawn_boss_level(1)
