@@ -11,6 +11,13 @@ var current_lb = "main"
 @export var player_scene_path: String = "res://Weapons/Player.tscn"
 @export var node_scene_path: String = "res://Weapons/node_2d.tscn"
 @export var prefer_player_template: bool = true
+var countdown_secs := 10
+var countdown_remaining := 0
+var pending_weapon := ""
+var spawn_timer_label: Label = null
+var spawn_timer: Timer = null
+@export var spawn_timer_label_path: NodePath
+@export var spawn_timer_path: NodePath
 
 func _ready() -> void:
 	if box_template == null:
@@ -21,6 +28,7 @@ func _ready() -> void:
 	if Global.has_signal("tiktok_spawn_requested"):
 		Global.tiktok_spawn_requested.connect(_on_tiktok_spawn)
 	randomize()
+	_find_spawn_timer_nodes()
 	
 # Trích xuất boss_level từ reason/raw_data theo thứ tự ưu tiên:
 # 1) raw_data.boss_level
@@ -119,6 +127,109 @@ func _apply_boss_scale_full(rb: Node2D, level: int) -> void:
 		(root as Node2D).scale = Vector2(s, s)
 	else:
 		rb.scale = Vector2(s, s)
+
+func _find_spawn_timer_nodes() -> void:
+	spawn_timer_label = null
+	spawn_timer = null
+	if spawn_timer_label_path != null and str(spawn_timer_label_path) != "":
+		var n1 = get_node_or_null(spawn_timer_label_path)
+		if n1 is Label:
+			spawn_timer_label = n1
+	if spawn_timer_path != null and str(spawn_timer_path) != "":
+		var n2 = get_node_or_null(spawn_timer_path)
+		if n2 is Timer:
+			spawn_timer = n2
+	if spawn_timer_label == null or spawn_timer == null:
+		var ui = get_node_or_null("Control")
+		if ui != null:
+			if spawn_timer_label == null:
+				spawn_timer_label = ui.get_node_or_null("SpawnTimerLabel")
+				if spawn_timer_label == null:
+					for n in ui.get_children():
+						if n is Label and n.find_child("Timer", true, false) != null:
+							spawn_timer_label = n
+							break
+			if spawn_timer == null:
+				if spawn_timer_label != null:
+					var t = spawn_timer_label.get_node_or_null("Timer")
+					if t is Timer:
+						spawn_timer = t
+				if spawn_timer == null:
+					var t2 = ui.find_child("Timer", true, false)
+					if t2 is Timer:
+						spawn_timer = t2
+	if spawn_timer_label == null or spawn_timer == null:
+		var pair = _scan_for_label_timer(get_tree().current_scene)
+		if pair.size() == 2:
+			spawn_timer_label = pair[0]
+			spawn_timer = pair[1]
+	if spawn_timer_label == null or spawn_timer == null:
+		var pair2 = _scan_for_label_timer(self)
+		if pair2.size() == 2:
+			spawn_timer_label = pair2[0]
+			spawn_timer = pair2[1]
+
+func _scan_for_label_timer(node: Node) -> Array:
+	var result: Array = []
+	if node == null:
+		return result
+	for child in node.get_children():
+		if child is Label:
+			# tìm Timer bất kỳ dưới Label (không phụ thuộc tên)
+			for sub in child.get_children():
+				if sub is Timer:
+					return [child, sub]
+			# tìm sâu hơn nếu Timer không phải là con trực tiếp
+			var found := _find_timer_recursive(child)
+			if found is Timer:
+				return [child, found]
+		var sub = _scan_for_label_timer(child)
+		if sub.size() == 2:
+			return sub
+	return result
+
+func _find_timer_recursive(node: Node) -> Node:
+	for c in node.get_children():
+		if c is Timer:
+			return c
+		var deep := _find_timer_recursive(c)
+		if deep is Timer:
+			return deep
+	return null
+
+func _start_weapon_countdown(kind: String) -> void:
+	_find_spawn_timer_nodes()
+	if spawn_timer == null:
+		spawn_timer = Timer.new()
+		add_child(spawn_timer)
+	pending_weapon = kind
+	countdown_remaining = countdown_secs
+	if spawn_timer_label != null:
+		spawn_timer_label.visible = true
+		spawn_timer_label.text = str(countdown_remaining) + "s"
+	spawn_timer.stop()
+	spawn_timer.wait_time = 1.0
+	spawn_timer.one_shot = false
+	if spawn_timer.timeout.is_connected(_on_spawn_timer_tick):
+		spawn_timer.timeout.disconnect(_on_spawn_timer_tick)
+	spawn_timer.timeout.connect(_on_spawn_timer_tick)
+	spawn_timer.start()
+
+func _on_spawn_timer_tick() -> void:
+	if countdown_remaining > 0:
+		countdown_remaining -= 1
+		if spawn_timer_label != null:
+			spawn_timer_label.text = str(countdown_remaining) + "s"
+	if countdown_remaining <= 0:
+		spawn_timer.stop()
+		if spawn_timer_label != null:
+			spawn_timer_label.text = ""
+			spawn_timer_label.visible = false
+		if pending_weapon == "sword":
+			_spawn_sword_now()
+		elif pending_weapon == "gun":
+			_spawn_gun_now()
+		pending_weapon = ""
 
 # Scale CollisionShape2D theo cấp để khớp kích cỡ hiển thị
 func _apply_collision_scale(rb: Node2D, level: int) -> void:
@@ -355,33 +466,31 @@ func spawn_basic_box():
 	get_tree().current_scene.add_child(box)
 	return box
 
-func _on_sword_pressed() -> void:
+func _spawn_sword_now() -> void:
 	if sword_scene == null:
 		return
-
 	var khung = spawn_region.get_global_rect()
-
 	var rx = randf_range(khung.position.x, khung.end.x)
 	var ry = randf_range(khung.position.y, khung.end.y)
-
 	var box = sword_scene.instantiate()
 	box.global_position = Vector2(rx, ry)
-
 	get_tree().current_scene.add_child(box)
+
+func _on_sword_pressed() -> void:
+	_start_weapon_countdown("sword")
 	
-func _on_gun_pressed() -> void:
+func _spawn_gun_now() -> void:
 	if gun_scene == null:
 		return
-
 	var khung = spawn_region.get_global_rect()
-
 	var rx = randf_range(khung.position.x, khung.end.x)
 	var ry = randf_range(khung.position.y, khung.end.y)
-
 	var box = gun_scene.instantiate()
 	box.global_position = Vector2(rx, ry)
-
 	get_tree().current_scene.add_child(box)
+
+func _on_gun_pressed() -> void:
+	_start_weapon_countdown("gun")
 
 # Spawn boss thủ công từ UI: số tim = level + 1 (Lv1=2, Lv2=3, Lv3=4, Lv4=5)
 func _spawn_boss_level(level: int) -> void:

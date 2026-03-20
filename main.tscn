@@ -158,6 +158,16 @@ offset_top = 281.5
 offset_right = 51.5
 offset_bottom = 312.5
 
+[node name="Countdown" type="Label" parent="Control" unique_id=1614860516]
+layout_mode = 0
+offset_left = 11.5
+offset_top = 341.5
+offset_right = 108.5
+offset_bottom = 382.5
+text = "countdown"
+
+[node name="mytimer" type="Timer" parent="Control/Countdown" unique_id=1597481802]
+
 [node name="Boxspawn" type="Area2D" parent="." unique_id=1530572154]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boxspawn" unique_id=1551865793]
@@ -193,14 +203,6 @@ environment = SubResource("Environment_272bh")
 [node name="Leaderboard" parent="LeaderboardUI" unique_id=1696245376 instance=ExtResource("10_4c57u")]
 position = Vector2(734, 16.999998)
 scale = Vector2(0.27, 0.27)
-
-[node name="Label" type="Label" parent="." unique_id=323489250]
-offset_left = 141.0
-offset_top = 116.0
-offset_right = 1049.0
-offset_bottom = 259.0
-theme_override_font_sizes/font_size = 104
-text = "TINH AN CAC CHO"
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
