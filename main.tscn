@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://c4abnfn5vcmm8" path="res://Weapons/tribal_bow_twilight_ritual.png" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://dj15w7rspcbwq" path="res://Gemini_Generated_Image_mhbtbemhbtbemhbt.png" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
+[ext_resource type="Shader" uid="uid://j2sigmuor6pj" path="res://shaders/ce.tres" id="10_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://cydcxg3d17mho" path="res://texture for ce/T_VFX_MarbleNoise_tiled.png" id="11_w48qg"]
+[ext_resource type="Texture2D" uid="uid://b18yfo6phwc0u" path="res://texture for ce/T_Gradient_circle22.jpg" id="12_vivmo"]
+[ext_resource type="Texture2D" uid="uid://dgrf6y1iy8grs" path="res://texture for ce/T_1_pixel.jpg" id="13_2cqfq"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
 bounce = 1.15
@@ -28,6 +32,35 @@ size = Vector2(539, 417)
 background_mode = 3
 glow_enabled = true
 glow_intensity = 1.35
+
+[sub_resource type="Gradient" id="Gradient_yaehf"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_074og"]
+gradient = SubResource("Gradient_yaehf")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_cegan"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_82xsv"]
+gradient = SubResource("Gradient_cegan")
+fill_from = Vector2(0.9778226, 1)
+
+[sub_resource type="Gradient" id="Gradient_getpj"]
+offsets = PackedFloat32Array(0, 0.263369, 0.4986631, 0.76069516, 0.9237968)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0.047058824, 0.28627452, 0.4509804, 0.9843137, 0.015686275, 0.84705883, 0.84705883, 1, 0.89411765, 0.92941177, 0.99215686, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ryguw"]
+gradient = SubResource("Gradient_getpj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d13ii"]
+shader = ExtResource("10_ycdy4")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/speed = Vector2(0, 1)
+shader_parameter/Texture2DParameter = ExtResource("11_w48qg")
+shader_parameter/Texture2DParameter2 = SubResource("GradientTexture2D_074og")
+shader_parameter/Texture2DParameter3 = ExtResource("12_vivmo")
+shader_parameter/Texture2DParameter4 = SubResource("GradientTexture2D_82xsv")
+shader_parameter/Texture2DParameter5 = SubResource("GradientTexture1D_ryguw")
 
 [node name="Node2D2" type="Node2D" unique_id=828684265 node_paths=PackedStringArray("spawn_area")]
 script = ExtResource("1_ig7tw")
@@ -203,6 +236,12 @@ environment = SubResource("Environment_272bh")
 [node name="Leaderboard" parent="LeaderboardUI" unique_id=1696245376 instance=ExtResource("10_4c57u")]
 position = Vector2(734, 16.999998)
 scale = Vector2(0.27, 0.27)
+
+[node name="ce" type="Sprite2D" parent="." unique_id=51267352]
+material = SubResource("ShaderMaterial_d13ii")
+position = Vector2(317.3125, -155.5)
+scale = Vector2(243.375, 295.00003)
+texture = ExtResource("13_2cqfq")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
