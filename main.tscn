@@ -162,8 +162,8 @@ offset_bottom = 312.5
 layout_mode = 0
 offset_left = 11.5
 offset_top = 341.5
-offset_right = 108.5
-offset_bottom = 382.5
+offset_right = 100.5
+offset_bottom = 374.5
 text = "countdown"
 
 [node name="mytimer" type="Timer" parent="Control/Countdown" unique_id=1597481802]
