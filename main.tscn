@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dp0a2rv4yrvpp" path="res://Weapons/Player.tscn" id="4_kek77"]
 [ext_resource type="Texture2D" uid="uid://c4abnfn5vcmm8" path="res://Weapons/tribal_bow_twilight_ritual.png" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://dj15w7rspcbwq" path="res://Gemini_Generated_Image_mhbtbemhbtbemhbt.png" id="7_272bh"]
+[ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
 [ext_resource type="Shader" uid="uid://j2sigmuor6pj" path="res://shaders/ce.tres" id="10_ycdy4"]
 [ext_resource type="Texture2D" uid="uid://cydcxg3d17mho" path="res://texture for ce/T_VFX_MarbleNoise_tiled.png" id="11_w48qg"]
@@ -191,15 +192,22 @@ offset_top = 281.5
 offset_right = 51.5
 offset_bottom = 312.5
 
-[node name="Countdown" type="Label" parent="Control" unique_id=1614860516]
-layout_mode = 0
-offset_left = 11.5
-offset_top = 341.5
-offset_right = 100.5
-offset_bottom = 374.5
-text = "countdown"
+[node name="Countdown_reg" type="CanvasLayer" parent="Control" unique_id=1989787037]
 
-[node name="mytimer" type="Timer" parent="Control/Countdown" unique_id=1597481802]
+[node name="Countdown" type="Label" parent="Control/Countdown_reg" unique_id=1614860516]
+z_index = 1
+offset_left = 588.25
+offset_top = 310.965
+offset_right = 701.25037
+offset_bottom = 360.965
+label_settings = ExtResource("8_w48qg")
+
+[node name="mytimer" type="Timer" parent="Control/Countdown_reg/Countdown" unique_id=1597481802]
+
+[node name="SPimg" type="Sprite2D" parent="Control/Countdown_reg" unique_id=58533503]
+texture_filter = 1
+position = Vector2(560, 299)
+scale = Vector2(4.84375, 4.75)
 
 [node name="Boxspawn" type="Area2D" parent="." unique_id=1530572154]
 
@@ -226,7 +234,6 @@ grow_vertical = 2
 scale = Vector2(0.995, 0.995)
 texture = ExtResource("7_272bh")
 region_rect = Rect2(0, 0, 1168, 912)
-metadata/_edit_use_anchors_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=795423465]
 environment = SubResource("Environment_272bh")

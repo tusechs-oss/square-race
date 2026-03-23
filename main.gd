@@ -14,10 +14,15 @@ var current_lb = "main"
 var countdown_secs := 10
 var countdown_remaining := 0
 var pending_weapon := ""
+var pending_weapon_node: Node2D = null
 var spawn_timer_label: Label = null
 var spawn_timer: Timer = null
 @export var spawn_timer_label_path: NodePath
 @export var spawn_timer_path: NodePath
+@export var spimg_path: NodePath
+var spimg_node: Node = null
+@export var sword_preview_tex: Texture2D
+@export var gun_preview_tex: Texture2D
 
 func _ready() -> void:
 	if box_template == null:
@@ -29,6 +34,7 @@ func _ready() -> void:
 		Global.tiktok_spawn_requested.connect(_on_tiktok_spawn)
 	randomize()
 	_find_spawn_timer_nodes()
+	_find_spimg_node()
 	
 # Trích xuất boss_level từ reason/raw_data theo thứ tự ưu tiên:
 # 1) raw_data.boss_level
@@ -197,15 +203,167 @@ func _find_timer_recursive(node: Node) -> Node:
 			return deep
 	return null
 
+func _find_spimg_node() -> void:
+	spimg_node = null
+	if spimg_path != null and str(spimg_path) != "":
+		var n = get_node_or_null(spimg_path)
+		if n != null:
+			spimg_node = n
+	if spimg_node == null:
+		spimg_node = get_node_or_null("SPimg")
+	if spimg_node == null:
+		spimg_node = get_node_or_null("spimg")
+	if spimg_node == null:
+		var found = _find_node_by_name(get_tree().current_scene, "SPimg")
+		if found != null:
+			spimg_node = found
+	if spimg_node == null:
+		var found2 = _find_node_by_name(get_tree().current_scene, "spimg")
+		if found2 != null:
+			spimg_node = found2
+
+func _find_node_by_name(node: Node, name: String) -> Node:
+	if node == null:
+		return null
+	if node.name.to_lower() == name.to_lower():
+		return node
+	for c in node.get_children():
+		var res = _find_node_by_name(c, name)
+		if res != null:
+			return res
+	return null
+
+func _set_spimg_texture(tex: Texture2D, kind: String = "") -> void:
+	if spimg_node == null or tex == null:
+		return
+		
+	var max_size = 100.0
+	if kind == "sword":
+		max_size = 140.0 # Kiếm to ra một chút so với 120
+	elif kind == "gun":
+		max_size = 80.0  # Súng nhỏ đi một chút so với 100
+		
+	var scale_factor = 1.0
+	var t_size = tex.get_size()
+	if t_size.x > 0 and t_size.y > 0:
+		var max_dim = max(t_size.x, t_size.y)
+		scale_factor = max_size / max_dim
+		
+	if spimg_node is TextureRect:
+		spimg_node.texture = tex
+		spimg_node.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		spimg_node.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		spimg_node.custom_minimum_size = Vector2(max_size, max_size)
+		spimg_node.size = Vector2(max_size, max_size)
+	elif spimg_node is Sprite2D:
+		spimg_node.texture = tex
+		spimg_node.scale = Vector2(scale_factor, scale_factor)
+	elif "texture" in spimg_node:
+		spimg_node.set("texture", tex)
+		if "scale" in spimg_node:
+			spimg_node.set("scale", Vector2(scale_factor, scale_factor))
+
+func _update_spawn_preview(kind: String) -> void:
+	_find_spimg_node()
+	if spimg_node == null:
+		return
+	var scene: PackedScene = null
+	if kind == "sword":
+		scene = sword_scene
+	elif kind == "gun":
+		scene = gun_scene
+	if scene == null:
+		return
+	var tmp = scene.instantiate()
+	var tex: Texture2D = null
+	tex = _find_texture_in_tree(tmp)
+	if tex != null:
+		_set_spimg_texture(tex, kind)
+	if tex == null:
+		if kind == "sword" and sword_preview_tex != null:
+			_set_spimg_texture(sword_preview_tex, kind)
+		elif kind == "gun" and gun_preview_tex != null:
+			_set_spimg_texture(gun_preview_tex, kind)
+	if is_instance_valid(tmp):
+		tmp.queue_free()
+
+func _find_texture_in_tree(node: Node) -> Texture2D:
+	if node == null:
+		return null
+	var queue: Array = [node]
+	while queue.size() > 0:
+		var n: Node = queue.pop_front()
+		if "texture" in n:
+			var t = n.get("texture")
+			if t != null and t is Texture2D:
+				return t
+		for c in n.get_children():
+			queue.append(c)
+	return null
+
 func _start_weapon_countdown(kind: String) -> void:
 	_find_spawn_timer_nodes()
 	if spawn_timer == null:
 		spawn_timer = Timer.new()
 		add_child(spawn_timer)
+	_update_spawn_preview(kind)
+	
+	# Khởi tạo vũ khí trước nhưng ẩn đi để lấy tọa độ ngẫu nhiên
+	if is_instance_valid(pending_weapon_node):
+		pending_weapon_node.queue_free()
+	pending_weapon_node = null
+	
+	var khung = spawn_region.get_global_rect()
+	var rx = randf_range(khung.position.x, khung.end.x)
+	var ry = randf_range(khung.position.y, khung.end.y)
+	var target_pos = Vector2(rx, ry)
+	
+	if kind == "sword" and sword_scene != null:
+		pending_weapon_node = sword_scene.instantiate()
+	elif kind == "gun" and gun_scene != null:
+		pending_weapon_node = gun_scene.instantiate()
+		
+	if pending_weapon_node != null:
+		pending_weapon_node.global_position = target_pos
+		pending_weapon_node.visible = false
+		# Tắt vật lý và tương tác tạm thời để nó không bị nhặt khi đang đếm ngược
+		_set_node_interaction(pending_weapon_node, false)
+		get_tree().current_scene.add_child(pending_weapon_node)
+	
+	# Di chuyển cả Countdown_reg tới vị trí vừa lấy được
+	var coundotw_reg = _find_node_by_name(get_tree().current_scene, "Countdown_reg")
+	if coundotw_reg == null:
+		coundotw_reg = _find_node_by_name(get_tree().current_scene, "coundotw_reg")
+		
+	if coundotw_reg != null:
+		coundotw_reg.visible = true
+		if coundotw_reg is CanvasLayer:
+			# Với CanvasLayer, ta set offset để dịch chuyển tất cả con bên trong
+			coundotw_reg.offset = target_pos
+		elif coundotw_reg is Node2D or coundotw_reg is Control:
+			coundotw_reg.global_position = target_pos
+				
+		# Nếu Countdown_reg là CanvasLayer, các node con bên trong nên được đặt gốc tọa độ ở (0,0)
+		if spawn_timer_label != null:
+			if spawn_timer_label is Control:
+				# Đặt nhãn đếm ngược xuống góc dưới bên phải hoặc sát bên dưới ảnh
+				# Thay vì trừ 60 ở trục y (đưa lên trên), ta cộng vào để đưa xuống dưới
+				spawn_timer_label.position = Vector2(-spawn_timer_label.size.x/2 + 65, -spawn_timer_label.size.y/2 + 45)
+				
+		if spimg_node != null:
+			if spimg_node is Control:
+				spimg_node.position = Vector2(-spimg_node.size.x/2, -spimg_node.size.y/2)
+			elif "position" in spimg_node:
+				spimg_node.set("position", Vector2(0, 0))
+	
+	if spimg_node != null:
+		spimg_node.visible = true
 	pending_weapon = kind
 	countdown_remaining = countdown_secs
 	if spawn_timer_label != null:
 		spawn_timer_label.visible = true
+		spawn_timer_label.modulate = Color(1, 1, 1, 1)
+		spawn_timer_label.scale = Vector2(1, 1)
 		spawn_timer_label.text = str(countdown_remaining) + "s"
 	spawn_timer.stop()
 	spawn_timer.wait_time = 1.0
@@ -220,16 +378,57 @@ func _on_spawn_timer_tick() -> void:
 		countdown_remaining -= 1
 		if spawn_timer_label != null:
 			spawn_timer_label.text = str(countdown_remaining) + "s"
+			var tw1 = create_tween()
+			tw1.tween_property(spawn_timer_label, "modulate", Color(1, 0.25, 0.25, 1), 0.08)
+			tw1.tween_property(spawn_timer_label, "modulate", Color(1, 1, 1, 1), 0.22)
+			var tw2 = create_tween()
+			tw2.tween_property(spawn_timer_label, "scale", Vector2(1.18, 1.18), 0.08)
+			tw2.tween_property(spawn_timer_label, "scale", Vector2(1, 1), 0.22)
 	if countdown_remaining <= 0:
 		spawn_timer.stop()
 		if spawn_timer_label != null:
 			spawn_timer_label.text = ""
 			spawn_timer_label.visible = false
-		if pending_weapon == "sword":
-			_spawn_sword_now()
-		elif pending_weapon == "gun":
-			_spawn_gun_now()
+		if spimg_node != null:
+			spimg_node.visible = false
+			
+		var coundotw_reg = _find_node_by_name(get_tree().current_scene, "Countdown_reg")
+		if coundotw_reg == null:
+			coundotw_reg = _find_node_by_name(get_tree().current_scene, "coundotw_reg")
+		if coundotw_reg != null:
+			coundotw_reg.visible = false
+		
+		# Hiện vũ khí và bật lại vật lý
+		if is_instance_valid(pending_weapon_node):
+			pending_weapon_node.visible = true
+			_set_node_interaction(pending_weapon_node, true)
+		
+		pending_weapon_node = null
+		# Bỏ fallback để tránh spawn thừa nếu node đã bị giải phóng
+				
 		pending_weapon = ""
+
+# Hàm hỗ trợ bật/tắt tương tác vật lý và Area2D cho vũ khí
+func _set_node_interaction(node: Node, enabled: bool) -> void:
+	if node == null:
+		return
+		
+	# Xử lý RigidBody2D (đứng yên/chuyển động)
+	if node is RigidBody2D:
+		node.freeze = !enabled
+		
+	# Xử lý Area2D (không cho phép nhặt khi đang đếm ngược)
+	if node is Area2D:
+		node.monitoring = enabled
+		node.monitorable = enabled
+		
+	# Đệ quy tìm các node con (ví dụ Area2D pickup nằm trong Node2D)
+	for child in node.get_children():
+		_set_node_interaction(child, enabled)
+	
+	# Xử lý các script có bật/tắt physics process
+	if not node is RigidBody2D and node.has_method("set_physics_process"):
+		node.set_physics_process(enabled)
 
 # Scale CollisionShape2D theo cấp để khớp kích cỡ hiển thị
 func _apply_collision_scale(rb: Node2D, level: int) -> void:

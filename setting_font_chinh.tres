@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://dd0xwhl3ja02o"]
+
+[ext_resource type="FontFile" uid="uid://c21gur2y55pdx" path="res://Conflict 3040.otf" id="1_lymbf"]
+
+[resource]
+line_spacing = 3.93
+font = ExtResource("1_lymbf")
+font_size = 34
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
