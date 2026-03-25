@@ -1,40 +1,93 @@
 extends Node2D
-var current_lb = "main"
-@onready var leaderboard_node = $CanvasLayer
-@export var bxh: PackedScene
-@export var spawn_area: Area2D 
-@export var sword_scene: PackedScene
-@export var box_template: PackedScene
-@export var gun_scene: PackedScene
-@onready var spawn_region = $SpawnRegion/ColorRect
-@onready var line_edit = find_child("LineEdit") 
+
+# --- CÁC BIẾN CẤU HÌNH VÀ THAM CHIẾU ---
+var current_lb = "main" # Tên bảng xếp hạng hiện tại
+@onready var leaderboard_node = $CanvasLayer # Tham chiếu đến UI bảng xếp hạng
+@export var bxh: PackedScene # Scene bảng xếp hạng (PackedScene để instantiate)
+@export var spawn_area: Area2D # Vùng spawn hộp cơ bản
+@export var sword_scene: PackedScene # Scene của vật phẩm Kiếm
+@export var box_template: PackedScene # Template cho nhân vật (Player)
+@export var gun_scene: PackedScene # Scene của vật phẩm Súng
+
+@onready var spawn_region = $SpawnRegion/ColorRect # Vùng dùng để lấy tọa độ spawn ngẫu nhiên cho vũ khí
+@onready var line_edit = find_child("LineEdit") # Ô nhập tên thủ công
 @export var player_scene_path: String = "res://Weapons/Player.tscn"
 @export var node_scene_path: String = "res://Weapons/node_2d.tscn"
-@export var prefer_player_template: bool = true
-var countdown_secs := 10
-var countdown_remaining := 0
-var pending_weapon := ""
-var pending_weapon_node: Node2D = null
-var spawn_timer_label: Label = null
-var spawn_timer: Timer = null
+@export var prefer_player_template: bool = true # Ưu tiên dùng template Player thay vì node 2d đơn giản
+
+# --- LOGIC ĐẾM NGƯỢC SPAWN VŨ KHÍ ---
+var countdown_secs := 10 # Thời gian chờ mặc định (10 giây)
+var countdown_remaining := 0 # Thời gian còn lại thực tế
+var pending_weapon := "" # Loại vũ khí đang chờ ("sword" hoặc "gun")
+var pending_weapon_node: Node2D = null # Node vũ khí đã được tạo nhưng đang ẩn để chờ
+var spawn_timer_label: Label = null # Nhãn hiển thị số giây đếm ngược trên màn hình
+var spawn_timer: Timer = null # Timer xử lý việc trừ giây mỗi giây
+
+# --- THAM CHIẾU NODE UI ---
 @export var spawn_timer_label_path: NodePath
 @export var spawn_timer_path: NodePath
 @export var spimg_path: NodePath
-var spimg_node: Node = null
-@export var sword_preview_tex: Texture2D
-@export var gun_preview_tex: Texture2D
+var spimg_node: Node = null # Node hiển thị ảnh xem trước vũ khí sắp spawn
+@export var sword_preview_tex: Texture2D # Ảnh xem trước của Kiếm
+@export var gun_preview_tex: Texture2D # Ảnh xem trước của Súng
+
+# --- BIẾN CHO SỰ KIỆN GIÓ ---
+var wind_event_timer: Timer = null # Timer điều khiển việc xuất hiện gió mỗi 30s
+@onready var wind_area_1 = get_node_or_null("WindArea")
+@onready var wind_area_2 = get_node_or_null("WindArea2")
 
 func _ready() -> void:
+	# Khởi tạo template nhân vật nếu chưa được gán trong Inspector
 	if box_template == null:
 		var path = player_scene_path if prefer_player_template else node_scene_path
 		var ps = load(path)
 		if ps and ps is PackedScene:
 			box_template = ps
+			
+	# Kết nối tín hiệu từ TikTok (thông qua Global singleton)
 	if Global.has_signal("tiktok_spawn_requested"):
 		Global.tiktok_spawn_requested.connect(_on_tiktok_spawn)
-	randomize()
-	_find_spawn_timer_nodes()
-	_find_spimg_node()
+		
+	randomize() # Khởi tạo hạt giống ngẫu nhiên
+	_find_spawn_timer_nodes() # Tìm các node UI đếm ngược
+	_find_spimg_node() # Tìm node hiển thị ảnh xem trước
+	_setup_wind_timer() # Thiết lập hệ thống gió tự động
+
+# --- THIẾT LẬP HỆ THỐNG GIÓ ---
+func _setup_wind_timer() -> void:
+	wind_event_timer = Timer.new()
+	wind_event_timer.wait_time = 30.0 # Cứ mỗi 30 giây gió sẽ xuất hiện
+	wind_event_timer.one_shot = false
+	wind_event_timer.autostart = true
+	add_child(wind_event_timer)
+	wind_event_timer.timeout.connect(_on_wind_timer_timeout)
+
+# --- THÔNG SỐ KHUNG HÌNH (DỰA TRÊN NINEPATCHRECT) ---
+const FRAME_LEFT = 135.0
+const FRAME_RIGHT_OFFSET = 92.0 # Cách mép phải bao nhiêu pixel
+const FRAME_TOP = 40.0 # Khoảng trống trên
+const FRAME_BOTTOM_OFFSET = 40.0 # Khoảng trống dưới
+
+# --- XỬ LÝ KHI GIÓ ĐẾN ---
+func _on_wind_timer_timeout() -> void:
+	var areas = []
+	if is_instance_valid(wind_area_1): areas.append(wind_area_1)
+	if is_instance_valid(wind_area_2): areas.append(wind_area_2)
+	
+	if areas.size() > 0:
+		var selected_area = areas.pick_random()
+		
+		# Đảm bảo hướng gió đúng cho từng vùng (giả định area1 bên phải, area2 bên trái)
+		if selected_area == wind_area_1:
+			if selected_area.has_method("set_wind_direction"):
+				selected_area.set_wind_direction(Vector2.LEFT)
+		elif selected_area == wind_area_2:
+			if selected_area.has_method("set_wind_direction"):
+				selected_area.set_wind_direction(Vector2.RIGHT)
+		
+		# Kích hoạt vùng gió được chọn trong 5 giây
+		if selected_area.has_method("activate_wind"):
+			selected_area.activate_wind(5.0)
 	
 # Trích xuất boss_level từ reason/raw_data theo thứ tự ưu tiên:
 # 1) raw_data.boss_level
@@ -313,9 +366,14 @@ func _start_weapon_countdown(kind: String) -> void:
 		pending_weapon_node.queue_free()
 	pending_weapon_node = null
 	
-	var khung = spawn_region.get_global_rect()
-	var rx = randf_range(khung.position.x, khung.end.x)
-	var ry = randf_range(khung.position.y, khung.end.y)
+	var view_size = get_viewport_rect().size
+	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
+	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
+	
+	var margin = 60.0 # Margin an toàn cho nhân vật (60px)
+	
+	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
+	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
 	var target_pos = Vector2(rx, ry)
 	
 	if kind == "sword" and sword_scene != null:
@@ -567,25 +625,18 @@ func _on_line_edit_text_submitted(new_text):
 	
 	var new_box = box_template.instantiate()
 	add_child(new_box)
-	# Gán player_name cho node RigidBody2D bên trong (nếu có)
-	var player_body = new_box.get_node_or_null("RigidBody2D")
-	if player_body and "player_name" in player_body:
-		player_body.player_name = new_text
-	elif "player_name" in new_box:
-		new_box.player_name = new_text
 	
-	var area = get_node_or_null("SpawnArea")
-	if area:
-		var rect_pos = area.global_position
-		var rect_size = area.size
-		
-		# Tính toán vị trí ngẫu nhiên bên trong khung
-		var rx = randf_range(rect_pos.x, rect_pos.x + rect_size.x)
-		var ry = randf_range(rect_pos.y, rect_pos.y + rect_size.y)
-		
-		new_box.global_position = Vector2(rx, ry)
-	else:
-		new_box.global_position = get_viewport_rect().size / 2
+	var view_size = get_viewport_rect().size
+	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
+	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
+	var margin = 60.0
+	
+	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
+	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
+	
+	new_box.global_position = Vector2(rx, ry)
+	
+	# Gán player_name cho node RigidBody2D bên trong (nếu có)
 	
 	var label_node = new_box.get_node_or_null("RigidBody2D/Label") 
 	if label_node == null:
@@ -643,23 +694,15 @@ func spawn_basic_box():
 			return null
 	var box = scene.instantiate()
 	
-	# Tìm chính xác Node Boxspawn trong hình image_ba1649.png
-	var area = get_node_or_null("Boxspawn")
-	if area:
-		# Lấy CollisionShape2D bên trong Boxspawn
-		var shape_node = area.get_node("CollisionShape2D")
-		var size = shape_node.shape.size
-		
-		# Lấy tọa độ tâm thực tế của vùng này trên màn hình
-		var center_pos = shape_node.global_position
-		
-		# Tính toán Random (Chia 2 để lấy phạm vi từ tâm ra mép)
-		var rx = randf_range(center_pos.x - size.x/2, center_pos.x + size.x/2)
-		var ry = randf_range(center_pos.y - size.y/2, center_pos.y + size.y/2)
-		
-		box.global_position = Vector2(rx, ry)
-	else:
-		box.global_position = get_viewport_rect().size / 2
+	var view_size = get_viewport_rect().size
+	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
+	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
+	var margin = 60.0
+	
+	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
+	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
+	
+	box.global_position = Vector2(rx, ry)
 
 	# Đưa vào Scene sau khi đã gán tọa độ chuẩn
 	get_tree().current_scene.add_child(box)
@@ -668,9 +711,14 @@ func spawn_basic_box():
 func _spawn_sword_now() -> void:
 	if sword_scene == null:
 		return
-	var khung = spawn_region.get_global_rect()
-	var rx = randf_range(khung.position.x, khung.end.x)
-	var ry = randf_range(khung.position.y, khung.end.y)
+	var view_size = get_viewport_rect().size
+	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
+	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
+	var margin = 60.0
+	
+	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
+	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
+	
 	var box = sword_scene.instantiate()
 	box.global_position = Vector2(rx, ry)
 	get_tree().current_scene.add_child(box)
@@ -681,9 +729,14 @@ func _on_sword_pressed() -> void:
 func _spawn_gun_now() -> void:
 	if gun_scene == null:
 		return
-	var khung = spawn_region.get_global_rect()
-	var rx = randf_range(khung.position.x, khung.end.x)
-	var ry = randf_range(khung.position.y, khung.end.y)
+	var view_size = get_viewport_rect().size
+	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
+	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
+	var margin = 60.0
+	
+	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
+	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
+	
 	var box = gun_scene.instantiate()
 	box.global_position = Vector2(rx, ry)
 	get_tree().current_scene.add_child(box)

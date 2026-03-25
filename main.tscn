@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://cydcxg3d17mho" path="res://texture for ce/T_VFX_MarbleNoise_tiled.png" id="11_w48qg"]
 [ext_resource type="Texture2D" uid="uid://b18yfo6phwc0u" path="res://texture for ce/T_Gradient_circle22.jpg" id="12_vivmo"]
 [ext_resource type="Texture2D" uid="uid://dgrf6y1iy8grs" path="res://texture for ce/T_1_pixel.jpg" id="13_2cqfq"]
+[ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
 bounce = 1.15
@@ -62,6 +63,9 @@ shader_parameter/Texture2DParameter2 = SubResource("GradientTexture2D_074og")
 shader_parameter/Texture2DParameter3 = ExtResource("12_vivmo")
 shader_parameter/Texture2DParameter4 = SubResource("GradientTexture2D_82xsv")
 shader_parameter/Texture2DParameter5 = SubResource("GradientTexture1D_ryguw")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cqfq"]
+size = Vector2(291, 539.5)
 
 [node name="Node2D2" type="Node2D" unique_id=828684265 node_paths=PackedStringArray("spawn_area")]
 script = ExtResource("1_ig7tw")
@@ -245,10 +249,33 @@ position = Vector2(734, 16.999998)
 scale = Vector2(0.27, 0.27)
 
 [node name="ce" type="Sprite2D" parent="." unique_id=51267352]
+visible = false
 material = SubResource("ShaderMaterial_d13ii")
 position = Vector2(317.3125, -155.5)
 scale = Vector2(243.375, 295.00003)
 texture = ExtResource("13_2cqfq")
+
+[node name="WindArea" type="Area2D" parent="." unique_id=1947451641]
+gravity_point_center = Vector2(1, 0)
+gravity_direction = Vector2(1, 0)
+linear_damp_space_override = 1
+linear_damp = 5.0
+script = ExtResource("16_yaehf")
+
+[node name="windreg" type="CollisionShape2D" parent="WindArea" unique_id=250226509]
+position = Vector2(852.5, 322.25)
+shape = SubResource("RectangleShape2D_2cqfq")
+
+[node name="WindArea2" type="Area2D" parent="." unique_id=1373506664]
+gravity_point_center = Vector2(1, 0)
+gravity_direction = Vector2(1, 0)
+linear_damp_space_override = 1
+linear_damp = 5.0
+script = ExtResource("16_yaehf")
+
+[node name="windreg" type="CollisionShape2D" parent="WindArea2" unique_id=1785202924]
+position = Vector2(342, 323)
+shape = SubResource("RectangleShape2D_2cqfq")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
