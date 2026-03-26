@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://rfpdejppredf" path="res://TX.gdshader" id="5_vbnx8"]
 [ext_resource type="Texture2D" uid="uid://bg5cv5qwbnu7r" path="res://R.jpg" id="6_mrx8n"]
 [ext_resource type="Texture2D" uid="uid://bpdrplsvuvr7v" path="res://4smg04.png" id="7_nm0ys"]
+[ext_resource type="Texture2D" uid="uid://b7g5vam0fmtiw" path="res://sw.png" id="9_mrx8n"]
 [ext_resource type="Script" uid="uid://cdhoxv1lt5326" path="res://addons/trail_2d/trail_2d.gd" id="10_gblts"]
 [ext_resource type="AudioStream" uid="uid://dwrvneuy0flaa" path="res://khối va chạm.mp3" id="11_5fvif"]
 [ext_resource type="AudioStream" uid="uid://d3ka61dkmouqc" path="res://pixel-gun-3d-zombie-slayer-shoot.mp3" id="12_5jqks"]
@@ -109,8 +110,10 @@ texture = ExtResource("7_nm0ys")
 [node name="Sword" type="Sprite2D" parent="RigidBody2D/hand" unique_id=1561596220]
 z_index = -1
 texture_filter = 1
-position = Vector2(-15.081298, -30.0813)
-scale = Vector2(0.16, 0.16)
+position = Vector2(6.056911, -4.065041)
+rotation = -0.19744372
+scale = Vector2(0.1160443, 0.123116225)
+texture = ExtResource("9_mrx8n")
 
 [node name="SwordHitbox" type="Area2D" parent="RigidBody2D/hand/Sword" unique_id=684933576]
 
