@@ -12,7 +12,7 @@ parameter_name = "Texture2DParameter5"
 texture_type = 1
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_i6usq"]
-size = Vector2(406.25003, 582)
+size = Vector2(406.24997, 582)
 title = "texture5"
 tint_color_enabled = true
 tint_color = Color(0.765625, 0.15551758, 0.15551758, 0.75)
