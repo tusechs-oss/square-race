@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dgrf6y1iy8grs" path="res://texture for ce/T_1_pixel.jpg" id="13_2cqfq"]
 [ext_resource type="Texture2D" uid="uid://cdtoexr6qkee2" path="res://texture for ce/T_VFX_CloudNoise_Tiled.png" id="15_yaehf"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
-[ext_resource type="Script" uid="uid://bx4w82g5qab6e" path="res://MeteorService.gd" id="17_meteor"]
+[ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
 [ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]

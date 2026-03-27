@@ -97,6 +97,9 @@ func _activate_meteor(meteor: Area2D) -> void:
 	if meteor_scene:
 		var m_instance = meteor_scene.instantiate()
 		add_child(m_instance)
+		
+		# BÙ TRỪ VỊ TRÍ: Animation 'Fall' trong Fire_SheetSprite kết thúc tại y = 237
+		# Chúng ta cần đặt instance sao cho điểm kết thúc này trùng với target_pos
 		var animation_offset = Vector2(0, 237)
 		m_instance.global_position = target_pos - animation_offset
 		
@@ -122,8 +125,8 @@ func _activate_meteor(meteor: Area2D) -> void:
 		hole.modulate.a = 0.0
 		var hole_tween = create_tween()
 		# Hiện SIÊU NHANH lên 0.8 trong 0.1 giây và 1.0 trong 0.05 giây (tổng cộng 0.15s)
-		hole_tween.tween_property(hole, "modulate:a", 0.8, 0.1) 
-		hole_tween.tween_property(hole, "modulate:a", 1.0, 0.05)
+		hole_tween.tween_property(hole, "modulate:a", 0.8, 0.7) 
+		hole_tween.tween_property(hole, "modulate:a", 1.0, 0.2)
 	
 	# B. Tạo hiệu ứng nổ
 	if explosion_scene:
