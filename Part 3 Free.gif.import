@@ -1,0 +1,16 @@
+[remap]
+
+importer="texture_gif"
+importer_version=1
+type="GIFTexture"
+uid="uid://gwuc78vicnjw"
+path="res://.godot/imported/Part 3 Free.gif-b090200b05b756562ff3b7845d07a673.res"
+
+[deps]
+
+source_file="res://Part 3 Free.gif"
+dest_files=["res://.godot/imported/Part 3 Free.gif-b090200b05b756562ff3b7845d07a673.res"]
+
+[params]
+
+storage/compress=true
