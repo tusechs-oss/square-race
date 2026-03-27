@@ -1,0 +1,16 @@
+[remap]
+
+importer="texture_gif"
+importer_version=1
+type="GIFTexture"
+uid="uid://b42q82ggm0i0i"
+path="res://.godot/imported/fireball_high_speed_side_small.gif-c0186c56003d96bcef9b689e32838ce9.res"
+
+[deps]
+
+source_file="res://fireball_high_speed_side_small.gif"
+dest_files=["res://.godot/imported/fireball_high_speed_side_small.gif-c0186c56003d96bcef9b689e32838ce9.res"]
+
+[params]
+
+storage/compress=true

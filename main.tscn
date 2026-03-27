@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dgrf6y1iy8grs" path="res://texture for ce/T_1_pixel.jpg" id="13_2cqfq"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
 [ext_resource type="Script" uid="uid://bx4w82g5qab6e" path="res://MeteorService.gd" id="17_meteor"]
+[ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
 bounce = 1.15
@@ -289,74 +290,114 @@ script = ExtResource("17_meteor")
 [node name="Meteor" type="Area2D" parent="Meteor_service" unique_id=838540315]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor" unique_id=2010615309]
-visible = false
 position = Vector2(599, 525)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor2" type="Area2D" parent="Meteor_service" unique_id=368017711]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor2" unique_id=861056360]
-visible = false
 position = Vector2(881, 300)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor3" type="Area2D" parent="Meteor_service" unique_id=1429522216]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor3" unique_id=1393114034]
-visible = false
 position = Vector2(420, 260)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor4" type="Area2D" parent="Meteor_service" unique_id=2093068019]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor4" unique_id=614338093]
-visible = false
 position = Vector2(302, 147)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor5" type="Area2D" parent="Meteor_service" unique_id=60961568]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor5" unique_id=114358276]
-visible = false
 position = Vector2(765, 181)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor6" type="Area2D" parent="Meteor_service" unique_id=1967681014]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor6" unique_id=1764266570]
-visible = false
 position = Vector2(355, 469)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor7" type="Area2D" parent="Meteor_service" unique_id=460983264]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor7" unique_id=990441266]
-visible = false
 position = Vector2(790, 441)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor8" type="Area2D" parent="Meteor_service" unique_id=1985352283]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor8" unique_id=163065366]
-visible = false
 position = Vector2(546, 135)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor9" type="Area2D" parent="Meteor_service" unique_id=1758002817]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor9" unique_id=1327546593]
-visible = false
 position = Vector2(679, 322)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor10" type="Area2D" parent="Meteor_service" unique_id=451886438]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor10" unique_id=641607138]
-visible = false
 position = Vector2(533, 409)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Timer" type="Timer" parent="Meteor_service" unique_id=403364754]
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402438" type="Sprite2D" parent="Meteor_service" unique_id=726601218]
+position = Vector2(356, 470)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402439" type="Sprite2D" parent="Meteor_service" unique_id=194653028]
+position = Vector2(599, 525)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402440" type="Sprite2D" parent="Meteor_service" unique_id=1234708564]
+position = Vector2(533, 410)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402441" type="Sprite2D" parent="Meteor_service" unique_id=522299742]
+position = Vector2(419.99997, 261)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402442" type="Sprite2D" parent="Meteor_service" unique_id=1701621166]
+position = Vector2(301, 148)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402443" type="Sprite2D" parent="Meteor_service" unique_id=1246640433]
+position = Vector2(545, 136)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402444" type="Sprite2D" parent="Meteor_service" unique_id=1556117472]
+position = Vector2(678, 323)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402445" type="Sprite2D" parent="Meteor_service" unique_id=183929251]
+position = Vector2(788, 442)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402446" type="Sprite2D" parent="Meteor_service" unique_id=57784637]
+position = Vector2(880, 301)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
+
+[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402447" type="Sprite2D" parent="Meteor_service" unique_id=1162039651]
+position = Vector2(764, 181)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("17_yaehf")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]

@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://cr372gbks680b"]
+
+[ext_resource type="Texture2D" uid="uid://d4k1khnmmk2da" path="res://wills_pixel_explosions_sample/wills_pixel_explosions_sample/round_explosion/spritesheet/spritesheet.png" id="1_oxoqp"]
+
+[sub_resource type="Animation" id="Animation_li25b"]
+resource_name = "Explosion"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.010548461, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335, 0.26666668, 0.3, 0.33333334, 0.36666667, 0.38891718, 0.40000004, 0.43333337, 0.4666667, 0.5, 0.53333336, 0.5666667, 0.6, 0.6333334, 0.6666667, 0.70000005, 0.73333335, 0.7666667, 0.8000001, 0.8333334, 0.86666673, 0.90000004, 0.9333334, 0.9666667, 1, 1.0206178, 1.0666667, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 73, 74, 75, 79]
+}
+
+[sub_resource type="Animation" id="Animation_n4djn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6sfjf"]
+_data = {
+&"Explosion": SubResource("Animation_li25b"),
+&"RESET": SubResource("Animation_n4djn")
+}
+
+[node name="Spritesheet" type="Sprite2D" unique_id=84843262]
+texture_filter = 1
+scale = Vector2(1.66, 1.66)
+texture = ExtResource("1_oxoqp")
+hframes = 10
+vframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=561544943]
+libraries/ = SubResource("AnimationLibrary_6sfjf")
