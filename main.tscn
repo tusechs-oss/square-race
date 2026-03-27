@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://b18yfo6phwc0u" path="res://texture for ce/T_Gradient_circle22.jpg" id="12_vivmo"]
 [ext_resource type="Texture2D" uid="uid://dgrf6y1iy8grs" path="res://texture for ce/T_1_pixel.jpg" id="13_2cqfq"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
-[ext_resource type="Script" uid="uid://bx4w82g5qab6e" path="res://MeteorService.gd" id="17_meteor"]
+[ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
 [ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
@@ -278,7 +278,6 @@ position = Vector2(342, 323)
 shape = SubResource("RectangleShape2D_2cqfq")
 
 [node name="Meteor_service" type="Node2D" parent="." unique_id=78167695]
-visible = false
 script = ExtResource("17_meteor")
 
 [node name="Meteor" type="Area2D" parent="Meteor_service" unique_id=838540315]
