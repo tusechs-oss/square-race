@@ -245,10 +245,13 @@ position = Vector2(734, 16.999998)
 scale = Vector2(0.27, 0.27)
 
 [node name="ce" type="Sprite2D" parent="." unique_id=51267352]
+visible = false
 material = SubResource("ShaderMaterial_d13ii")
 position = Vector2(317.3125, -155.5)
 scale = Vector2(243.375, 295.00003)
 texture = ExtResource("13_2cqfq")
+
+[node name="black_flash" type="Sprite2D" parent="." unique_id=1354221011]
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
