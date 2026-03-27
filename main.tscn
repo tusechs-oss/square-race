@@ -53,7 +53,7 @@ fill_to = Vector2(0.5623932, 0.82564104)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_82xsv"]
 gradient = SubResource("Gradient_cegan")
-fill_from = Vector2(0, 1)
+fill_from = Vector2(0.9778226, 1)
 
 [sub_resource type="Gradient" id="Gradient_getpj"]
 offsets = PackedFloat32Array(0, 0.263369, 0.4986631, 0.76069516, 0.9237968)
