@@ -279,6 +279,10 @@ shape = SubResource("RectangleShape2D_2cqfq")
 
 [node name="Meteor_service" type="Node2D" parent="." unique_id=78167695]
 script = ExtResource("17_meteor")
+spawn_interval = null
+active_duration = null
+explosion_scene = null
+meteor_scene = null
 
 [node name="Meteor" type="Area2D" parent="Meteor_service" unique_id=838540315]
 
@@ -362,7 +366,7 @@ texture = ExtResource("17_yaehf")
 [node name="ce2" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402444" unique_id=911786424]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(15.094421, -132.54726)
+position = Vector2(11.320837, -139.62262)
 scale = Vector2(784.90576, 725.4718)
 texture = ExtResource("13_2cqfq")
 
@@ -458,7 +462,7 @@ texture = ExtResource("17_yaehf")
 [node name="ce10" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402440" unique_id=1838976612]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(18.868038, -150.94339)
+position = Vector2(7.547283, -135.84904)
 scale = Vector2(841.50934, 741.5095)
 texture = ExtResource("13_2cqfq")
 

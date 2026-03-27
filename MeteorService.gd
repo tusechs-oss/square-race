@@ -125,8 +125,8 @@ func _activate_meteor(meteor: Area2D) -> void:
 		hole.modulate.a = 0.0
 		var hole_tween = create_tween()
 		# Hiện SIÊU NHANH lên 0.8 trong 0.1 giây và 1.0 trong 0.05 giây (tổng cộng 0.15s)
-		hole_tween.tween_property(hole, "modulate:a", 0.8, 0.7) 
-		hole_tween.tween_property(hole, "modulate:a", 1.0, 0.2)
+		hole_tween.tween_property(hole, "modulate:a", 0.8, 0.1) 
+		hole_tween.tween_property(hole, "modulate:a", 1.0, 0.05)
 	
 	# B. Tạo hiệu ứng nổ
 	if explosion_scene:
@@ -161,8 +161,6 @@ func _activate_meteor(meteor: Area2D) -> void:
 func _check_and_kill_overlapping(meteor: Area2D) -> void:
 	if not meteor.monitoring: return
 	var bodies = meteor.get_overlapping_bodies()
-	if bodies.size() > 0:
-		print("Meteor ", meteor.name, " overlapping with: ", bodies.size(), " bodies")
 	for body in bodies:
 		_on_meteor_body_entered(body)
 
@@ -178,14 +176,6 @@ func _hide_all_meteors() -> void:
 # --- XỬ LÝ KHI NGƯỜI CHƠI CHẠM VÀO ---
 func _on_meteor_body_entered(body: Node) -> void:
 	if body == null: return
-	
-	# --- DEBUG SIÊU CHI TIẾT ---
-	print("!!! VA CHẠM THIÊN THẠCH !!!")
-	print("- Tên node va chạm: ", body.name)
-	print("- Các nhóm của node: ", body.get_groups())
-	if body.get_parent():
-		print("- Tên node cha: ", body.get_parent().name)
-		print("- Các nhóm của node cha: ", body.get_parent().get_groups())
 	
 	# Kiểm tra tất cả các khả năng để tìm Player
 	var player_node = null
@@ -211,7 +201,6 @@ func _on_meteor_body_entered(body: Node) -> void:
 			player_node = body.get_parent()
 
 	if player_node:
-		print("=> ĐÃ TÌM THẤY PLAYER: ", player_node.name)
 		if player_node.has_method("apply_damage"):
 			print("=> Đang gây sát thương cho: ", player_node.name)
 			player_node.apply_damage(9999)
@@ -221,7 +210,6 @@ func _on_meteor_body_entered(body: Node) -> void:
 		if player_node.get_parent() and ("Player" in player_node.get_parent().name or player_node.get_parent().is_in_group("Player")):
 			root_to_delete = player_node.get_parent()
 			
-		print("=> Đang xóa node: ", root_to_delete.name)
 		root_to_delete.queue_free()
 	else:
 		print("=> KHÔNG TÌM THẤY GROUP 'Player' TRONG VA CHẠM NÀY")
