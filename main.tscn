@@ -279,10 +279,6 @@ shape = SubResource("RectangleShape2D_2cqfq")
 
 [node name="Meteor_service" type="Node2D" parent="." unique_id=78167695]
 script = ExtResource("17_meteor")
-spawn_interval = null
-active_duration = null
-explosion_scene = null
-meteor_scene = null
 
 [node name="Meteor" type="Area2D" parent="Meteor_service" unique_id=838540315]
 

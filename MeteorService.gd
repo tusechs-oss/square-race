@@ -202,7 +202,6 @@ func _on_meteor_body_entered(body: Node) -> void:
 
 	if player_node:
 		if player_node.has_method("apply_damage"):
-			print("=> Đang gây sát thương cho: ", player_node.name)
 			player_node.apply_damage(9999)
 			
 		# Xóa toàn bộ cụm Player để chắc chắn chết
@@ -211,8 +210,6 @@ func _on_meteor_body_entered(body: Node) -> void:
 			root_to_delete = player_node.get_parent()
 			
 		root_to_delete.queue_free()
-	else:
-		print("=> KHÔNG TÌM THẤY GROUP 'Player' TRONG VA CHẠM NÀY")
 
 
 func _on_meteor_2_body_entered(body: Node2D) -> void:
