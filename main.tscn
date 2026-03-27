@@ -11,9 +11,9 @@
 [ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
 [ext_resource type="Shader" uid="uid://j2sigmuor6pj" path="res://shaders/ce.tres" id="10_ycdy4"]
-[ext_resource type="Texture2D" uid="uid://cydcxg3d17mho" path="res://texture for ce/T_VFX_MarbleNoise_tiled.png" id="11_w48qg"]
 [ext_resource type="Texture2D" uid="uid://b18yfo6phwc0u" path="res://texture for ce/T_Gradient_circle22.jpg" id="12_vivmo"]
 [ext_resource type="Texture2D" uid="uid://dgrf6y1iy8grs" path="res://texture for ce/T_1_pixel.jpg" id="13_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://cdtoexr6qkee2" path="res://texture for ce/T_VFX_CloudNoise_Tiled.png" id="15_yaehf"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
 [ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
 [ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
@@ -66,7 +66,7 @@ gradient = SubResource("Gradient_getpj")
 shader = ExtResource("10_ycdy4")
 shader_parameter/scale = Vector2(1, 1)
 shader_parameter/speed = Vector2(0, 1)
-shader_parameter/Texture2DParameter = ExtResource("11_w48qg")
+shader_parameter/Texture2DParameter = ExtResource("15_yaehf")
 shader_parameter/Texture2DParameter2 = SubResource("GradientTexture2D_074og")
 shader_parameter/Texture2DParameter3 = ExtResource("12_vivmo")
 shader_parameter/Texture2DParameter4 = SubResource("GradientTexture2D_82xsv")
@@ -350,8 +350,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402443" unique_id=51267352]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(18.867615, -147.16977)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(18.86793, -154.71695)
+scale = Vector2(815.09454, 718.8679)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402444" type="Sprite2D" parent="Meteor_service" unique_id=1556117472]
@@ -362,8 +362,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce2" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402444" unique_id=911786424]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(30.18872, -147.16992)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(15.094421, -132.54726)
+scale = Vector2(784.90576, 725.4718)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402445" type="Sprite2D" parent="Meteor_service" unique_id=183929251]
@@ -374,8 +374,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce3" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402445" unique_id=1294624584]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(7.5473633, -147.16968)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(16.981205, -146.69812)
+scale = Vector2(826.41486, 716.0377)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402446" type="Sprite2D" parent="Meteor_service" unique_id=57784637]
@@ -386,8 +386,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce4" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402446" unique_id=1699274989]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(15.094482, -135.84906)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(11.321045, -143.86795)
+scale = Vector2(792.4527, 717.9245)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402447" type="Sprite2D" parent="Meteor_service" unique_id=1162039651]
@@ -398,8 +398,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce5" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402447" unique_id=1859421305]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(3.7736816, -139.62265)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(11.320477, -143.39624)
+scale = Vector2(777.3582, 707.54724)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402442" type="Sprite2D" parent="Meteor_service" unique_id=1701621166]
@@ -410,8 +410,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce6" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402442" unique_id=2000639316]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(22.641602, -128.30191)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(15.094372, -147.16985)
+scale = Vector2(811.3207, 711.3208)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402439" type="Sprite2D" parent="Meteor_service" unique_id=194653028]
@@ -422,8 +422,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce7" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402439" unique_id=103016495]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(22.641602, -147.1698)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(15.094358, -155.66035)
+scale = Vector2(845.2829, 733.9623)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402438" type="Sprite2D" parent="Meteor_service" unique_id=726601218]
@@ -434,8 +434,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce8" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402438" unique_id=677772055]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(7.5473633, -147.16968)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(19.81132, -140.09424)
+scale = Vector2(790.5659, 710.3773)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402441" type="Sprite2D" parent="Meteor_service" unique_id=522299742]
@@ -446,8 +446,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce9" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402441" unique_id=1851643464]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(-0.00022888184, -135.84906)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(-0.00019836426, -135.84904)
+scale = Vector2(766.0378, 696.22644)
 texture = ExtResource("13_2cqfq")
 
 [node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402440" type="Sprite2D" parent="Meteor_service" unique_id=1234708564]
@@ -458,8 +458,8 @@ texture = ExtResource("17_yaehf")
 [node name="ce10" type="Sprite2D" parent="Meteor_service/PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402440" unique_id=1838976612]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_d13ii")
-position = Vector2(7.547119, -169.81134)
-scale = Vector2(860.3774, 750.9434)
+position = Vector2(18.868038, -150.94339)
+scale = Vector2(841.50934, 741.5095)
 texture = ExtResource("13_2cqfq")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
