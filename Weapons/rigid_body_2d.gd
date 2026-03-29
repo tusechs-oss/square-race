@@ -445,3 +445,51 @@ func apply_damage(amount := 1) -> bool:
 	if hearts > 0:
 		return false # Chưa chết
 	return true # Đã hết máu
+
+var dying = false # Cờ đánh dấu đang trong hiệu ứng chết
+
+# --- HIỆU ỨNG CHẾT CHÁY (BURN DISSOLVE) ---
+func burn_death():
+	if dying: return # Tránh gọi nhiều lần
+	dying = true
+	
+	# 1. Khóa chuyển động và ĐÓNG BĂNG nhân vật
+	set_deferred("freeze", true)
+	# Không dùng PROCESS_MODE_DISABLED ở đây vì nó sẽ làm dừng Tween
+	# Thay vào đó ta sẽ dùng một biến cờ để ngừng logic di chuyển
+	
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	set_deferred("collision_layer", 0)
+	set_deferred("collision_mask", 0)
+	
+	# 2. Áp dụng logic lên TextureRect hiện tại (Shader cầu vồng)
+	var visual_node = get_node_or_null("TextureRect")
+	if not visual_node: visual_node = get_node_or_null("Sprite2D") # Fallback
+	
+	if visual_node and visual_node.material:
+		visual_node.material = visual_node.material.duplicate()
+		var mat = visual_node.material
+		
+		# Load noise texture dự phòng
+		var noise_tex = load("res://texture for ce/T_VFX_CloudNoise_Tiled.png")
+		mat.set_shader_parameter("noise_tex", noise_tex)
+		mat.set_shader_parameter("burn_color", Color(3.0, 0.8, 0.1))
+		mat.set_shader_parameter("burn_size", 0.15)
+		
+		# 3. Tween hiệu ứng tan biến
+		# Đảm bảo Tween chạy ngay cả khi game bị dừng (nếu cần)
+		var t = create_tween()
+		mat.set_shader_parameter("dissolve_value", 0.0)
+		# Cháy trong 2.5 giây để nhìn rõ hiệu ứng lửa thiêu rụi
+		t.tween_property(mat, "shader_parameter/dissolve_value", 1, 1.9).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		
+		# Chờ hiệu ứng xong
+		await t.finished
+	
+	# 4. Xóa nhân vật
+	var root = get_parent()
+	if root and (root.is_in_group("Player") or "Player" in root.name):
+		root.queue_free()
+	else:
+		queue_free()

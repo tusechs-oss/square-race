@@ -87,44 +87,38 @@ func _on_spawn_timer_timeout() -> void:
 func _activate_meteor(meteor: Area2D) -> void:
 	var target_pos = meteor.global_position
 	
-	# BẮT ĐẦU GÂY SÁT THƯƠNG NGAY KHI BẮT ĐẦU RƠI
-	meteor.monitoring = true
-	meteor.monitorable = true
-	# Kiểm tra ngay lập tức xem có ai đang đứng ở điểm rơi không
-	_check_and_kill_overlapping(meteor)
+	# KHÔNG GÂY SÁT THƯƠNG KHI ĐANG RƠI (Chỉ làm cảnh)
+	meteor.monitoring = false
+	meteor.monitorable = false
 	
 	# 1. Hiệu ứng rơi bằng AnimationPlayer từ scene Fire_SheetSprite
 	if meteor_scene:
 		var m_instance = meteor_scene.instantiate()
 		add_child(m_instance)
-		
-		# BÙ TRỪ VỊ TRÍ: Animation 'Fall' trong Fire_SheetSprite kết thúc tại y = 237
-		# Chúng ta cần đặt instance sao cho điểm kết thúc này trùng với target_pos
 		var animation_offset = Vector2(0, 237)
 		m_instance.global_position = target_pos - animation_offset
 		
 		var anim_player = m_instance.find_child("fall", true, false)
 		if anim_player:
 			anim_player.play("Fall")
-			# Trong lúc đang rơi, vẫn liên tục kiểm tra va chạm
-			var fall_timer = 0.0
-			while fall_timer < 0.2133:
-				_check_and_kill_overlapping(meteor)
-				await get_tree().physics_frame # Dùng physics_frame để chính xác hơn về va chạm
-				fall_timer += get_physics_process_delta_time()
+			# Đợi đến khi chạm đất
+			await get_tree().create_timer(0.2133).timeout
 		else:
 			await get_tree().create_timer(0.24).timeout
 		
 		m_instance.queue_free()
 	
-	# 2. Va chạm (Impact) và Nổ
+	# 2. VA CHẠM (IMPACT) VÀ NỔ - ĐÂY MỚI LÀ LÚC GÂY CHẾT
+	meteor.monitoring = true
+	meteor.monitorable = true
+	_check_and_kill_overlapping(meteor)
+	
 	# A. Hiện hố
 	if meteor_to_hole.has(meteor):
 		var hole = meteor_to_hole[meteor]
 		hole.visible = true
 		hole.modulate.a = 0.0
 		var hole_tween = create_tween()
-		# Hiện SIÊU NHANH lên 0.8 trong 0.1 giây và 1.0 trong 0.05 giây (tổng cộng 0.15s)
 		hole_tween.tween_property(hole, "modulate:a", 0.8, 0.1) 
 		hole_tween.tween_property(hole, "modulate:a", 1.0, 0.05)
 	
@@ -138,24 +132,22 @@ func _activate_meteor(meteor: Area2D) -> void:
 			exp_anim.play("Explosion")
 			exp_anim.animation_finished.connect(func(_anim): explosion.queue_free())
 	
-	# C. Giữ collision trong suốt thời gian hố tồn tại
+	# C. Giữ collision thêm một chút lúc nổ để diệt những ai đứng gần
 	_check_and_kill_overlapping(meteor)
+	await get_tree().create_timer(0.4).timeout
 	
-	# 3. Đợi hố tồn tại (active_duration) và liên tục gây sát thương
-	var hole_timer = 0.0
-	while hole_timer < active_duration:
-		_check_and_kill_overlapping(meteor)
-		await get_tree().physics_frame
-		hole_timer += get_physics_process_delta_time()
-	
-	# Tắt collision và ẩn hố sau khi hết thời gian
+	# Tắt collision sau khi nổ xong (hố trang trí)
 	meteor.monitoring = false
 	meteor.monitorable = false
 	
+	# 3. Xử lý hố tồn tại rồi mờ dần
 	if meteor_to_hole.has(meteor):
 		var hole = meteor_to_hole[meteor]
+		await get_tree().create_timer(active_duration + 3.0).timeout
+		var fade_out = create_tween()
+		fade_out.tween_property(hole, "modulate:a", 0.0, 1.5)
+		await fade_out.finished
 		hole.visible = false
-		hole.modulate.a = 0.0
 
 # Hàm bổ trợ kiểm tra và diệt những ai đang đứng trong vùng va chạm
 func _check_and_kill_overlapping(meteor: Area2D) -> void:
@@ -201,15 +193,18 @@ func _on_meteor_body_entered(body: Node) -> void:
 			player_node = body.get_parent()
 
 	if player_node:
-		if player_node.has_method("apply_damage"):
-			player_node.apply_damage(9999)
+		if player_node.has_method("burn_death"):
+			# Gọi hiệu ứng chết cháy bằng shader mới
+			player_node.burn_death()
+		else:
+			# Nếu không có hiệu ứng, xóa ngay lập tức như cũ
+			if player_node.has_method("apply_damage"):
+				player_node.apply_damage(9999)
 			
-		# Xóa toàn bộ cụm Player để chắc chắn chết
-		var root_to_delete = player_node
-		if player_node.get_parent() and ("Player" in player_node.get_parent().name or player_node.get_parent().is_in_group("Player")):
-			root_to_delete = player_node.get_parent()
-			
-		root_to_delete.queue_free()
+			var root_to_delete = player_node
+			if player_node.get_parent() and ("Player" in player_node.get_parent().name or player_node.get_parent().is_in_group("Player")):
+				root_to_delete = player_node.get_parent()
+			root_to_delete.queue_free()
 
 
 func _on_meteor_2_body_entered(body: Node2D) -> void:

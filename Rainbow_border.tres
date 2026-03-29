@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cm5tkhborussb"]
+
+[ext_resource type="Shader" uid="uid://rfpdejppredf" path="res://TX.gdshader" id="1_orr05"]
+[ext_resource type="Texture2D" uid="uid://gekepwhrgali" path="res://texture for ce/T_VFX_Noise_12.PNG" id="2_tivs7"]
+
+[resource]
+shader = ExtResource("1_orr05")
+shader_parameter/width = 0.02700000128249999
+shader_parameter/speed = 2.0
+shader_parameter/noise_tex = ExtResource("2_tivs7")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1.9999999, 0.5350056, 0.15167145, 1)
+shader_parameter/burn_size = 0.0

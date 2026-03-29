@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dcfq5ral3h4nn" path="res://KillSplash.tscn" id="3_5jqks"]
 [ext_resource type="PackedScene" uid="uid://cvgb1jjhkp0nb" path="res://gundrop.tscn" id="4_5uiw7"]
 [ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="5_nm0ys"]
-[ext_resource type="Shader" uid="uid://rfpdejppredf" path="res://TX.gdshader" id="5_vbnx8"]
 [ext_resource type="Texture2D" uid="uid://bg5cv5qwbnu7r" path="res://R.jpg" id="6_mrx8n"]
+[ext_resource type="Material" uid="uid://cm5tkhborussb" path="res://Rainbow_border.tres" id="6_nm0ys"]
 [ext_resource type="Texture2D" uid="uid://bpdrplsvuvr7v" path="res://4smg04.png" id="7_nm0ys"]
 [ext_resource type="Texture2D" uid="uid://b7g5vam0fmtiw" path="res://sw.png" id="9_mrx8n"]
 [ext_resource type="Script" uid="uid://cdhoxv1lt5326" path="res://addons/trail_2d/trail_2d.gd" id="10_gblts"]
@@ -21,11 +21,6 @@ friction = 0.0
 bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nm73w"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lg5qu"]
-shader = ExtResource("5_vbnx8")
-shader_parameter/width = 0.02700000128249999
-shader_parameter/speed = 2.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1u1nc"]
 size = Vector2(272.75, 243.25)
@@ -75,7 +70,7 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect" type="TextureRect" parent="RigidBody2D" unique_id=1286840685]
-material = SubResource("ShaderMaterial_lg5qu")
+material = ExtResource("6_nm0ys")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -108,6 +103,7 @@ scale = Vector2(0.88, 0.88)
 texture = ExtResource("7_nm0ys")
 
 [node name="Sword" type="Sprite2D" parent="RigidBody2D/hand" unique_id=1561596220]
+visible = false
 z_index = -1
 texture_filter = 1
 position = Vector2(6.056911, -4.065041)
