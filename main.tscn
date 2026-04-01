@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dj15w7rspcbwq" path="res://Gemini_Generated_Image_mhbtbemhbtbemhbt.png" id="7_272bh"]
 [ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
+[ext_resource type="Texture2D" uid="uid://bqsab0vkjjkak" path="res://alert-icon-1562.png" id="14_w48qg"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
 [ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
 [ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
@@ -250,70 +251,60 @@ script = ExtResource("17_meteor")
 [node name="Meteor" type="Area2D" parent="Meteor_service" unique_id=838540315]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor" unique_id=2010615309]
-visible = false
 position = Vector2(599, 525)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor2" type="Area2D" parent="Meteor_service" unique_id=368017711]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor2" unique_id=861056360]
-visible = false
 position = Vector2(881, 300)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor3" type="Area2D" parent="Meteor_service" unique_id=1429522216]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor3" unique_id=1393114034]
-visible = false
 position = Vector2(420, 260)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor4" type="Area2D" parent="Meteor_service" unique_id=2093068019]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor4" unique_id=614338093]
-visible = false
 position = Vector2(302, 147)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor5" type="Area2D" parent="Meteor_service" unique_id=60961568]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor5" unique_id=114358276]
-visible = false
 position = Vector2(765, 181)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor6" type="Area2D" parent="Meteor_service" unique_id=1967681014]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor6" unique_id=1764266570]
-visible = false
 position = Vector2(355, 469)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor7" type="Area2D" parent="Meteor_service" unique_id=460983264]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor7" unique_id=990441266]
-visible = false
 position = Vector2(790, 441)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor8" type="Area2D" parent="Meteor_service" unique_id=1985352283]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor8" unique_id=163065366]
-visible = false
 position = Vector2(546, 135)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor9" type="Area2D" parent="Meteor_service" unique_id=1758002817]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor9" unique_id=1327546593]
-visible = false
 position = Vector2(679, 322)
 shape = SubResource("CircleShape2D_vivmo")
 
 [node name="Meteor10" type="Area2D" parent="Meteor_service" unique_id=451886438]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor10" unique_id=641607138]
-visible = false
 position = Vector2(533, 409)
 shape = SubResource("CircleShape2D_vivmo")
 
@@ -378,6 +369,69 @@ z_index = -2
 position = Vector2(533, 410)
 scale = Vector2(0.185, 0.185)
 texture = ExtResource("17_yaehf")
+
+[node name="AlertZone" type="Node2D" parent="Meteor_service" unique_id=1374639489]
+
+[node name="Alert" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=779749815]
+self_modulate = Color(1, 1, 1, 0.7058824)
+texture_filter = 1
+position = Vector2(302, 151)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert2" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=1910817901]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(881, 304)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert3" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=164544528]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(533, 412.54)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert4" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=114285028]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(680, 325.5)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert5" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=291139176]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(420, 264)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert6" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=79880515]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(765, 184)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert7" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=961007923]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(546, 139)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert8" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=2055540867]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(598.805, 528.545)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert9" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=566242040]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(355, 472)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
+
+[node name="Alert10" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=2050198068]
+self_modulate = Color(1, 1, 1, 0.7058824)
+position = Vector2(790, 445.11)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("14_w48qg")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
