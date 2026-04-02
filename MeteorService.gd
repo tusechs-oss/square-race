@@ -13,10 +13,21 @@ extends Node2D
 @onready var timer: Timer = $Timer
 var meteors: Array[Area2D] = []
 var meteor_to_hole: Dictionary = {} # Ánh xạ Meteor -> Sprite2D (hố)
+var meteor_to_alert: Dictionary = {} # Ánh xạ Meteor -> Sprite2D (cảnh báo)
 
 func _ready() -> void:
-	# 1. Thu thập tất cả các node Meteor (Area2D) và Hố (Sprite2D)
+	# 1. Thu thập tất cả các node Meteor (Area2D), Hố (Sprite2D) và Cảnh báo
 	var holes: Array[Sprite2D] = []
+	var alerts: Array[Sprite2D] = []
+	
+	# Tìm AlertZone
+	var alert_zone = get_node_or_null("AlertZone")
+	if alert_zone:
+		for child in alert_zone.get_children():
+			if child is Sprite2D:
+				alerts.append(child)
+				child.visible = false
+
 	for child in get_children():
 		if child is Area2D:
 			meteors.append(child)
@@ -46,17 +57,29 @@ func _ready() -> void:
 			child.visible = false
 			child.modulate.a = 0.0 # Bắt đầu bằng độ mờ 0
 	
-	# Ghép đôi Meteor với Hố gần nhất
+	# Ghép đôi Meteor với Hố và Cảnh báo gần nhất
 	for m in meteors:
+		# Ghép hố
 		var closest_hole = null
-		var min_dist = 999999.0
+		var min_dist_hole = 999999.0
 		for h in holes:
 			var dist = m.global_position.distance_to(h.global_position)
-			if dist < min_dist:
-				min_dist = dist
+			if dist < min_dist_hole:
+				min_dist_hole = dist
 				closest_hole = h
 		if closest_hole:
 			meteor_to_hole[m] = closest_hole
+			
+		# Ghép cảnh báo
+		var closest_alert = null
+		var min_dist_alert = 999999.0
+		for a in alerts:
+			var dist = m.global_position.distance_to(a.global_position)
+			if dist < min_dist_alert:
+				min_dist_alert = dist
+				closest_alert = a
+		if closest_alert:
+			meteor_to_alert[m] = closest_alert
 	
 	_hide_all_meteors() # Đảm bảo mọi thứ ẩn lúc bắt đầu
 	
@@ -79,9 +102,42 @@ func _on_spawn_timer_timeout() -> void:
 		available_meteors.shuffle() # Trộn ngẫu nhiên
 		
 		var spawn_count = min(3, available_meteors.size())
+		var selected_meteors = []
 		for i in range(spawn_count):
-			var m = available_meteors[i]
+			selected_meteors.append(available_meteors[i])
+		
+		# HIỂN THỊ CẢNH BÁO TRƯỚC 3 GIÂY
+		for m in selected_meteors:
+			_show_alert(m)
+		
+		# Đợi 3 giây trước khi rơi thiên thạch
+		await get_tree().create_timer(3.0).timeout
+		
+		for m in selected_meteors:
 			_activate_meteor(m)
+
+# --- HIỂN THỊ CẢNH BÁO ---
+func _show_alert(meteor: Area2D) -> void:
+	if meteor_to_alert.has(meteor):
+		var alert = meteor_to_alert[meteor]
+		alert.visible = true
+		alert.modulate.a = 1.0
+		
+		# HIỆU ỨNG NHẤP NHÁY NHANH + GLOW (Phát sáng)
+		# Tốc độ: 0.1s cho mỗi pha (0.2s cho 1 chu kỳ), 15 chu kỳ = 3 giây
+		var blink_tween = create_tween().set_loops(15) 
+		
+		# Pha 1: Làm mờ và giảm độ sáng
+		blink_tween.tween_property(alert, "modulate:a", 0.3, 0.1)
+		blink_tween.parallel().tween_property(alert, "self_modulate", Color(1, 1, 1, 1), 0.1)
+		
+		# Pha 2: Hiện rõ và phát sáng (Glow) bằng cách tăng self_modulate vượt mức 1.0 (nếu có HDR)
+		blink_tween.tween_property(alert, "modulate:a", 0.3, 0.1)
+		blink_tween.parallel().tween_property(alert, "self_modulate", Color(2.5, 2.5, 2.5, 1), 0.1)
+		
+		await get_tree().create_timer(3.0).timeout
+		alert.visible = false
+		alert.self_modulate = Color(1, 1, 1, 1) # Reset lại độ sáng mặc định
 
 # --- KÍCH HOẠT THIÊN THẠCH ---
 func _activate_meteor(meteor: Area2D) -> void:
@@ -164,6 +220,9 @@ func _hide_all_meteors() -> void:
 	for h in meteor_to_hole.values():
 		h.visible = false
 		h.modulate.a = 0.0
+	for a in meteor_to_alert.values():
+		a.visible = false
+		a.modulate.a = 0.0
 
 # --- XỬ LÝ KHI NGƯỜI CHƠI CHẠM VÀO ---
 func _on_meteor_body_entered(body: Node) -> void:
