@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dj15w7rspcbwq" path="res://Gemini_Generated_Image_mhbtbemhbtbemhbt.png" id="7_272bh"]
 [ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
+[ext_resource type="Texture2D" uid="uid://cf1qilqifinp7" path="res://texture for ce/T_VFX_Glow_1.PNG" id="14_w48qg"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
 [ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
 [ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
@@ -38,6 +39,10 @@ size = Vector2(291, 539.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vivmo"]
 radius = 41.677334
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vivmo"]
+blend_mode = 1
+light_mode = 2
 
 [node name="Node2D2" type="Node2D" unique_id=828684265 node_paths=PackedStringArray("spawn_area")]
 script = ExtResource("1_ig7tw")
@@ -378,6 +383,13 @@ z_index = -2
 position = Vector2(533, 410)
 scale = Vector2(0.185, 0.185)
 texture = ExtResource("17_yaehf")
+
+[node name="holua" type="Sprite2D" parent="Meteor_service" unique_id=2045087398]
+texture_filter = 3
+material = SubResource("CanvasItemMaterial_vivmo")
+position = Vector2(453, 181)
+scale = Vector2(0.52, 0.4800003)
+texture = ExtResource("14_w48qg")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
