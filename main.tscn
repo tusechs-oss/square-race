@@ -18,7 +18,9 @@
 [ext_resource type="Texture2D" uid="uid://dod0kofqevfxs" path="res://texture for ce/T_VFX_Glo31.png" id="16_jq2sk"]
 [ext_resource type="Texture2D" uid="uid://clv4er2xt8763" path="res://texture for ce/floaty_64.png" id="17_4k2k6"]
 [ext_resource type="Texture2D" uid="uid://bp7eepn62oka2" path="res://texture for ce/floaty_32.png" id="18_0rl1p"]
+[ext_resource type="Texture2D" uid="uid://chcso4k5cnnn2" path="res://texture for ce/spotlight_2.png" id="18_getpj"]
 [ext_resource type="Texture2D" uid="uid://dx012it6wa8j2" path="res://texture for ce/spotlight_8.png" id="19_ok6jj"]
+[ext_resource type="Texture2D" uid="uid://cf1qilqifinp7" path="res://texture for ce/T_VFX_Glow_1.PNG" id="19_ryguw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g38nq"]
 friction = 0.0
@@ -63,6 +65,12 @@ hue_variation_max = -2.2351742e-08
 anim_speed_min = 0.19999999
 anim_speed_max = 0.5
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d13ii"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1u8w0"]
+blend_mode = 1
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_suwb7"]
 blend_mode = 1
 light_mode = 1
@@ -83,6 +91,12 @@ scale_min = 0.14999999
 scale_max = 2.0
 anim_speed_min = 0.19999999
 anim_speed_max = 0.5
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0odxb"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lswn8"]
+blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_f0n5f"]
 blend_mode = 1
@@ -109,67 +123,71 @@ blend_mode = 1
 light_mode = 1
 
 [sub_resource type="Animation" id="Animation_gblts"]
-length = 0.001
+length = 3.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("purple:modulate")
+tracks/0/path = NodePath("red:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [Vector2(45.623764, -91.092026)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("red:position")
+tracks/1/path = NodePath("blue:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(45.623764, -91.092026)]
+"values": [Vector2(199.73068, -91.092026)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("blue:position")
+tracks/2/path = NodePath("blue:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(201.7584, -96.3272)]
+"values": [Color(1, 0.72605973, 0.98982096, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("blue:modulate")
+tracks/3/path = NodePath("red:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(0, 0.726, 0.99, 0)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("red:modulate")
+tracks/4/path = NodePath("purple:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(0.86, 0.07166665, 0, 0)]
+"values": [Color(1, 1, 1, 0)]
 }
+
+[sub_resource type="Animation" id="Animation_a6jrf"]
+resource_name = "new_animation"
+length = 3.0333333
 
 [sub_resource type="Animation" id="Animation_4xd6l"]
 resource_name = "reloading"
@@ -177,67 +195,68 @@ length = 3.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("purple:modulate")
+tracks/0/path = NodePath("red:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(2.0666666, 2.5),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"values": [Vector2(45.623764, -91.092026), Vector2(126.73268, -88.997955)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("red:position")
+tracks/1/path = NodePath("blue:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 2.5),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(45.623764, -91.092026), Vector2(127.74654, -91.092026)]
+"values": [Vector2(199.73068, -91.092026), Vector2(124.70494, -91.092026)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("blue:position")
+tracks/2/path = NodePath("blue:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 2.5),
+"times": PackedFloat32Array(1.7, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(201.7584, -96.3272), Vector2(123.69108, -96.3272)]
+"values": [Color(1, 0.72605973, 0.98982096, 1), Color(1, 0.72605973, 0.98982096, 0.010000001)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("blue:modulate")
+tracks/3/path = NodePath("red:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 2.5),
+"times": PackedFloat32Array(1.7, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0, 0.726, 0.99, 1), Color(0, 0.726, 0.99, 0)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("red:modulate")
+tracks/4/path = NodePath("purple:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 2.5),
+"times": PackedFloat32Array(2, 2.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0.86, 0.07166665, 0, 1), Color(0.86, 0.07166665, 0, 0)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_f0n5f"]
 _data = {
 &"RESET": SubResource("Animation_gblts"),
+&"new_animation": SubResource("Animation_a6jrf"),
 &"reloading": SubResource("Animation_4xd6l")
 }
 
@@ -372,14 +391,15 @@ position = Vector2(346, -79)
 scale = Vector2(0.9863281, 0.9550781)
 
 [node name="blue" type="Sprite2D" parent="hollow" unique_id=488665271]
-modulate = Color(0, 0.726, 0.99, 0)
+modulate = Color(1, 0.72605973, 0.98982096, 0)
 self_modulate = Color(0.5160374, 0.22585088, 0.88257295, 1)
 material = SubResource("CanvasItemMaterial_gblts")
-position = Vector2(201.7584, -96.3272)
+position = Vector2(199.73068, -91.092026)
 scale = Vector2(0.28712872, 0.23312879)
 texture = ExtResource("16_jq2sk")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="hollow/blue" unique_id=239529059]
+self_modulate = Color(0, 1, 1, 1)
 material = SubResource("CanvasItemMaterial_c1n73")
 position = Vector2(-5.296509, 13.473663)
 rotation = 3.1022959
@@ -390,22 +410,48 @@ texture = ExtResource("17_4k2k6")
 lifetime = 0.88
 process_material = SubResource("ParticleProcessMaterial_suwb7")
 
+[node name="Sprite2D" type="Sprite2D" parent="hollow/blue" unique_id=1348918020]
+self_modulate = Color(0, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_d13ii")
+position = Vector2(-3.5310297, 8.982478)
+scale = Vector2(3.724138, 1.0789475)
+texture = ExtResource("18_getpj")
+
+[node name="Sprite2D2" type="Sprite2D" parent="hollow/blue" unique_id=2131499007]
+material = SubResource("CanvasItemMaterial_1u8w0")
+position = Vector2(0, 17.964916)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("19_ryguw")
+
 [node name="red" type="Sprite2D" parent="hollow" unique_id=346733179]
-modulate = Color(0.86, 0.07166665, 0, 0)
-self_modulate = Color(1, 0, 0, 1)
+self_modulate = Color(1, 0, 0.5529412, 1)
 material = SubResource("CanvasItemMaterial_suwb7")
 position = Vector2(45.623764, -91.092026)
 scale = Vector2(0.27873594, 0.24463104)
 texture = ExtResource("16_jq2sk")
 
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="hollow/red" unique_id=1038580]
-self_modulate = Color(1, 0.13999999, 0.13999999, 1)
+self_modulate = Color(1, 0, 0, 1)
 material = SubResource("CanvasItemMaterial_4xd6l")
 position = Vector2(3.6373901, 8.559998)
 scale = Vector2(0.48841396, 0.56217545)
 amount = 16
 texture = ExtResource("17_4k2k6")
 process_material = SubResource("ParticleProcessMaterial_f0n5f")
+
+[node name="Sprite2D" type="Sprite2D" parent="hollow/red" unique_id=1313995082]
+self_modulate = Color(1, 0.08333331, 0, 1)
+material = SubResource("CanvasItemMaterial_0odxb")
+position = Vector2(7.274709, 4.280056)
+scale = Vector2(3.724, 1.079)
+texture = ExtResource("18_getpj")
+
+[node name="Sprite2D2" type="Sprite2D" parent="hollow/red" unique_id=183587349]
+self_modulate = Color(1, 0.92827797, 0.9283472, 1)
+material = SubResource("CanvasItemMaterial_lswn8")
+position = Vector2(-7.274709, 8.560114)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("19_ryguw")
 
 [node name="purple" type="Sprite2D" parent="hollow" unique_id=1183049948]
 modulate = Color(1, 1, 1, 0)
