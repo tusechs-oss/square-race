@@ -54,6 +54,16 @@ func _ready() -> void:
 	_find_spawn_timer_nodes() # Tìm các node UI đếm ngược
 	_find_spimg_node() # Tìm node hiển thị ảnh xem trước
 	_setup_wind_timer() # Thiết lập hệ thống gió tự động
+	_setup_gojo_timer() # Thiết lập hệ thống spawn Gojo tự động mỗi 15s
+
+# --- THIẾT LẬP HỆ THỐNG GOJO TỰ ĐỘNG ---
+func _setup_gojo_timer() -> void:
+	var gojo_timer = Timer.new()
+	gojo_timer.wait_time = 25.0 # Tăng thêm 10s (tổng cộng 25s)
+	gojo_timer.one_shot = false
+	gojo_timer.autostart = true
+	add_child(gojo_timer)
+	gojo_timer.timeout.connect(func(): _start_weapon_countdown("gojo"))
 
 # --- THIẾT LẬP HỆ THỐNG GIÓ ---
 func _setup_wind_timer() -> void:
@@ -390,7 +400,11 @@ func _start_weapon_countdown(kind: String) -> void:
 		pending_weapon_node = gun_scene.instantiate()
 	elif kind == "gojo":
 		if gojo_scene == null:
+<<<<<<< Updated upstream
 			gojo_scene = load("res://Gojo.tscn")
+=======
+			gojo_scene = load("res://Gojjooo.tscn")
+>>>>>>> Stashed changes
 		if gojo_scene != null:
 			pending_weapon_node = gojo_scene.instantiate()
 		

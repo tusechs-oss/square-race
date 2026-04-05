@@ -22,6 +22,8 @@ var current_target: Node2D = null # Mục tiêu hiện tại đang nhắm đến
 @onready var shoot_timer = $hand/ShootTimer # Thời gian chờ giữa các lần bắn
 @onready var muzzle = $hand/Muzzle # Vị trí đầu nòng súng (để spawn đạn)
 @onready var sword_hitbox = $hand/Sword/SwordHitbox # Vùng va chạm của kiếm
+@onready var hollow_node = get_node_or_null("../hollow") # Hiệu ứng Gojo
+@onready var hollow_anim = get_node_or_null("../hollow/AnimationPlayer") # Animation Gojo
 
 # Hệ thống rung camera khi chém/bắn
 @onready var shake_camera = get_tree().get_first_node_in_group("camera_shake")
@@ -38,7 +40,11 @@ var current_target: Node2D = null # Mục tiêu hiện tại đang nhắm đến
 var sword_kills_left = 0 # Số lần được chém (thường là 1 lần biến mất)
 const GUN_PICKUP_DELAY = 1.0 # Delay 1s sau khi nhặt mới được bắn
 var gun_ready_at = 0.0 # Mốc thời gian được phép bắn
+<<<<<<< Updated upstream
 var gojo_charging = false # Đang tích tụ Hollow Purple
+=======
+var gojo_charging := false # Đang tích tụ Hollow Purple
+>>>>>>> Stashed changes
 const MAX_AMMO = 2 # Số đạn tối đa
 var ammo = MAX_AMMO # Số đạn hiện có
 var kill = 0 # Số mạng đã giết
@@ -166,10 +172,20 @@ func pick_up_sword():
 func pick_up_gojo():
 	if gojo_charging: return
 	current_weapon = WeaponType.GOJO
+<<<<<<< Updated upstream
+=======
+	gojo_charging = true
+	
+	# Player đứng yên
+	freeze = true
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+>>>>>>> Stashed changes
 	
 	if gun_sprite: gun_sprite.hide()
 	if sword_sprite: sword_sprite.hide()
 	
+<<<<<<< Updated upstream
 	# Bắt đầu chuỗi chiêu thức Hollow Red -> Blue -> Purple
 	start_hollow_sequence()
 
@@ -187,6 +203,20 @@ func start_hollow_sequence():
 		hollow_anim.play("reloading")
 		
 		# Đợi đến khi ra màu tím (khoảng 2.5s theo animation reloading)
+=======
+	# Bắt đầu chuỗi animation Hollow
+	start_hollow_sequence()
+
+func start_hollow_sequence():
+	# Sử dụng animation "reloading" từ node hollow
+	if hollow_node and hollow_anim:
+		hollow_node.show()
+		# Đặt lại vị trí tương đối về 0 để xoay quanh nhân vật chính xác
+		hollow_node.position = Vector2.ZERO
+		hollow_anim.play("reloading")
+		
+		# Đợi đến đoạn màu tím (khoảng 2.5 giây theo animation reloading)
+>>>>>>> Stashed changes
 		await get_tree().create_timer(2.5).timeout
 		
 		# Phóng Hollow Purple
@@ -196,6 +226,7 @@ func start_hollow_sequence():
 		await hollow_anim.animation_finished
 		hollow_node.hide()
 	
+<<<<<<< Updated upstream
 	current_weapon = WeaponType.NONE
 	gojo_charging = false
 
@@ -206,6 +237,17 @@ func launch_hollow_purple():
 		
 	if hollow_purple_scene:
 		var purple = hollow_purple_scene.instantiate()
+=======
+	# Reset trạng thái
+	freeze = false
+	gojo_charging = false
+	current_weapon = WeaponType.NONE
+
+func launch_hollow_purple():
+	var purple_scene = load("res://HollowPurple.tscn")
+	if purple_scene:
+		var purple = purple_scene.instantiate()
+>>>>>>> Stashed changes
 		purple.shooter = self
 		# Phóng theo hướng đang nhìn (hand rotation)
 		purple.direction = Vector2.RIGHT.rotated(hand.global_rotation)
@@ -217,9 +259,16 @@ func launch_hollow_purple():
 			shake_camera.add_trauma(1.0)
 
 func _process(delta):
+<<<<<<< Updated upstream
 	# Cập nhật vị trí hiệu ứng Gojo theo nhân vật
 	if hollow_node and hollow_node.visible:
 		hollow_node.global_position = global_position
+=======
+	# Cập nhật vị trí và hướng của hiệu ứng Gojo theo nhân vật
+	if hollow_node and hollow_node.visible:
+		hollow_node.global_position = global_position
+		hollow_node.global_rotation = hand.global_rotation
+>>>>>>> Stashed changes
 
 	# Lật ảnh súng/kiếm khi quay sang trái để không bị ngược
 	if hand.global_rotation > PI/2 or hand.global_rotation < -PI/2:

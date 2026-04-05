@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://d0x4hg182tvcu"]
 
+<<<<<<< Updated upstream
 [ext_resource type="Shader" uid="uid://c0v0ycbgujvm7" path="res://Gojjooo.gdshader" id="1_wur5e"]
 [ext_resource type="Texture2D" uid="uid://uoms0u2dctc5" path="res://satoru-gojo-21.png" id="2_1rt3w"]
 [ext_resource type="Shader" uid="uid://b3bxvqns8s8r7" path="res://Weapons/Blink.gdshader" id="3_cri24"]
@@ -9,9 +10,16 @@ shader = ExtResource("1_wur5e")
 shader_parameter/tint_color = Color(1, 1, 1, 1)
 shader_parameter/tint_amount = 0.0
 shader_parameter/flash_modifier = 0.15386283055639366
+=======
+[ext_resource type="Script" uid="uid://myodehqly5gj" path="res://GojjoooPickup.gd" id="1_pickup"]
+[ext_resource type="Texture2D" uid="uid://c81t4l228dhes" path="res://satoru-gojo-21.png" id="2_1rt3w"]
+[ext_resource type="Shader" uid="uid://b3bxvqns8s8r7" path="res://Weapons/Blink.gdshader" id="3_cri24"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_63ndk"]
+shader = ExtResource("3_cri24")
+shader_parameter/flash_modifier = 0.42584829088247117
+>>>>>>> Stashed changes
 shader_parameter/flash_color = Color(1, 1, 1, 1)
-shader_parameter/line_color = Color(1, 1, 1, 1)
-shader_parameter/line_thickness = 1.0
 
 [sub_resource type="Animation" id="Animation_xvp8o"]
 resource_name = "spawngojo"
@@ -31,23 +39,11 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = false
-tracks/1/path = NodePath(".:material:shader")
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/flash_modifier")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("3_cri24")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:material:shader_parameter/flash_modifier")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.93333334),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
@@ -59,12 +55,26 @@ _data = {
 &"spawngojo": SubResource("Animation_xvp8o")
 }
 
-[node name="Node2D" type="Node2D" unique_id=1092398484]
+[sub_resource type="CircleShape2D" id="CircleShape2D_gojo"]
+radius = 40.0
 
-[node name="purple" type="Sprite2D" parent="." unique_id=1984400354]
+[node name="Node2D" type="Node2D" unique_id=898359820]
+script = ExtResource("1_pickup")
+
+[node name="purple" type="Sprite2D" parent="." unique_id=1643305476]
 material = SubResource("ShaderMaterial_63ndk")
+<<<<<<< Updated upstream
 scale = Vector2(0.092619866, 0.092619866)
+=======
+scale = Vector2(0.09753246, 0.09753246)
+>>>>>>> Stashed changes
 texture = ExtResource("2_1rt3w")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="purple" unique_id=938932503]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="purple" unique_id=1434429940]
 libraries/ = SubResource("AnimationLibrary_ghrjb")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1633531373]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1931881031]
+shape = SubResource("CircleShape2D_gojo")
