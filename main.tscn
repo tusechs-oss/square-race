@@ -1,451 +1,487 @@
 [gd_scene format=3 uid="uid://c050xmgtwmcn6"]
 
-[ext_resource type="Script" uid="uid://chov48wx8snej" path="res://main.gd" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://4goy6q677m1d" path="res://Fire_anima.tscn" id="2_272bh"]
-[ext_resource type="PackedScene" uid="uid://cyclifb0dn05v" path="res://Leaderboard.tscn" id="2_kek77"]
-[ext_resource type="PackedScene" uid="uid://b5tn3exv03tyk" path="res://Weapons/fire.tscn" id="3_7mycd"]
-[ext_resource type="Script" uid="uid://c8mn2o5n6t7ne" path="res://vietnam.gd" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://dp0a2rv4yrvpp" path="res://Weapons/Player.tscn" id="4_kek77"]
-[ext_resource type="Texture2D" uid="uid://c4abnfn5vcmm8" path="res://Weapons/tribal_bow_twilight_ritual.png" id="6_7mycd"]
-[ext_resource type="Texture2D" uid="uid://dj15w7rspcbwq" path="res://Gemini_Generated_Image_mhbtbemhbtbemhbt.png" id="7_272bh"]
+[ext_resource type="Script" uid="uid://dhbhy6ecrg4t6" path="res://Weapons/rigid_body_2d.gd" id="1_cegan"]
+[ext_resource type="PackedScene" uid="uid://4skvv05ouaaw" path="res://Weapons/Shot.tscn" id="2_82xsv"]
+[ext_resource type="PackedScene" uid="uid://dcfq5ral3h4nn" path="res://KillSplash.tscn" id="3_getpj"]
+[ext_resource type="PackedScene" uid="uid://cvgb1jjhkp0nb" path="res://gundrop.tscn" id="4_ryguw"]
+[ext_resource type="Material" uid="uid://cm5tkhborussb" path="res://Rainbow_border.tres" id="6_d13ii"]
+[ext_resource type="Texture2D" uid="uid://bg5cv5qwbnu7r" path="res://R.jpg" id="7_1u8w0"]
+[ext_resource type="Texture2D" uid="uid://bpdrplsvuvr7v" path="res://4smg04.png" id="8_0odxb"]
 [ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="8_w48qg"]
-[ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
-[ext_resource type="Texture2D" uid="uid://bqsab0vkjjkak" path="res://alert-icon-1562.png" id="14_w48qg"]
-[ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
-[ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
-[ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
+[ext_resource type="Texture2D" uid="uid://b7g5vam0fmtiw" path="res://sw.png" id="9_lswn8"]
+[ext_resource type="Script" uid="uid://cdhoxv1lt5326" path="res://addons/trail_2d/trail_2d.gd" id="10_a6jrf"]
+[ext_resource type="AudioStream" uid="uid://dwrvneuy0flaa" path="res://khối va chạm.mp3" id="11_xuqvo"]
+[ext_resource type="AudioStream" uid="uid://d3ka61dkmouqc" path="res://pixel-gun-3d-zombie-slayer-shoot.mp3" id="12_qsp4k"]
+[ext_resource type="AudioStream" uid="uid://pe7kds3yp7c3" path="res://gomen-amanai-gojo.mp3" id="13_kq58d"]
+[ext_resource type="AudioStream" uid="uid://b5kryc3gh0lsq" path="res://among-us-kill-sound-effect-hd_slMcZ2v.mp3" id="14_seu75"]
+[ext_resource type="AudioStream" uid="uid://bbw21vwjy2ouy" path="res://NYSfM2ZRrOsD6TYg.mp3" id="15_htxhm"]
+[ext_resource type="Texture2D" uid="uid://dod0kofqevfxs" path="res://texture for ce/T_VFX_Glo31.png" id="16_jq2sk"]
+[ext_resource type="Texture2D" uid="uid://clv4er2xt8763" path="res://texture for ce/floaty_64.png" id="17_4k2k6"]
+[ext_resource type="Texture2D" uid="uid://bp7eepn62oka2" path="res://texture for ce/floaty_32.png" id="18_0rl1p"]
+[ext_resource type="Texture2D" uid="uid://chcso4k5cnnn2" path="res://texture for ce/spotlight_2.png" id="18_getpj"]
+[ext_resource type="Texture2D" uid="uid://dx012it6wa8j2" path="res://texture for ce/spotlight_8.png" id="19_ok6jj"]
+[ext_resource type="Texture2D" uid="uid://cf1qilqifinp7" path="res://texture for ce/T_VFX_Glow_1.PNG" id="19_ryguw"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7mycd"]
-bounce = 1.15
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g38nq"]
+friction = 0.0
+bounce = 1.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_272bh"]
-size = Vector2(19, 662)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nm73w"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vw27"]
-size = Vector2(818.5, 54)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1u1nc"]
+size = Vector2(272.75, 243.25)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d0lh3"]
+size = Vector2(196.99184, 182.33737)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
-size = Vector2(539, 417)
+[sub_resource type="Curve" id="Curve_yv2v2"]
+_data = [Vector2(0.1534091, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
-[sub_resource type="Environment" id="Environment_272bh"]
-background_mode = 3
-glow_enabled = true
-glow_intensity = 1.35
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_suwb7"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cqfq"]
-size = Vector2(291, 539.5)
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gblts"]
+blend_mode = 1
+light_mode = 1
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vivmo"]
-radius = 41.677334
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_c1n73"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 7
+particles_anim_loop = false
 
-[node name="Node2D2" type="Node2D" unique_id=828684265 node_paths=PackedStringArray("spawn_area")]
-script = ExtResource("1_ig7tw")
-bxh = ExtResource("2_kek77")
-spawn_area = NodePath("Boxspawn")
-sword_scene = ExtResource("2_272bh")
-box_template = ExtResource("4_kek77")
-gun_scene = ExtResource("3_7mycd")
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_suwb7"]
+particle_flag_disable_z = true
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+angular_velocity_min = -204.70001
+angular_velocity_max = 363.52997
+gravity = Vector3(90, 0, 0)
+scale_min = 0.14999999
+scale_max = 2.0
+hue_variation_min = -2.2351742e-08
+hue_variation_max = -2.2351742e-08
+anim_speed_min = 0.19999999
+anim_speed_max = 0.5
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2033857400 groups=["wall"]]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d13ii"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1u8w0"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_suwb7"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4xd6l"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 7
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f0n5f"]
+particle_flag_disable_z = true
+angular_velocity_min = -204.70001
+angular_velocity_max = 363.52997
+gravity = Vector3(-90, 0, 0)
+scale_min = 0.14999999
+scale_max = 2.0
+anim_speed_min = 0.19999999
+anim_speed_max = 0.5
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0odxb"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lswn8"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_f0n5f"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_huri4"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 7
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f7qgm"]
+particle_flag_disable_z = true
+angle_min = -388.5
+angle_max = 714.0
+spread = 180.0
+initial_velocity_max = 200.44
+gravity = Vector3(0, 0, 0)
+scale_min = 0.19999999
+scale_max = 4.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_m2whl"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Animation" id="Animation_gblts"]
+length = 3.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("red:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(45.623764, -91.092026)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("blue:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(199.73068, -91.092026)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("blue:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.72605973, 0.98982096, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("red:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("purple:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_a6jrf"]
+resource_name = "new_animation"
+length = 3.0333333
+
+[sub_resource type="Animation" id="Animation_4xd6l"]
+resource_name = "reloading"
+length = 3.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("red:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(45.623764, -91.092026), Vector2(126.73268, -88.997955)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("blue:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(199.73068, -91.092026), Vector2(124.70494, -91.092026)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("blue:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.7, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0.72605973, 0.98982096, 1), Color(1, 0.72605973, 0.98982096, 0.010000001)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("red:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1.7, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("purple:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(2, 2.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f0n5f"]
+_data = {
+&"RESET": SubResource("Animation_gblts"),
+&"new_animation": SubResource("Animation_a6jrf"),
+&"reloading": SubResource("Animation_4xd6l")
+}
+
+[node name="Player" type="Node2D" unique_id=2116439196]
+position = Vector2(1, 5)
+
+[node name="RigidBody2D" type="RigidBody2D" parent="." unique_id=102067423 groups=["Player"]]
+physics_material_override = SubResource("PhysicsMaterial_g38nq")
+gravity_scale = 0.0
+lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 3
+angular_damp_mode = 1
+angular_damp = 1.0
+script = ExtResource("1_cegan")
+bullet_scene = ExtResource("2_82xsv")
+kill_splash_scene = ExtResource("3_getpj")
+gun_drop_scene = ExtResource("4_ryguw")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D" unique_id=1914109737]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D" unique_id=797225866]
 visible = false
-collision_layer = 3
-collision_mask = 3
-physics_material_override = SubResource("PhysicsMaterial_7mycd")
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_nm73w")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2041117305 groups=["wall"]]
-visible = false
-position = Vector2(186, 329)
-shape = SubResource("RectangleShape2D_272bh")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=618292259 groups=["wall"]]
-visible = false
-position = Vector2(1003, 329)
-shape = SubResource("RectangleShape2D_272bh")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=1179646725 groups=["wall"]]
-visible = false
-position = Vector2(594, 621)
-shape = SubResource("RectangleShape2D_5vw27")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=2025065477 groups=["wall"]]
-visible = false
-position = Vector2(602, 27)
-shape = SubResource("RectangleShape2D_5vw27")
-
-[node name="SpawnArea" type="ReferenceRect" parent="." unique_id=759512000]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Label" type="Label" parent="RigidBody2D" unique_id=1319552608]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.0
+offset_top = -64.0
+offset_right = 70.0
+offset_bottom = -32.0
 grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="SpawnRegion" type="Area2D" parent="." unique_id=686232893]
-position = Vector2(244, 55)
-
-[node name="ColorRect" type="ColorRect" parent="SpawnRegion" unique_id=1049005429]
-visible = false
-offset_left = -10.0
-offset_top = 51.0
-offset_right = 718.0
-offset_bottom = 501.0
-
-[node name="Control" type="Control" parent="." unique_id=1745785682]
-custom_minimum_size = Vector2(1, 1)
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -0.5
-offset_top = -0.5
-offset_right = 0.5
-offset_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="NameInput" type="LineEdit" parent="Control" unique_id=535314014]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 9.5
-anchor_top = 94.5
-anchor_right = 9.5
-anchor_bottom = 94.50001
-offset_right = 91.0
-offset_bottom = 30.999992
-placeholder_text = "Name"
-emoji_menu_enabled = false
-metadata/_edit_use_anchors_ = true
-
-[node name="Vietnam" type="Button" parent="Control" unique_id=1881530207]
-texture_filter = 1
-material = SubResource("ShaderMaterial_efxa6")
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 23.5
-offset_top = 39.5
-offset_right = 3023.4995
-offset_bottom = 2506.167
-scale = Vector2(0.015, 0.015)
-script = ExtResource("4_1bvp3")
-metadata/_edit_use_anchors_ = true
-
-[node name="GUN" type="Button" parent="Control" unique_id=1261020831]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 4.5
-anchor_top = 139.5
-anchor_right = 4.5
-anchor_bottom = 139.5
-offset_right = 520.0
-offset_bottom = 520.0
-scale = Vector2(0.16, 0.16)
-icon = ExtResource("6_7mycd")
-flat = true
-metadata/_edit_use_anchors_ = true
-
-[node name="Sword" type="Button" parent="Control" unique_id=1162907972]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 18.5
-anchor_top = 233.50002
-anchor_right = 18.5
-anchor_bottom = 233.50002
-offset_top = -1.5258789e-05
-offset_right = 57.0
-offset_bottom = 33.999985
-metadata/_edit_use_anchors_ = true
-
-[node name="Boss lv1" type="Button" parent="Control" unique_id=651612636]
-layout_mode = 0
-offset_left = 22.5
-offset_top = 281.5
-offset_right = 51.5
-offset_bottom = 312.5
-
-[node name="Countdown_reg" type="CanvasLayer" parent="Control" unique_id=1989787037]
-
-[node name="Countdown" type="Label" parent="Control/Countdown_reg" unique_id=1614860516]
-z_index = 1
-offset_left = 588.25
-offset_top = 310.965
-offset_right = 701.25037
-offset_bottom = 360.965
 label_settings = ExtResource("8_w48qg")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="mytimer" type="Timer" parent="Control/Countdown_reg/Countdown" unique_id=1597481802]
-
-[node name="SPimg" type="Sprite2D" parent="Control/Countdown_reg" unique_id=58533503]
-texture_filter = 1
-position = Vector2(560, 299)
-scale = Vector2(4.84375, 4.75)
-
-[node name="Boxspawn" type="Area2D" parent="." unique_id=1530572154]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boxspawn" unique_id=1551865793]
-visible = false
-light_mask = 2
-visibility_layer = 2
-position = Vector2(597.5, 312.5)
-shape = SubResource("RectangleShape2D_7mycd")
-
-[node name="UI" type="CanvasLayer" parent="." unique_id=1383926153]
-layer = -5
-
-[node name="NinePatchRect" type="NinePatchRect" parent="UI" unique_id=936906264]
-self_modulate = Color(1.4643909, 1.4643909, 1.4643909, 1)
-texture_filter = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 135.0
-offset_right = -92.37695
+[node name="TextureRect" type="TextureRect" parent="RigidBody2D" unique_id=1286840685]
+material = ExtResource("6_d13ii")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -29.66
+offset_top = -30.06
+offset_right = 5.790001
+offset_bottom = 5.699999
 grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.995, 0.995)
-texture = ExtResource("7_272bh")
-region_rect = Rect2(0, 0, 1168, 912)
+scale = Vector2(1.675, 1.675)
+texture = ExtResource("7_1u8w0")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=795423465]
-environment = SubResource("Environment_272bh")
+[node name="AutoAimArea" type="Area2D" parent="RigidBody2D" unique_id=1364610957]
 
-[node name="LeaderboardUI" type="CanvasLayer" parent="." unique_id=472433615]
-
-[node name="Leaderboard" parent="LeaderboardUI" unique_id=1696245376 instance=ExtResource("10_4c57u")]
-position = Vector2(734, 16.999998)
-scale = Vector2(0.27, 0.27)
-
-[node name="WindArea" type="Area2D" parent="." unique_id=1947451641]
-gravity_point_center = Vector2(1, 0)
-gravity_direction = Vector2(1, 0)
-linear_damp_space_override = 1
-linear_damp = 5.0
-script = ExtResource("16_yaehf")
-
-[node name="windreg" type="CollisionShape2D" parent="WindArea" unique_id=250226509]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/AutoAimArea" unique_id=605601477]
 visible = false
-position = Vector2(852.5, 322.25)
-shape = SubResource("RectangleShape2D_2cqfq")
+position = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_1u1nc")
 
-[node name="WindArea2" type="Area2D" parent="." unique_id=1373506664]
-gravity_point_center = Vector2(1, 0)
-gravity_direction = Vector2(1, 0)
-linear_damp_space_override = 1
-linear_damp = 5.0
-script = ExtResource("16_yaehf")
+[node name="hand" type="Marker2D" parent="RigidBody2D" unique_id=648572089]
+position = Vector2(36.1, 0)
+scale = Vector2(2.46, 2.46)
 
-[node name="windreg" type="CollisionShape2D" parent="WindArea2" unique_id=1785202924]
+[node name="Gun" type="Sprite2D" parent="RigidBody2D/hand" unique_id=585199912]
 visible = false
-position = Vector2(342, 323)
-shape = SubResource("RectangleShape2D_2cqfq")
-
-[node name="Meteor_service" type="Node2D" parent="." unique_id=78167695]
-script = ExtResource("17_meteor")
-
-[node name="Meteor" type="Area2D" parent="Meteor_service" unique_id=838540315]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor" unique_id=2010615309]
-position = Vector2(599, 525)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor2" type="Area2D" parent="Meteor_service" unique_id=368017711]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor2" unique_id=861056360]
-position = Vector2(881, 300)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor3" type="Area2D" parent="Meteor_service" unique_id=1429522216]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor3" unique_id=1393114034]
-position = Vector2(420, 260)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor4" type="Area2D" parent="Meteor_service" unique_id=2093068019]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor4" unique_id=614338093]
-position = Vector2(302, 147)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor5" type="Area2D" parent="Meteor_service" unique_id=60961568]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor5" unique_id=114358276]
-position = Vector2(765, 181)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor6" type="Area2D" parent="Meteor_service" unique_id=1967681014]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor6" unique_id=1764266570]
-position = Vector2(355, 469)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor7" type="Area2D" parent="Meteor_service" unique_id=460983264]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor7" unique_id=990441266]
-position = Vector2(790, 441)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor8" type="Area2D" parent="Meteor_service" unique_id=1985352283]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor8" unique_id=163065366]
-position = Vector2(546, 135)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor9" type="Area2D" parent="Meteor_service" unique_id=1758002817]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor9" unique_id=1327546593]
-position = Vector2(679, 322)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Meteor10" type="Area2D" parent="Meteor_service" unique_id=451886438]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Meteor_service/Meteor10" unique_id=641607138]
-position = Vector2(533, 409)
-shape = SubResource("CircleShape2D_vivmo")
-
-[node name="Timer" type="Timer" parent="Meteor_service" unique_id=403364754]
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402443" type="Sprite2D" parent="Meteor_service" unique_id=1246640433]
-z_index = -1
-position = Vector2(545, 135.99998)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402444" type="Sprite2D" parent="Meteor_service" unique_id=1556117472]
-z_index = -1
-position = Vector2(678, 323)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402445" type="Sprite2D" parent="Meteor_service" unique_id=183929251]
-z_index = -1
-position = Vector2(788, 441.99997)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402446" type="Sprite2D" parent="Meteor_service" unique_id=57784637]
-z_index = -2
-position = Vector2(879.99994, 301)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402447" type="Sprite2D" parent="Meteor_service" unique_id=1162039651]
-z_index = -2
-position = Vector2(764.00006, 181)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402442" type="Sprite2D" parent="Meteor_service" unique_id=1701621166]
-z_index = -2
-position = Vector2(301, 148)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402439" type="Sprite2D" parent="Meteor_service" unique_id=194653028]
-z_index = -2
-position = Vector2(599, 525)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402438" type="Sprite2D" parent="Meteor_service" unique_id=726601218]
-z_index = -2
-position = Vector2(356, 469.99997)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402441" type="Sprite2D" parent="Meteor_service" unique_id=522299742]
-z_index = -2
-position = Vector2(420.00006, 261)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="PngtreeMysteriousAndScaryHoleInTheDarkForestPngImage13402440" type="Sprite2D" parent="Meteor_service" unique_id=1234708564]
-z_index = -2
-position = Vector2(533, 410)
-scale = Vector2(0.185, 0.185)
-texture = ExtResource("17_yaehf")
-
-[node name="AlertZone" type="Node2D" parent="Meteor_service" unique_id=1374639489]
-
-[node name="Alert" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=779749815]
-self_modulate = Color(1, 1, 1, 0.7058824)
 texture_filter = 1
-position = Vector2(302, 151)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+position = Vector2(6.4634156, 2.4390244)
+scale = Vector2(0.88, 0.88)
+texture = ExtResource("8_0odxb")
 
-[node name="Alert2" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=1910817901]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(881, 304)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="Sword" type="Sprite2D" parent="RigidBody2D/hand" unique_id=1561596220]
+visible = false
+z_index = -1
+texture_filter = 1
+position = Vector2(6.056911, -4.065041)
+rotation = -0.19744372
+scale = Vector2(0.1160443, 0.123116225)
+texture = ExtResource("9_lswn8")
 
-[node name="Alert3" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=164544528]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(533, 412.54)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="SwordHitbox" type="Area2D" parent="RigidBody2D/hand/Sword" unique_id=684933576]
 
-[node name="Alert4" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=114285028]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(680, 325.5)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/hand/Sword/SwordHitbox" unique_id=862036908]
+visible = false
+position = Vector2(5.0812874, 188.00815)
+scale = Vector2(1.0000002, 1.0000002)
+shape = SubResource("RectangleShape2D_d0lh3")
 
-[node name="Alert5" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=291139176]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(420, 264)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="Muzzle" type="Marker2D" parent="RigidBody2D/hand" unique_id=1466545983]
+position = Vector2(23.130081, -0.40650406)
+scale = Vector2(0.475, 0.475)
 
-[node name="Alert6" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=79880515]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(765, 184)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="ShootTimer" type="Timer" parent="RigidBody2D/hand" unique_id=1174690563]
+one_shot = true
 
-[node name="Alert7" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=961007923]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(546, 139)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="Trail" type="Line2D" parent="RigidBody2D" unique_id=895888144]
+z_index = -2
+texture_filter = 1
+points = PackedVector2Array(-30, -1, -75, -3)
+width = 35.0
+width_curve = SubResource("Curve_yv2v2")
+texture_mode = 2
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("10_a6jrf")
+length = 15
+metadata/_custom_type_script = "uid://cdhoxv1lt5326"
 
-[node name="Alert8" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=2055540867]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(598.805, 528.545)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="BounceSound" type="AudioStreamPlayer" parent="." unique_id=168077183]
+stream = ExtResource("11_xuqvo")
+volume_db = -28.002
+pitch_scale = 0.67
 
-[node name="Alert9" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=566242040]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(355, 472)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="GunSound" type="AudioStreamPlayer2D" parent="." unique_id=1216340189]
+stream = ExtResource("12_qsp4k")
 
-[node name="Alert10" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=2050198068]
-self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(790, 445.11)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("14_w48qg")
+[node name="Gojo" type="AudioStreamPlayer2D" parent="." unique_id=489114105]
+stream = ExtResource("13_kq58d")
 
-[connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
-[connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]
-[connection signal="pressed" from="Control/GUN" to="." method="_on_gun_pressed"]
-[connection signal="toggled" from="Control/GUN" to="." method="_on_gun_toggled"]
-[connection signal="pressed" from="Control/Sword" to="." method="_on_sword_pressed"]
-[connection signal="pressed" from="Control/Boss lv1" to="." method="_on_boss_lv_1_pressed"]
-[connection signal="body_entered" from="Meteor_service/Meteor" to="Meteor_service" method="_on_meteor_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor2" to="Meteor_service" method="_on_meteor_2_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor3" to="Meteor_service" method="_on_meteor_3_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor4" to="Meteor_service" method="_on_meteor_4_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor5" to="Meteor_service" method="_on_meteor_5_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor6" to="Meteor_service" method="_on_meteor_6_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor7" to="Meteor_service" method="_on_meteor_7_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor8" to="Meteor_service" method="_on_meteor_8_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor9" to="Meteor_service" method="_on_meteor_9_body_entered"]
-[connection signal="body_entered" from="Meteor_service/Meteor10" to="Meteor_service" method="_on_meteor_10_body_entered"]
+[node name="SwordKill" type="AudioStreamPlayer2D" parent="." unique_id=1050034360]
+stream = ExtResource("14_seu75")
+
+[node name="Reload" type="AudioStreamPlayer2D" parent="." unique_id=1573510801]
+stream = ExtResource("15_htxhm")
+
+[node name="hollow" type="Sprite2D" parent="." unique_id=1821208703]
+material = SubResource("ShaderMaterial_suwb7")
+position = Vector2(346, -79)
+scale = Vector2(0.9863281, 0.9550781)
+
+[node name="blue" type="Sprite2D" parent="hollow" unique_id=488665271]
+modulate = Color(1, 0.72605973, 0.98982096, 0)
+self_modulate = Color(0.5160374, 0.22585088, 0.88257295, 1)
+material = SubResource("CanvasItemMaterial_gblts")
+position = Vector2(199.73068, -91.092026)
+scale = Vector2(0.28712872, 0.23312879)
+texture = ExtResource("16_jq2sk")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="hollow/blue" unique_id=239529059]
+self_modulate = Color(0, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_c1n73")
+position = Vector2(-5.296509, 13.473663)
+rotation = 3.1022959
+scale = Vector2(6.8015847, 6.9606204)
+skew = 0.0017786026
+amount = 16
+texture = ExtResource("17_4k2k6")
+lifetime = 0.88
+process_material = SubResource("ParticleProcessMaterial_suwb7")
+
+[node name="Sprite2D" type="Sprite2D" parent="hollow/blue" unique_id=1348918020]
+self_modulate = Color(0, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_d13ii")
+position = Vector2(-3.5310297, 8.982478)
+scale = Vector2(3.724138, 1.0789475)
+texture = ExtResource("18_getpj")
+
+[node name="Sprite2D2" type="Sprite2D" parent="hollow/blue" unique_id=2131499007]
+material = SubResource("CanvasItemMaterial_1u8w0")
+position = Vector2(0, 17.964916)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("19_ryguw")
+
+[node name="red" type="Sprite2D" parent="hollow" unique_id=346733179]
+self_modulate = Color(1, 0, 0.5529412, 1)
+material = SubResource("CanvasItemMaterial_suwb7")
+position = Vector2(45.623764, -91.092026)
+scale = Vector2(0.27873594, 0.24463104)
+texture = ExtResource("16_jq2sk")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="hollow/red" unique_id=1038580]
+self_modulate = Color(1, 0, 0, 1)
+material = SubResource("CanvasItemMaterial_4xd6l")
+position = Vector2(3.6373901, 8.559998)
+scale = Vector2(0.48841396, 0.56217545)
+amount = 16
+texture = ExtResource("17_4k2k6")
+process_material = SubResource("ParticleProcessMaterial_f0n5f")
+
+[node name="Sprite2D" type="Sprite2D" parent="hollow/red" unique_id=1313995082]
+self_modulate = Color(1, 0.08333331, 0, 1)
+material = SubResource("CanvasItemMaterial_0odxb")
+position = Vector2(7.274709, 4.280056)
+scale = Vector2(3.724, 1.079)
+texture = ExtResource("18_getpj")
+
+[node name="Sprite2D2" type="Sprite2D" parent="hollow/red" unique_id=183587349]
+self_modulate = Color(1, 0.92827797, 0.9283472, 1)
+material = SubResource("CanvasItemMaterial_lswn8")
+position = Vector2(-7.274709, 8.560114)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("19_ryguw")
+
+[node name="purple" type="Sprite2D" parent="hollow" unique_id=1183049948]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 0, 1, 1)
+material = SubResource("CanvasItemMaterial_f0n5f")
+position = Vector2(124.704926, -93.186104)
+rotation = -0.007552229
+scale = Vector2(0.26186273, 0.26505032)
+texture = ExtResource("16_jq2sk")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="hollow/purple" unique_id=1608325833]
+material = SubResource("CanvasItemMaterial_huri4")
+position = Vector2(2.9460177, 2.0632365)
+scale = Vector2(2.0680842, 2.000001)
+amount = 16
+texture = ExtResource("18_0rl1p")
+lifetime = 0.36
+process_material = SubResource("ParticleProcessMaterial_f7qgm")
+
+[node name="Sprite2D" type="Sprite2D" parent="hollow/purple" unique_id=1642549645]
+self_modulate = Color(1.262, 0.703, 1.953, 1)
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_m2whl")
+position = Vector2(0.00012207031, 14.011406)
+scale = Vector2(4.948416, 3.7538884)
+texture = ExtResource("19_ok6jj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="hollow" unique_id=326417068]
+libraries/ = SubResource("AnimationLibrary_f0n5f")
+
+[connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="_on_body_entered"]
+[connection signal="body_entered" from="RigidBody2D/AutoAimArea" to="RigidBody2D" method="_on_auto_aim_area_body_entered"]
+[connection signal="body_entered" from="RigidBody2D/hand/Sword/SwordHitbox" to="RigidBody2D" method="_on_sword_hitbox_body_entered"]
