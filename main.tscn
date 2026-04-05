@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dj15w7rspcbwq" path="res://Gemini_Generated_Image_mhbtbemhbtbemhbt.png" id="7_272bh"]
 [ext_resource type="LabelSettings" uid="uid://dd0xwhl3ja02o" path="res://setting_font_chinh.tres" id="8_w48qg"]
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
+[ext_resource type="Texture2D" uid="uid://secy4xbw8aha" path="res://vecteezy_yellow-warning-sign-with-exclamation-point-isolated-on_45904050.png" id="12_vivmo"]
 [ext_resource type="Texture2D" uid="uid://bqsab0vkjjkak" path="res://alert-icon-1562.png" id="14_w48qg"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
 [ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
@@ -229,9 +230,16 @@ linear_damp = 5.0
 script = ExtResource("16_yaehf")
 
 [node name="windreg" type="CollisionShape2D" parent="WindArea" unique_id=250226509]
-visible = false
 position = Vector2(852.5, 322.25)
 shape = SubResource("RectangleShape2D_2cqfq")
+debug_color = Color(0.98039216, 0.7529412, 0, 0.74509805)
+
+[node name="Sprite2D" type="Sprite2D" parent="WindArea" unique_id=2015632907]
+z_index = 1
+texture_filter = 1
+position = Vector2(868, 316)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("12_vivmo")
 
 [node name="WindArea2" type="Area2D" parent="." unique_id=1373506664]
 gravity_point_center = Vector2(1, 0)
@@ -241,9 +249,15 @@ linear_damp = 5.0
 script = ExtResource("16_yaehf")
 
 [node name="windreg" type="CollisionShape2D" parent="WindArea2" unique_id=1785202924]
-visible = false
 position = Vector2(342, 323)
 shape = SubResource("RectangleShape2D_2cqfq")
+debug_color = Color(0.98, 0.7513334, 0, 0.74509805)
+
+[node name="Sprite2D" type="Sprite2D" parent="WindArea2" unique_id=1084995255]
+texture_filter = 1
+position = Vector2(324, 314)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("12_vivmo")
 
 [node name="Meteor_service" type="Node2D" parent="." unique_id=78167695]
 script = ExtResource("17_meteor")

@@ -6,7 +6,7 @@ extends RigidBody2D
 @export var auto_aim_max_distance := 800.0 # Khoảng cách tối đa để tự ngắm
 
 # Các loại vũ khí hiện có
-enum WeaponType { NONE, GUN, SWORD }
+enum WeaponType { NONE, GUN, SWORD } # , GOJO }
 
 # --- CÁC THAM CHIẾU VÀ BIẾN TRẠNG THÁI ---
 @export var kill_splash_scene: PackedScene # Hiệu ứng khi tiêu diệt kẻ địch
@@ -27,6 +27,7 @@ var current_target: Node2D = null # Mục tiêu hiện tại đang nhắm đến
 var sword_kills_left = 0 # Số lần được chém (thường là 1 lần biến mất)
 const GUN_PICKUP_DELAY = 1.0 # Delay 1s sau khi nhặt mới được bắn
 var gun_ready_at = 0.0 # Mốc thời gian được phép bắn
+# var gojo_charging := false # Đang tích tụ Hollow Purple
 const MAX_AMMO = 2 # Số đạn tối đa
 var ammo = MAX_AMMO # Số đạn hiện có
 var kill = 0 # Số mạng đã giết
@@ -270,6 +271,48 @@ func pick_up_sword():
 	if sword_hitbox:
 		sword_hitbox.monitoring = true
 		sword_hitbox.monitorable = false
+
+# func pick_up_gojo():
+# 	if gojo_charging: return
+# 	current_weapon = WeaponType.GOJO
+# 	gojo_charging = true
+# 	
+# 	# Player đứng yên
+# 	freeze = true
+# 	linear_velocity = Vector2.ZERO
+# 	angular_velocity = 0
+# 	
+# 	if gun_sprite: gun_sprite.hide()
+# 	if sword_sprite: sword_sprite.hide()
+# 	
+# 	# Bắt đầu chuỗi animation Hollow
+# 	start_hollow_sequence()
+
+# func start_hollow_sequence():
+# 	# Animation Red (Đỏ)
+# 	var t = create_tween()
+# 	self_modulate = Color.RED
+# 	t.tween_property(self, "scale", Vector2(1.5, 1.5), 0.5)
+# 	await t.finished
+# 	
+# 	# Animation Blue (Xanh)
+# 	t = create_tween()
+# 	self_modulate = Color.BLUE
+# 	t.tween_property(self, "scale", Vector2(0.8, 0.8), 0.5)
+# 	await t.finished
+# 	
+# 	# Animation Purple (Tím) - Đến đây thôi
+# 	t = create_tween()
+# 	self_modulate = Color.PURPLE
+# 	t.tween_property(self, "scale", Vector2(2.0, 2.0), 0.5)
+# 	await t.finished
+# 	
+# 	# Reset trạng thái (tạm thời để có thể di chuyển lại sau khi test)
+# 	# self_modulate = Color.WHITE
+# 	# scale = Vector2(1.0, 1.0)
+# 	# freeze = false
+# 	# gojo_charging = false
+# 	# current_weapon = WeaponType.NONE
 
 func _process(delta):
 	# Lật ảnh súng/kiếm khi quay sang trái để không bị ngược
