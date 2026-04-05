@@ -6,16 +6,19 @@ extends RigidBody2D
 @export var auto_aim_max_distance := 800.0 # Khoảng cách tối đa để tự ngắm
 
 # Các loại vũ khí hiện có
-enum WeaponType { NONE, GUN, SWORD }
+enum WeaponType { NONE, GUN, SWORD, GOJO }
 
 # --- CÁC THAM CHIẾU VÀ BIẾN TRẠNG THÁI ---
 @export var kill_splash_scene: PackedScene # Hiệu ứng khi tiêu diệt kẻ địch
+@export var hollow_purple_scene: PackedScene # Scene đạn Hollow Purple
 var current_weapon: WeaponType = WeaponType.NONE # Vũ khí đang cầm
 var current_target: Node2D = null # Mục tiêu hiện tại đang nhắm đến
 
 @onready var hand = $hand # Node cánh tay (xoay theo mục tiêu)
 @onready var gun_sprite = $hand/Gun # Hình ảnh súng
 @onready var sword_sprite = $hand/Sword # Hình ảnh kiếm
+@onready var hollow_node = get_node_or_null("../hollow") # Hiệu ứng Gojo
+@onready var hollow_anim = get_node_or_null("../hollow/AnimationPlayer") # Animation Gojo
 @onready var shoot_timer = $hand/ShootTimer # Thời gian chờ giữa các lần bắn
 @onready var muzzle = $hand/Muzzle # Vị trí đầu nòng súng (để spawn đạn)
 @onready var sword_hitbox = $hand/Sword/SwordHitbox # Vùng va chạm của kiếm
@@ -23,26 +26,23 @@ var current_target: Node2D = null # Mục tiêu hiện tại đang nhắm đến
 # Hệ thống rung camera khi chém/bắn
 @onready var shake_camera = get_tree().get_first_node_in_group("camera_shake")
 
+# --- HỆ THỐNG ÂM THANH ---
+@onready var bounce_sound = get_node_or_null("../BounceSound")
+@onready var gun_sound = get_node_or_null("../GunSound")
+@onready var sword_sound = get_node_or_null("../SwordSound")
+@onready var gojo_sound = get_node_or_null("../Gojo")
+@onready var sword_kill_sound = get_node_or_null("../SwordKill")
+@onready var reload_sound = get_node_or_null("../Reload")
+
 # --- THÔNG SỐ VŨ KHÍ ---
 var sword_kills_left = 0 # Số lần được chém (thường là 1 lần biến mất)
 const GUN_PICKUP_DELAY = 1.0 # Delay 1s sau khi nhặt mới được bắn
 var gun_ready_at = 0.0 # Mốc thời gian được phép bắn
+var gojo_charging = false # Đang tích tụ Hollow Purple
 const MAX_AMMO = 2 # Số đạn tối đa
 var ammo = MAX_AMMO # Số đạn hiện có
 var kill = 0 # Số mạng đã giết
 var player_name: String = "" # Tên nhân vật (ID TikTok)
-
-# --- HỆ THỐNG ÂM THANH ---
-@export var bounce_volume_db := -15
-@export var gun_volume_db := -5
-@export var sword_volume_db := -5
-@export var sword_kill_volume_db := -5
-@export var reload_volume_db := -5
-@onready var bounce_sound: AudioStreamPlayer = null
-@onready var gun_sound: AudioStreamPlayer2D = null
-@onready var sword_sound: AudioStreamPlayer2D = null
-@onready var sword_kill_sound: AudioStreamPlayer2D = null
-@onready var reload_sound: AudioStreamPlayer2D = null
 
 # --- HỆ THỐNG MÁU ---
 @export var max_hearts := 1 # Máu tối đa
@@ -78,6 +78,8 @@ func _ready():
 		gun_sprite.hide()
 	if sword_sprite:
 		sword_sprite.hide()
+	if hollow_node:
+		hollow_node.hide()
 	if sword_hitbox:
 		sword_hitbox.monitoring = false
 		sword_hitbox.monitorable = false
@@ -109,120 +111,8 @@ func _on_body_entered(body):
 	apply_central_impulse(linear_velocity.normalized() * 10)
 
 func _ensure_audio_players() -> void:
-	# 1. Tìm hoặc tạo BounceSound
-	if bounce_sound == null:
-		bounce_sound = get_node_or_null("../BounceSound")
-	if bounce_sound == null and get_parent():
-		bounce_sound = get_parent().get_node_or_null("BounceSound")
-	if bounce_sound == null and get_tree().current_scene:
-		bounce_sound = get_tree().current_scene.find_child("BounceSound", true, false)
-		
-	if bounce_sound == null:
-		var local_sound = get_node_or_null("LocalBounceSound")
-		if local_sound == null:
-			local_sound = AudioStreamPlayer2D.new()
-			local_sound.name = "LocalBounceSound"
-			add_child(local_sound)
-			local_sound.stream = load("res://khối va chạm.mp3")
-			local_sound.bus = "Master"
-			local_sound.attenuation = 0.0
-			local_sound.max_distance = 100000.0
-		bounce_sound = local_sound
-	
-	if bounce_sound:
-		bounce_sound.volume_db = bounce_volume_db
-		
-	# 2. Tìm hoặc tạo GunSound
-	if gun_sound == null:
-		gun_sound = get_node_or_null("../GunSound")
-	if gun_sound == null and get_parent():
-		gun_sound = get_parent().get_node_or_null("GunSound")
-	if gun_sound == null and get_tree().current_scene:
-		gun_sound = get_tree().current_scene.find_child("GunSound", true, false)
-		
-	if gun_sound == null:
-		var local_gun = get_node_or_null("LocalGunSound")
-		if local_gun == null:
-			local_gun = AudioStreamPlayer2D.new()
-			local_gun.name = "LocalGunSound"
-			add_child(local_gun)
-			local_gun.stream = load("res://pixel-gun-3d-zombie-slayer-shoot.mp3")
-			local_gun.bus = "Master"
-			local_gun.attenuation = 0.0
-			local_gun.max_distance = 100000.0
-		gun_sound = local_gun
-	
-	if gun_sound:
-		gun_sound.volume_db = gun_volume_db
-		
-	# 3. Tìm hoặc tạo SwordSound (Gojo)
-	if sword_sound == null:
-		sword_sound = get_node_or_null("../SwordSound")
-	if sword_sound == null and get_parent():
-		sword_sound = get_parent().get_node_or_null("SwordSound")
-	if sword_sound == null and get_tree().current_scene:
-		sword_sound = get_tree().current_scene.find_child("SwordSound", true, false)
-		
-	if sword_sound == null:
-		var local_sword = get_node_or_null("LocalSwordSound")
-		if local_sword == null:
-			local_sword = AudioStreamPlayer2D.new()
-			local_sword.name = "LocalSwordSound"
-			add_child(local_sword)
-			local_sword.stream = load("res://gomen-amanai-gojo.mp3")
-			local_sword.bus = "Master"
-			local_sword.attenuation = 0.0
-			local_sword.max_distance = 100000.0
-		sword_sound = local_sword
-	
-	if sword_sound:
-		sword_sound.volume_db = sword_volume_db
-		
-	# 4. Tìm hoặc tạo SwordKillSound (Among Us)
-	if sword_kill_sound == null:
-		sword_kill_sound = get_node_or_null("../SwordKillSound")
-	if sword_kill_sound == null and get_parent():
-		sword_kill_sound = get_parent().get_node_or_null("SwordKillSound")
-	if sword_kill_sound == null and get_tree().current_scene:
-		sword_kill_sound = get_tree().current_scene.find_child("SwordKillSound", true, false)
-		
-	if sword_kill_sound == null:
-		var local_kill = get_node_or_null("LocalSwordKillSound")
-		if local_kill == null:
-			local_kill = AudioStreamPlayer2D.new()
-			local_kill.name = "LocalSwordKillSound"
-			add_child(local_kill)
-			local_kill.stream = load("res://among-us-kill-sound-effect-hd_slMcZ2v.mp3")
-			local_kill.bus = "Master"
-			local_kill.attenuation = 0.0
-			local_kill.max_distance = 100000.0
-		sword_kill_sound = local_kill
-	
-	if sword_kill_sound:
-		sword_kill_sound.volume_db = sword_kill_volume_db
-		
-	# 5. Tìm hoặc tạo ReloadSound
-	if reload_sound == null:
-		reload_sound = get_node_or_null("../ReloadSound")
-	if reload_sound == null and get_parent():
-		reload_sound = get_parent().get_node_or_null("ReloadSound")
-	if reload_sound == null and get_tree().current_scene:
-		reload_sound = get_tree().current_scene.find_child("ReloadSound", true, false)
-		
-	if reload_sound == null:
-		var local_reload = get_node_or_null("LocalReloadSound")
-		if local_reload == null:
-			local_reload = AudioStreamPlayer2D.new()
-			local_reload.name = "LocalReloadSound"
-			add_child(local_reload)
-			local_reload.stream = load("res://NYSfM2ZRrOsD6TYg.mp3")
-			local_reload.bus = "Master"
-			local_reload.attenuation = 0.0
-			local_reload.max_distance = 100000.0
-		reload_sound = local_reload
-	
-	if reload_sound:
-		reload_sound.volume_db = reload_volume_db
+	# Các node âm thanh đã được gán qua @onready get_node_or_null
+	pass
 
 # --- TÌM MỤC TIÊU GẦN NHẤT ---
 func get_target_from_area():
@@ -266,12 +156,71 @@ func pick_up_sword():
 		sword_sprite.show()
 	if gun_sprite:
 		gun_sprite.hide()
+	if hollow_node:
+		hollow_node.hide()
 	# Kích hoạt vùng chém của kiếm
 	if sword_hitbox:
 		sword_hitbox.monitoring = true
 		sword_hitbox.monitorable = false
 
+func pick_up_gojo():
+	if gojo_charging: return
+	current_weapon = WeaponType.GOJO
+	
+	if gun_sprite: gun_sprite.hide()
+	if sword_sprite: sword_sprite.hide()
+	
+	# Bắt đầu chuỗi chiêu thức Hollow Red -> Blue -> Purple
+	start_hollow_sequence()
+
+func start_hollow_sequence():
+	gojo_charging = true
+	
+	# Phát âm thanh Gojo
+	if gojo_sound:
+		gojo_sound.stop()
+		gojo_sound.play()
+	
+	# Sử dụng animation "reloading" có sẵn trong Player.tscn
+	if hollow_node and hollow_anim:
+		hollow_node.show()
+		hollow_anim.play("reloading")
+		
+		# Đợi đến khi ra màu tím (khoảng 2.5s theo animation reloading)
+		await get_tree().create_timer(2.5).timeout
+		
+		# Phóng Hollow Purple
+		launch_hollow_purple()
+		
+		# Đợi nốt phần còn lại của animation
+		await hollow_anim.animation_finished
+		hollow_node.hide()
+	
+	current_weapon = WeaponType.NONE
+	gojo_charging = false
+
+func launch_hollow_purple():
+	if hollow_purple_scene == null:
+		# Fallback if not assigned
+		hollow_purple_scene = load("res://HollowPurple.tscn")
+		
+	if hollow_purple_scene:
+		var purple = hollow_purple_scene.instantiate()
+		purple.shooter = self
+		# Phóng theo hướng đang nhìn (hand rotation)
+		purple.direction = Vector2.RIGHT.rotated(hand.global_rotation)
+		purple.global_position = global_position
+		get_tree().current_scene.add_child(purple)
+		
+		# Hiệu ứng rung màn hình mạnh
+		if shake_camera and shake_camera.has_method("add_trauma"):
+			shake_camera.add_trauma(1.0)
+
 func _process(delta):
+	# Cập nhật vị trí hiệu ứng Gojo theo nhân vật
+	if hollow_node and hollow_node.visible:
+		hollow_node.global_position = global_position
+
 	# Lật ảnh súng/kiếm khi quay sang trái để không bị ngược
 	if hand.global_rotation > PI/2 or hand.global_rotation < -PI/2:
 		gun_sprite.flip_v = true 

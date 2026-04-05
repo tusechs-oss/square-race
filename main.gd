@@ -8,6 +8,7 @@ var current_lb = "main" # Tên bảng xếp hạng hiện tại
 @export var sword_scene: PackedScene # Scene của vật phẩm Kiếm
 @export var box_template: PackedScene # Template cho nhân vật (Player)
 @export var gun_scene: PackedScene # Scene của vật phẩm Súng
+@export var gojo_scene: PackedScene # Scene của vật phẩm Gojo
 
 @onready var spawn_region = $SpawnRegion/ColorRect # Vùng dùng để lấy tọa độ spawn ngẫu nhiên cho vũ khí
 @onready var line_edit = find_child("LineEdit") # Ô nhập tên thủ công
@@ -18,7 +19,7 @@ var current_lb = "main" # Tên bảng xếp hạng hiện tại
 # --- LOGIC ĐẾM NGƯỢC SPAWN VŨ KHÍ ---
 var countdown_secs := 10 # Thời gian chờ mặc định (10 giây)
 var countdown_remaining := 0 # Thời gian còn lại thực tế
-var pending_weapon := "" # Loại vũ khí đang chờ ("sword" hoặc "gun")
+var pending_weapon := "" # Loại vũ khí đang chờ ("sword", "gun", "gojo")
 var pending_weapon_node: Node2D = null # Node vũ khí đã được tạo nhưng đang ẩn để chờ
 var spawn_timer_label: Label = null # Nhãn hiển thị số giây đếm ngược trên màn hình
 var spawn_timer: Timer = null # Timer xử lý việc trừ giây mỗi giây
@@ -30,6 +31,7 @@ var spawn_timer: Timer = null # Timer xử lý việc trừ giây mỗi giây
 var spimg_node: Node = null # Node hiển thị ảnh xem trước vũ khí sắp spawn
 @export var sword_preview_tex: Texture2D # Ảnh xem trước của Kiếm
 @export var gun_preview_tex: Texture2D # Ảnh xem trước của Súng
+@export var gojo_preview_tex: Texture2D # Ảnh xem trước của Gojo
 
 # --- BIẾN CHO SỰ KIỆN GIÓ ---
 var wind_event_timer: Timer = null # Timer điều khiển việc xuất hiện gió mỗi 30s
@@ -295,6 +297,8 @@ func _set_spimg_texture(tex: Texture2D, kind: String = "") -> void:
 		max_size = 140.0 # Kiếm to ra một chút so với 120
 	elif kind == "gun":
 		max_size = 80.0  # Súng nhỏ đi một chút so với 100
+	elif kind == "gojo":
+		max_size = 120.0 # Gojo kích thước vừa phải
 		
 	var scale_factor = 1.0
 	var t_size = tex.get_size()
@@ -325,6 +329,8 @@ func _update_spawn_preview(kind: String) -> void:
 		scene = sword_scene
 	elif kind == "gun":
 		scene = gun_scene
+	elif kind == "gojo":
+		scene = gojo_scene
 	if scene == null:
 		return
 	var tmp = scene.instantiate()
@@ -337,6 +343,8 @@ func _update_spawn_preview(kind: String) -> void:
 			_set_spimg_texture(sword_preview_tex, kind)
 		elif kind == "gun" and gun_preview_tex != null:
 			_set_spimg_texture(gun_preview_tex, kind)
+		elif kind == "gojo" and gojo_preview_tex != null:
+			_set_spimg_texture(gojo_preview_tex, kind)
 	if is_instance_valid(tmp):
 		tmp.queue_free()
 
@@ -380,6 +388,11 @@ func _start_weapon_countdown(kind: String) -> void:
 		pending_weapon_node = sword_scene.instantiate()
 	elif kind == "gun" and gun_scene != null:
 		pending_weapon_node = gun_scene.instantiate()
+	elif kind == "gojo":
+		if gojo_scene == null:
+			gojo_scene = load("res://Gojo.tscn")
+		if gojo_scene != null:
+			pending_weapon_node = gojo_scene.instantiate()
 		
 	if pending_weapon_node != null:
 		pending_weapon_node.global_position = target_pos
@@ -743,6 +756,9 @@ func _spawn_gun_now() -> void:
 
 func _on_gun_pressed() -> void:
 	_start_weapon_countdown("gun")
+
+func _on_gojo_pressed() -> void:
+	_start_weapon_countdown("gojo")
 
 # Spawn boss thủ công từ UI: số tim = level + 1 (Lv1=2, Lv2=3, Lv3=4, Lv4=5)
 func _spawn_boss_level(level: int) -> void:
