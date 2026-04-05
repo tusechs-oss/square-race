@@ -393,7 +393,7 @@ texture = ExtResource("14_w48qg")
 
 [node name="Alert4" type="Sprite2D" parent="Meteor_service/AlertZone" unique_id=114285028]
 self_modulate = Color(1, 1, 1, 0.7058824)
-position = Vector2(680, 325.5)
+position = Vector2(706, 331)
 scale = Vector2(0.44, 0.44)
 texture = ExtResource("14_w48qg")
 
