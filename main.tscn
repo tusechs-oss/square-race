@@ -8,7 +8,7 @@
 shader = ExtResource("1_h2yge")
 shader_parameter/tint_color = Color(1, 1, 1, 1)
 shader_parameter/tint_amount = 0.0
-shader_parameter/flash_modifier = 0.2259231942917226
+shader_parameter/flash_modifier = 0.0
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 shader_parameter/line_color = Color(1, 1, 1, 1)
 shader_parameter/line_thickness = 1.0
@@ -63,7 +63,7 @@ _data = {
 
 [node name="purple" type="Sprite2D" parent="." unique_id=1984400354]
 material = SubResource("ShaderMaterial_63ndk")
-scale = Vector2(0.09212007, 0.09212007)
+scale = Vector2(0.09, 0.09)
 texture = ExtResource("2_1bvp3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="purple" unique_id=938932503]
