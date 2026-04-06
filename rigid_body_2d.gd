@@ -11,11 +11,12 @@ var current_weapon: WeaponType = WeaponType.NONE
 var current_target: Node2D = null # Biến lưu mục tiêu hiện tại
 @onready var hand = $hand
 @onready var gun_sprite = $hand/Gun        # sprite khẩu súng
-@onready var sword_sprite = $hand/Sword    # sprite cây kiếm
 @onready var shoot_timer = $hand/ShootTimer
 @onready var muzzle = $hand/Muzzle
-@onready var sword_hitbox = $hand/Sword/SwordHitbox
+@onready var sword_sprite = $hand/Sword # Node dao
+@onready var sword_hitbox = $hand/Sword/SwordHitbox # Vùng va chạm
 @onready var sword_timer = $hand.get_node_or_null("SwordTimer") # nếu muốn thêm Timer riêng cho kiếm
+var original_sword_scale := Vector2(0.046, 0.046)
 @onready var shake_camera = get_tree().get_first_node_in_group("camera_shake")
 var sword_kills_left = 0
 const GUN_PICKUP_DELAY = 1.0 # Chờ 1 giây sau khi nhặt súng mới được bắn
@@ -25,6 +26,8 @@ var ammo = MAX_AMMO
 var kill = 0
 var player_name: String = ""
 func _ready():
+	if sword_sprite:
+		original_sword_scale = sword_sprite.scale
 	# ẩn hết vũ khí khi spawn
 	if gun_sprite:
 		gun_sprite.hide()
@@ -33,6 +36,8 @@ func _ready():
 	if sword_hitbox:
 		sword_hitbox.monitoring = false
 		sword_hitbox.monitorable = false
+		if not sword_hitbox.body_entered.is_connected(_on_sword_hitbox_body_entered):
+			sword_hitbox.body_entered.connect(_on_sword_hitbox_body_entered)
 
 	add_to_group("Player")
 	await get_tree().create_timer(0.1).timeout
@@ -109,6 +114,7 @@ func pick_up_sword():
 	if sword_hitbox:
 		sword_hitbox.monitoring = true
 		sword_hitbox.monitorable = false
+		_check_sword_overlap_kill()
 
 func _process(delta):
 	if hand.global_rotation > PI/2 or hand.global_rotation < -PI/2:
@@ -144,6 +150,12 @@ func _process(delta):
 		WeaponType.GUN:
 			if gun_sprite and gun_sprite.visible:
 				auto_shoot()
+		WeaponType.SWORD:
+			if sword_sprite:
+				# Xoay thuận chiều trở lại
+				sword_sprite.rotation += 70 * delta
+				var scale_pulse = 1.0 + sin(Time.get_ticks_msec() * 0.1) * 0.2
+				sword_sprite.scale = original_sword_scale * scale_pulse
 func auto_shoot():
 	if ammo <= 0:
 		return
@@ -188,7 +200,12 @@ func _try_sword_kill(body: Node2D) -> bool:
 		return false
 	if not body.is_in_group("Player"):
 		return false
-	if body.has_method("queue_free"):
+		
+	var dead := true
+	if body.has_method("apply_damage"):
+		dead = body.apply_damage(1) # Trừ máu kẻ địch
+		
+	if dead and body.has_method("queue_free"):
 		kill += 1
 		# Tạo splash effect tại vị trí kẻ bị chém (nếu đã gán scene trong Inspector)
 		if kill_splash_scene:
@@ -199,10 +216,18 @@ func _try_sword_kill(body: Node2D) -> bool:
 			var anim_player := splash.get_node_or_null("Sprite2D/AnimationPlayer")
 			if anim_player is AnimationPlayer:
 				anim_player.play("Splash") # tên animation trong KillSplash.tscn
+				
 		body.queue_free()
 		sword_kills_left -= 1
+		
+		# Phát âm thanh giết bằng kiếm
+		var kill_sound = get_node_or_null("SwordKill")
+		if kill_sound:
+			kill_sound.stop()
+			kill_sound.play()
+
 		if shake_camera and shake_camera.has_method("add_trauma"):
-			shake_camera.add_trauma(0.45)
+			shake_camera.add_trauma(0.5)
 		if sword_kills_left <= 0:
 			_consume_sword()
 		return true
@@ -212,6 +237,8 @@ func _consume_sword() -> void:
 	current_weapon = WeaponType.NONE
 	if sword_sprite:
 		sword_sprite.hide()
+		sword_sprite.rotation = 0
+		sword_sprite.scale = original_sword_scale
 	if sword_hitbox:
 		sword_hitbox.monitoring = false
 

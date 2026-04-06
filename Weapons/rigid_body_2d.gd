@@ -16,9 +16,12 @@ var current_target: Node2D = null # Mục tiêu hiện tại đang nhắm đến
 @onready var hand = $hand # Node cánh tay (xoay theo mục tiêu)
 @onready var gun_sprite = $hand/Gun # Hình ảnh súng
 @onready var sword_sprite = $hand/Sword # Hình ảnh kiếm
+@onready var sword_hitbox = $hand/Sword/SwordHitbox # Vùng va chạm của kiếm
 @onready var shoot_timer = $hand/ShootTimer # Thời gian chờ giữa các lần bắn
 @onready var muzzle = $hand/Muzzle # Vị trí đầu nòng súng (để spawn đạn)
-@onready var sword_hitbox = $hand/Sword/SwordHitbox # Vùng va chạm của kiếm
+
+# Lưu lại scale ban đầu để hiệu ứng co giãn không làm sai lệch kích thước
+var original_sword_scale := Vector2(0.046, 0.046)
 
 # Hệ thống rung camera khi chém/bắn
 @onready var shake_camera = get_tree().get_first_node_in_group("camera_shake")
@@ -50,6 +53,8 @@ var player_name: String = "" # Tên nhân vật (ID TikTok)
 var hearts := 1 # Máu hiện tại
 
 func _ready():
+	if sword_sprite:
+		original_sword_scale = sword_sprite.scale
 	_ensure_audio_players() # Khởi tạo các node âm thanh nếu chưa có
 	
 	# Thiết lập va chạm cho RigidBody2D
@@ -57,6 +62,10 @@ func _ready():
 	max_contacts_reported = 8
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
+		
+	# Kết nối tín hiệu cho vùng chém của kiếm
+	if sword_hitbox and not sword_hitbox.body_entered.is_connected(_on_sword_hitbox_body_entered):
+		sword_hitbox.body_entered.connect(_on_sword_hitbox_body_entered)
 		
 	# Khởi tạo Trail (vệt đuôi di chuyển)
 	if has_node("Trail"):
@@ -271,6 +280,18 @@ func pick_up_sword():
 	if sword_hitbox:
 		sword_hitbox.monitoring = true
 		sword_hitbox.monitorable = false
+		# Kiểm tra ngay lập tức xem có kẻ địch nào đang ở sẵn trong vùng chém không
+		_check_sword_overlap_kill()
+
+func _check_sword_overlap_kill() -> void:
+	if sword_kills_left <= 0:
+		return
+	if not sword_hitbox:
+		return
+	# Duyệt qua các body đang chồng lấn để chém ngay lập tức
+	for body in sword_hitbox.get_overlapping_bodies():
+		if _try_sword_kill(body):
+			return
 
 # func pick_up_gojo():
 # 	if gojo_charging: return
@@ -339,11 +360,19 @@ func _process(delta):
 		# Nếu không cầm súng thì để tay ở vị trí mặc định (góc 0)
 		hand.rotation = lerp_angle(hand.rotation, 0, 0.1)
 	
-	# 3. Thực hiện bắn tự động nếu cầm súng
+	# 3. Thực hiện logic vũ khí
 	match current_weapon:
 		WeaponType.GUN:
 			if gun_sprite and gun_sprite.visible:
 				auto_shoot()
+		WeaponType.SWORD:
+			# Xoay con dao quanh vòng tròn (pivot tại vòng)
+			if sword_sprite:
+				# Xoay thuận chiều trở lại
+				sword_sprite.rotation += 70 * delta 
+				# Hiệu ứng Motion: Co giãn nhẹ cho sinh động
+				var scale_pulse = 1.0 + sin(Time.get_ticks_msec() * 0.1) * 0.2
+				sword_sprite.scale = original_sword_scale * scale_pulse
 
 # --- LOGIC BẮN SÚNG ---
 func auto_shoot():
@@ -426,6 +455,8 @@ func _consume_sword() -> void:
 	current_weapon = WeaponType.NONE
 	if sword_sprite:
 		sword_sprite.hide()
+		sword_sprite.rotation = 0
+		sword_sprite.scale = original_sword_scale
 	if sword_hitbox:
 		sword_hitbox.monitoring = false
 

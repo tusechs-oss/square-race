@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bg5cv5qwbnu7r" path="res://R.jpg" id="6_mrx8n"]
 [ext_resource type="Material" uid="uid://cm5tkhborussb" path="res://Rainbow_border.tres" id="6_nm0ys"]
 [ext_resource type="Texture2D" uid="uid://bpdrplsvuvr7v" path="res://4smg04.png" id="7_nm0ys"]
-[ext_resource type="Texture2D" uid="uid://b7g5vam0fmtiw" path="res://sw.png" id="9_mrx8n"]
+[ext_resource type="Texture2D" uid="uid://8bqlhoef583c" path="res://Knife 4.png" id="9_mrx8n"]
 [ext_resource type="Script" uid="uid://cdhoxv1lt5326" path="res://addons/trail_2d/trail_2d.gd" id="10_gblts"]
 [ext_resource type="AudioStream" uid="uid://dwrvneuy0flaa" path="res://khối va chạm.mp3" id="11_5fvif"]
 [ext_resource type="AudioStream" uid="uid://d3ka61dkmouqc" path="res://pixel-gun-3d-zombie-slayer-shoot.mp3" id="12_5jqks"]
@@ -26,7 +26,7 @@ bounce = 1.0
 size = Vector2(272.75, 243.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0lh3"]
-size = Vector2(196.99184, 182.33737)
+size = Vector2(794.18524, 661.6296)
 
 [sub_resource type="Curve" id="Curve_yv2v2"]
 _data = [Vector2(0.1534091, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -104,19 +104,21 @@ texture = ExtResource("7_nm0ys")
 
 [node name="Sword" type="Sprite2D" parent="RigidBody2D/hand" unique_id=1561596220]
 visible = false
-z_index = -1
+z_index = 1
 texture_filter = 1
-position = Vector2(6.056911, -4.065041)
-rotation = -0.19744372
-scale = Vector2(0.1160443, 0.123116225)
+position = Vector2(-9.796747, 5.6910563)
+scale = Vector2(0.046, 0.046)
 texture = ExtResource("9_mrx8n")
+centered = false
+offset = Vector2(-424.015, -420)
+flip_h = true
+flip_v = true
 
 [node name="SwordHitbox" type="Area2D" parent="RigidBody2D/hand/Sword" unique_id=684933576]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/hand/Sword/SwordHitbox" unique_id=862036908]
 visible = false
-position = Vector2(5.0812874, 188.00815)
-scale = Vector2(1.0000002, 1.0000002)
+position = Vector2(273.94846, 256.2743)
 shape = SubResource("RectangleShape2D_d0lh3")
 
 [node name="Muzzle" type="Marker2D" parent="RigidBody2D/hand" unique_id=1466545983]
@@ -159,4 +161,3 @@ stream = ExtResource("15_c1n73")
 
 [connection signal="body_entered" from="RigidBody2D" to="RigidBody2D" method="_on_body_entered"]
 [connection signal="body_entered" from="RigidBody2D/AutoAimArea" to="RigidBody2D" method="_on_auto_aim_area_body_entered"]
-[connection signal="body_entered" from="RigidBody2D/hand/Sword/SwordHitbox" to="RigidBody2D" method="_on_sword_hitbox_body_entered"]

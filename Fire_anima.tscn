@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://fxb6boafypqr" path="res://sword.gd" id="1_lcl8j"]
 [ext_resource type="Shader" uid="uid://b66s340fjckt1" path="res://sword.gdshader" id="2_1oa1d"]
-[ext_resource type="Texture2D" uid="uid://kushpq3hvmi" path="res://6951dfc299ecc304db62cb44adb46545-removebg-preview.png" id="3_1oa1d"]
+[ext_resource type="Texture2D" uid="uid://bv1a5pk8c1gyh" path="res://Knife 2.png" id="3_1oa1d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vg0fh"]
 size = Vector2(103.16948, 86.940575)
@@ -11,7 +11,7 @@ size = Vector2(103.16948, 86.940575)
 shader = ExtResource("2_1oa1d")
 shader_parameter/tint_color = Color(1, 1, 1, 1)
 shader_parameter/tint_amount = 0.0
-shader_parameter/flash_modifier = 0.09656358581502633
+shader_parameter/flash_modifier = 0.12921400326329047
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 shader_parameter/line_color = Color(1, 1, 1, 1)
 shader_parameter/line_thickness = 3.618000171855
@@ -30,7 +30,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(-0.03333334, 0.5, 1),
 "transitions": PackedFloat32Array(0.7320428, 1.5157164, 1.3195081),
 "update": 0,
-"values": [Vector2(0.28, 0.28), Vector2(0.32, 0.32), Vector2(0.28, 0.28)]
+"values": [Vector2(0.14, 0.14), Vector2(0.155, 0.155), Vector2(0.14, 0.14)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -63,7 +63,7 @@ shape = SubResource("RectangleShape2D_vg0fh")
 
 [node name="Fire" type="Sprite2D" parent="SWORD" unique_id=1040267122]
 material = SubResource("ShaderMaterial_ugcdv")
-scale = Vector2(0.29949638, 0.29949638)
+scale = Vector2(0.1499156, 0.1499156)
 texture = ExtResource("3_1oa1d")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SWORD/Fire" unique_id=1007329914]

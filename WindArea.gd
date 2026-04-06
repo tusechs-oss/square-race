@@ -7,17 +7,23 @@ extends Area2D
 
 @onready var warning_sprite = get_node_or_null("Sprite2D")
 @onready var wind_visual = get_node_or_null("windreg")
+@onready var color_rect = get_node_or_null("ColorRect")
 
 func _ready() -> void:
-	# Ẩn mặc định
-	visible = true # Để các node con có thể điều khiển hiển thị riêng
+	# Ẩn mặc định ngay khi vào game
+	visible = true 
 	monitoring = false
 	monitorable = false
 	
 	if warning_sprite:
-		warning_sprite.visible = false
+		warning_sprite.hide()
 	if wind_visual:
-		wind_visual.visible = false
+		wind_visual.hide()
+	
+	# Tìm và ẩn mọi ColorRect bên trong (kể cả ColorRect2)
+	for child in get_children():
+		if child is ColorRect:
+			child.hide()
 	
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
@@ -27,48 +33,45 @@ func set_wind_direction(dir: Vector2) -> void:
 
 func activate_wind(duration: float = 8.0) -> void:
 	# --- BƯỚC 1: CẢNH BÁO NHẤP NHÁY (3 GIÂY) ---
-	if warning_sprite or wind_visual:
-		if warning_sprite: warning_sprite.visible = true
-		if wind_visual: wind_visual.visible = true
+	var all_color_rects = []
+	for child in get_children():
+		if child is ColorRect:
+			all_color_rects.append(child)
+			child.show()
+			
+	if warning_sprite: warning_sprite.show()
+	if wind_visual: wind_visual.show()
+	
+	# Nháy nhanh hơn (0.1s mỗi pha)
+	var tween = create_tween().set_loops(15)
+	
+	# Pha HIỆN
+	if warning_sprite:
+		tween.tween_property(warning_sprite, "modulate:a", 1.0, 0.1).from(0.2)
+	for cr in all_color_rects:
+		tween.parallel().tween_callback(func(): cr.show()).set_delay(0.1)
+	if wind_visual:
+		tween.parallel().tween_callback(func(): wind_visual.show()).set_delay(0.1)
 		
-		# Hiệu ứng nhấp nháy nhanh + Glow giảm xuống (1.5 thay vì 2.5 để không bị chói)
-		var tween = create_tween().set_loops(15) # 0.1s * 2 * 15 = 3s
-		
-		# Pha 1: Mờ đi
-		if warning_sprite:
-			tween.tween_property(warning_sprite, "modulate:a", 0.2, 0.1)
-			tween.parallel().tween_property(warning_sprite, "self_modulate", Color(1, 1, 1, 1), 0.1)
-		if wind_visual:
-			# Nếu wind_visual là CollisionShape thì dùng visible, nếu là CanvasItem thì dùng modulate
-			if wind_visual is CanvasItem:
-				tween.parallel().tween_property(wind_visual, "modulate:a", 0.1, 0.1)
-			else:
-				tween.parallel().tween_callback(func(): wind_visual.visible = false).set_delay(0.1)
-		
-		# Pha 2: Hiện rõ + Glow nhẹ
-		if warning_sprite:
-			tween.tween_property(warning_sprite, "modulate:a", 1.0, 0.1)
-			tween.parallel().tween_property(warning_sprite, "self_modulate", Color(1.5, 1.5, 1.5, 1), 0.1)
-		if wind_visual:
-			if wind_visual is CanvasItem:
-				tween.parallel().tween_property(wind_visual, "modulate:a", 0.7, 0.1)
-			else:
-				tween.parallel().tween_callback(func(): wind_visual.visible = true).set_delay(0.1)
-		
-		await get_tree().create_timer(3.0).timeout
-		
-		# Kết thúc cảnh báo - ẨN TẤT CẢ VÙNG VÀNG VÀ ICON
-		if warning_sprite: 
-			warning_sprite.visible = false
-			warning_sprite.self_modulate = Color(1, 1, 1, 1)
-		if wind_visual:
-			wind_visual.visible = false
+	# Pha ẨN
+	if warning_sprite:
+		tween.tween_property(warning_sprite, "modulate:a", 0.2, 0.1)
+	for cr in all_color_rects:
+		tween.parallel().tween_callback(func(): cr.hide()).set_delay(0.1)
+	if wind_visual:
+		tween.parallel().tween_callback(func(): wind_visual.hide()).set_delay(0.1)
+	
+	await tween.finished
+	
+	# Đảm bảo ẩn hoàn toàn sau khi cảnh báo xong
+	if warning_sprite: 
+		warning_sprite.hide()
+		warning_sprite.modulate.a = 1.0
+	if wind_visual: wind_visual.hide()
+	for cr in all_color_rects:
+		cr.hide()
 	
 	# --- BƯỚC 2: KÍCH HOẠT GIÓ ---
-	# Giữ wind_visual ẩn theo yêu cầu (để bạn tự thêm hiệu ứng sau)
-	if wind_visual:
-		wind_visual.visible = false
-		
 	monitoring = true
 	monitorable = true
 	

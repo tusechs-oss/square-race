@@ -373,6 +373,24 @@ func _find_texture_in_tree(node: Node) -> Texture2D:
 			queue.append(c)
 	return null
 
+# --- HÀM LẤY VỊ TRÍ SPAWN NGẪU NHIÊN TỪ SPAWNREGION ---
+func _get_random_spawn_pos() -> Vector2:
+	if spawn_region:
+		var rect = spawn_region.get_global_rect()
+		var margin = 60.0 # Giữ margin 60px như cũ cho an toàn
+		var rx = randf_range(rect.position.x + margin, rect.position.x + rect.size.x - margin)
+		var ry = randf_range(rect.position.y + margin, rect.position.y + rect.size.y - margin)
+		return Vector2(rx, ry)
+	
+	# Fallback nếu không tìm thấy spawn_region (dùng khung cũ)
+	var view_size = get_viewport_rect().size
+	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
+	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
+	var margin = 60.0
+	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
+	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
+	return Vector2(rx, ry)
+
 func _start_weapon_countdown(kind: String) -> void:
 	_find_spawn_timer_nodes()
 	if spawn_timer == null:
@@ -385,15 +403,7 @@ func _start_weapon_countdown(kind: String) -> void:
 		pending_weapon_node.queue_free()
 	pending_weapon_node = null
 	
-	var view_size = get_viewport_rect().size
-	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
-	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
-	
-	var margin = 60.0 # Margin an toàn cho nhân vật (60px)
-	
-	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
-	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
-	var target_pos = Vector2(rx, ry)
+	var target_pos = _get_random_spawn_pos()
 	
 	if kind == "sword" and sword_scene != null:
 		pending_weapon_node = sword_scene.instantiate()
@@ -650,15 +660,7 @@ func _on_line_edit_text_submitted(new_text):
 	var new_box = box_template.instantiate()
 	add_child(new_box)
 	
-	var view_size = get_viewport_rect().size
-	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
-	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
-	var margin = 60.0
-	
-	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
-	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
-	
-	new_box.global_position = Vector2(rx, ry)
+	new_box.global_position = _get_random_spawn_pos()
 	
 	# Gán player_name cho node RigidBody2D bên trong (nếu có)
 	
@@ -718,15 +720,7 @@ func spawn_basic_box():
 			return null
 	var box = scene.instantiate()
 	
-	var view_size = get_viewport_rect().size
-	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
-	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
-	var margin = 60.0
-	
-	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
-	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
-	
-	box.global_position = Vector2(rx, ry)
+	box.global_position = _get_random_spawn_pos()
 
 	# Đưa vào Scene sau khi đã gán tọa độ chuẩn
 	get_tree().current_scene.add_child(box)
@@ -735,16 +729,8 @@ func spawn_basic_box():
 func _spawn_sword_now() -> void:
 	if sword_scene == null:
 		return
-	var view_size = get_viewport_rect().size
-	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
-	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
-	var margin = 60.0
-	
-	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
-	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
-	
 	var box = sword_scene.instantiate()
-	box.global_position = Vector2(rx, ry)
+	box.global_position = _get_random_spawn_pos()
 	get_tree().current_scene.add_child(box)
 
 func _on_sword_pressed() -> void:
@@ -753,16 +739,8 @@ func _on_sword_pressed() -> void:
 func _spawn_gun_now() -> void:
 	if gun_scene == null:
 		return
-	var view_size = get_viewport_rect().size
-	var frame_right = view_size.x - FRAME_RIGHT_OFFSET
-	var frame_bottom = view_size.y - FRAME_BOTTOM_OFFSET
-	var margin = 60.0
-	
-	var rx = randf_range(FRAME_LEFT + margin, frame_right - margin)
-	var ry = randf_range(FRAME_TOP + margin, frame_bottom - margin)
-	
 	var box = gun_scene.instantiate()
-	box.global_position = Vector2(rx, ry)
+	box.global_position = _get_random_spawn_pos()
 	get_tree().current_scene.add_child(box)
 
 func _on_gun_pressed() -> void:
