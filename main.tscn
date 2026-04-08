@@ -12,7 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://b2h8ok8yfc7wb" path="res://addons/silent_wolf/Scores/Leaderboard.tscn" id="10_4c57u"]
 [ext_resource type="Texture2D" uid="uid://secy4xbw8aha" path="res://vecteezy_yellow-warning-sign-with-exclamation-point-isolated-on_45904050.png" id="12_vivmo"]
 [ext_resource type="Texture2D" uid="uid://bqsab0vkjjkak" path="res://alert-icon-1562.png" id="14_w48qg"]
+[ext_resource type="AudioStream" uid="uid://mu8xe306q88v" path="res://metoer.mp3" id="16_074og"]
 [ext_resource type="Script" uid="uid://b1x77uem6p7h7" path="res://WindArea.gd" id="16_yaehf"]
+[ext_resource type="AudioStream" uid="uid://bux7cebxvgpcp" path="res://wind.mp3" id="17_cegan"]
 [ext_resource type="Script" uid="uid://cbj1chhhmsatk" path="res://MeteorService.gd" id="17_meteor"]
 [ext_resource type="Texture2D" uid="uid://cg3ra6g7yhjig" path="res://pngtree-mysterious-and-scary-hole-in-the-dark-forest-png-image_13402438.png" id="17_yaehf"]
 
@@ -236,13 +238,13 @@ offset_left = 706.0
 offset_top = 55.0
 offset_right = 1000.0
 offset_bottom = 593.0
-color = Color(0.98039216, 0.7529412, 0, 0.15)
+color = Color(0.98039216, 0.7529412, 0, 0.05)
 
 [node name="windreg" type="CollisionShape2D" parent="WindArea" unique_id=250226509]
 visible = false
 position = Vector2(852.5, 322.25)
 shape = SubResource("RectangleShape2D_2cqfq")
-debug_color = Color(0.98039216, 0.7529412, 0, 0.15)
+debug_color = Color(0.98039216, 0.7529412, 0, 0.05)
 
 [node name="Sprite2D" type="Sprite2D" parent="WindArea" unique_id=2015632907]
 z_index = 1
@@ -277,7 +279,7 @@ offset_left = 197.0
 offset_top = 52.0
 offset_right = 491.0
 offset_bottom = 590.0
-color = Color(0.98039216, 0.7529412, 0, 0.15)
+color = Color(0.98039216, 0.7529412, 0, 0.05)
 
 [node name="Meteor_service" type="Node2D" parent="." unique_id=78167695]
 script = ExtResource("17_meteor")
@@ -467,6 +469,12 @@ self_modulate = Color(1, 1, 1, 0.7058824)
 position = Vector2(790, 445.11)
 scale = Vector2(0.44, 0.44)
 texture = ExtResource("14_w48qg")
+
+[node name="metoer" type="AudioStreamPlayer2D" parent="." unique_id=860034504]
+stream = ExtResource("16_074og")
+
+[node name="wind" type="AudioStreamPlayer2D" parent="." unique_id=449093013]
+stream = ExtResource("17_cegan")
 
 [connection signal="text_submitted" from="Control/NameInput" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="Control/Vietnam" to="." method="_on_vietnam_pressed"]

@@ -113,6 +113,14 @@ func _on_spawn_timer_timeout() -> void:
 		# Đợi 3 giây trước khi rơi thiên thạch
 		await get_tree().create_timer(3.0).timeout
 		
+		# Phát âm thanh meteor từ node có sẵn trong main khi bắt đầu rơi
+		var main_meteor_node = get_tree().current_scene.get_node_or_null("metoer")
+		if main_meteor_node:
+			# Chọn vị trí trung tâm của các thiên thạch hoặc vị trí của cái đầu tiên
+			if selected_meteors.size() > 0:
+				main_meteor_node.global_position = selected_meteors[0].global_position
+			main_meteor_node.play()
+		
 		for m in selected_meteors:
 			_activate_meteor(m)
 
