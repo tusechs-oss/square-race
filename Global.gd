@@ -1,7 +1,7 @@
 extends Node
 
-signal tiktok_gift_received(user_name, avatar_url, gift_name, amount)
-signal tiktok_spawn_requested(user_name, avatar_url, reason)
+signal youtube_superchat_received(user_name, avatar_url, amount)
+signal youtube_spawn_requested(user_name, avatar_url, reason, raw_data)
 var udp := PacketPeerUDP.new()
 var listen_port := 4242
 var current_leaderboard := "main"
@@ -53,4 +53,4 @@ func _process(_delta: float) -> void:
 
 			# Gửi tín hiệu spawn với dữ liệu đã chuẩn hóa
 			print("[UDP] spawn:", _name)
-			tiktok_spawn_requested.emit(_name, _avatar, _reason, parsed)
+			youtube_spawn_requested.emit(_name, _avatar, _reason, parsed)

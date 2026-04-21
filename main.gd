@@ -47,9 +47,9 @@ func _ready() -> void:
 		if ps and ps is PackedScene:
 			box_template = ps
 			
-	# Kết nối tín hiệu từ TikTok (thông qua Global singleton)
-	if Global.has_signal("tiktok_spawn_requested"):
-		Global.tiktok_spawn_requested.connect(_on_tiktok_spawn)
+	# Kết nối tín hiệu từ YouTube (thông qua Global singleton)
+	if Global.has_signal("youtube_spawn_requested"):
+		Global.youtube_spawn_requested.connect(_on_youtube_spawn)
 		
 	randomize() # Khởi tạo hạt giống ngẫu nhiên
 	_find_spawn_timer_nodes() # Tìm các node UI đếm ngược
@@ -102,54 +102,24 @@ func _on_wind_timer_timeout() -> void:
 		if selected_area.has_method("activate_wind"):
 			selected_area.activate_wind(5.0)
 	
-# Trích xuất boss_level từ reason/raw_data theo thứ tự ưu tiên:
-# 1) raw_data.boss_level
-# 2) reason = "boss_lv_X"
-# 3) Test offline: gift == "rose" + repeatEnd → map repeatCount 5/10/15/20 → 1..4
-# 4) raw_data.hearts (nếu có) → nâng cấp theo hearts-1
+# Trích xuất boss_level từ reason/raw_data:
+# Chỉ giữ lại Boss Lv3 theo yêu cầu (30k Super Chat)
 func _resolve_boss_level(reason: Variant, raw_data: Variant) -> int:
 	var level := 0
-	if raw_data is Dictionary:
-		level = int(raw_data.get("boss_level", 0))
-		if level == 0:
-			var g := str(raw_data.get("gift", "")).to_lower()
-			var rc := int(raw_data.get("repeatCount", 0))
-			var re := bool(raw_data.get("repeatEnd", false))
-			if g == "rose" and re:
-				match rc:
-					5: level = 1
-					10: level = 2
-					15: level = 3
-					20: level = 4
-					25: level = 5
-			elif g == "donut":
-				level = 6
-		if raw_data.has("hearts"):
-			var h := int(raw_data["hearts"])
-			if h > 0:
-				level = max(level, h - 1)
-	if level == 0 and typeof(reason) == TYPE_STRING:
-		var r := str(reason).to_lower()
-		if r.begins_with("boss_lv_"):
-			var parts = r.split("_")
-			if parts.size() >= 3:
-				level = int(parts[2])
+	var r := str(reason).to_lower()
+	if r == "boss_lv_3":
+		level = 3
 	return level
 
-# Màu sắc theo cấp Boss (1→5): đỏ nhạt → đỏ đậm
+# Màu sắc theo cấp Boss: Chỉ dùng Boss Lv3 (Đỏ vừa)
 func _boss_color_for_level(level: int) -> Color:
 	match level:
-		1: return Color(1.0, 0.7, 0.7, 1.0)
-		2: return Color(1.0, 0.5, 0.5, 1.0)
 		3: return Color(0.95, 0.3, 0.3, 1.0)
-		4: return Color(0.9, 0.15, 0.15, 1.0)
-		5: return Color(0.85, 0.05, 0.05, 1.0)
-		6: return Color(0.7, 0.0, 0.0, 1.0)
 		_: return Color(1, 1, 1, 1)
 
 # Áp màu Boss lên phần thân (ưu tiên TextureRect; không có thì tô cả RigidBody2D)
 func _apply_boss_color(rb: Node, level: int) -> void:
-	if rb == null:
+	if rb == null or level != 3:
 		return
 	var col := _boss_color_for_level(level)
 	var body_tex = rb.get_node_or_null("TextureRect")
@@ -162,7 +132,7 @@ func _apply_boss_color(rb: Node, level: int) -> void:
 
 # Áp màu cho Trail (Line2D) nếu nhân vật có node "Trail"
 func _apply_trail_color(rb: Node, level: int) -> void:
-	if rb == null:
+	if rb == null or level != 3:
 		return
 	var trail = rb.get_node_or_null("Trail")
 	if trail == null:
@@ -175,19 +145,14 @@ func _apply_trail_color(rb: Node, level: int) -> void:
 			trail.modulate = col
 		# Tăng độ dày trail theo cấp nếu có thuộc tính width
 		if "width" in trail:
-			trail.width = 6.0 + max(level - 1, 0) * 2.0
+			trail.width = 10.0 # Cố định cho Lv3
 		if "visible" in trail:
 			trail.visible = true
 
-# Tăng kích cỡ theo cấp Boss; Lv6 phóng to rõ rệt
+# Tăng kích cỡ theo cấp Boss; Chỉ Lv3
 func _boss_scale_for_level(level: int) -> float:
 	match level:
-		1: return 1.0
-		2: return 1.2
 		3: return 1.4
-		4: return 1.7
-		5: return 2.1
-		6: return 2.6
 		_: return 1.0
 
 func _apply_boss_scale_full(rb: Node2D, level: int) -> void:
@@ -560,7 +525,7 @@ func _apply_collision_scale(rb: Node2D, level: int) -> void:
 			var base_h = float(col.get_meta("base_height", shape.height))
 			shape.height = base_h * s
 
-func _on_tiktok_spawn(user_name, avatar_url, reason, raw_data = null):
+func _on_youtube_spawn(user_name, avatar_url, reason, raw_data = null):
 	if box_template:
 		# 1. Tạo nhân vật
 		var new_player = spawn_basic_box()
@@ -746,8 +711,10 @@ func _spawn_gun_now() -> void:
 func _on_gun_pressed() -> void:
 	_start_weapon_countdown("gun")
 
-# Spawn boss thủ công từ UI: số tim = level + 1 (Lv1=2, Lv2=3, Lv3=4, Lv4=5)
+# Spawn boss thủ công từ UI: Chỉ Boss Lv3
 func _spawn_boss_level(level: int) -> void:
+	if level != 3:
+		return
 	var new_player = spawn_basic_box()
 	if new_player:
 		var rb = new_player.get_node_or_null("RigidBody2D")
@@ -759,5 +726,5 @@ func _spawn_boss_level(level: int) -> void:
 			_apply_trail_color(rb, level)
 			_apply_boss_scale_full(rb, level)
 
-func _on_boss_lv_1_pressed() -> void:
-	_spawn_boss_level(1)
+func _on_boss_lv_3_pressed() -> void:
+	_spawn_boss_level(3)

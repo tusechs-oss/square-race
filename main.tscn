@@ -165,12 +165,13 @@ offset_right = 57.0
 offset_bottom = 33.999985
 metadata/_edit_use_anchors_ = true
 
-[node name="Boss lv1" type="Button" parent="Control" unique_id=651612636]
+[node name="Boss lv3" type="Button" parent="Control" unique_id=651612636]
 layout_mode = 0
 offset_left = 22.5
 offset_top = 281.5
 offset_right = 51.5
 offset_bottom = 312.5
+text = "Boss Lv3"
 
 [node name="Countdown_reg" type="CanvasLayer" parent="Control" unique_id=1989787037]
 
@@ -481,7 +482,7 @@ stream = ExtResource("17_cegan")
 [connection signal="pressed" from="Control/GUN" to="." method="_on_gun_pressed"]
 [connection signal="toggled" from="Control/GUN" to="." method="_on_gun_toggled"]
 [connection signal="pressed" from="Control/Sword" to="." method="_on_sword_pressed"]
-[connection signal="pressed" from="Control/Boss lv1" to="." method="_on_boss_lv_1_pressed"]
+[connection signal="pressed" from="Control/Boss lv3" to="." method="_on_boss_lv_3_pressed"]
 [connection signal="body_entered" from="Meteor_service/Meteor" to="Meteor_service" method="_on_meteor_body_entered"]
 [connection signal="body_entered" from="Meteor_service/Meteor2" to="Meteor_service" method="_on_meteor_2_body_entered"]
 [connection signal="body_entered" from="Meteor_service/Meteor3" to="Meteor_service" method="_on_meteor_3_body_entered"]

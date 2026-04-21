@@ -164,30 +164,6 @@ func _ensure_audio_players() -> void:
 	
 	if gun_sound:
 		gun_sound.volume_db = gun_volume_db
-		
-	# 3. Tìm hoặc tạo SwordSound (Gojo)
-	if sword_sound == null:
-		sword_sound = get_node_or_null("../SwordSound")
-	if sword_sound == null and get_parent():
-		sword_sound = get_parent().get_node_or_null("SwordSound")
-	if sword_sound == null and get_tree().current_scene:
-		sword_sound = get_tree().current_scene.find_child("SwordSound", true, false)
-		
-	if sword_sound == null:
-		var local_sword = get_node_or_null("LocalSwordSound")
-		if local_sword == null:
-			local_sword = AudioStreamPlayer2D.new()
-			local_sword.name = "LocalSwordSound"
-			add_child(local_sword)
-			local_sword.stream = load("res://gomen-amanai-gojo.mp3")
-			local_sword.bus = "Master"
-			local_sword.attenuation = 0.0
-			local_sword.max_distance = 100000.0
-		sword_sound = local_sword
-	
-	if sword_sound:
-		sword_sound.volume_db = sword_volume_db
-		
 	# 4. Tìm hoặc tạo SwordKillSound (Among Us)
 	if sword_kill_sound == null:
 		sword_kill_sound = get_node_or_null("../SwordKillSound")
